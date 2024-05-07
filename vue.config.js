@@ -132,7 +132,7 @@ const vueConfig = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         // target: 'http://localhost:8080',
-        // target: `http://172.19.5.222:8080`,
+        // target: `http://172.19.5.226:8080`,
         target: process.env.VUE_APP_BASE_URL,
         // 如果要代理 websockets
         ws: true,

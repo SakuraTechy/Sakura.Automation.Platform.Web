@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :bordered="false" class="ui-card">
-      <split splitHeight="100%" leftWidth="500">
+      <split splitHeight="100%" :leftWidth="width">
         <template slot="paneL">
           <div class="card-container">
             <a-tabs v-model="activeKey" :tabBarGutter="0">
@@ -348,6 +348,7 @@ export default {
       variantList: [],
       showModal: false,
       activeKey: '1',
+      width: '500',
       activeIndex: 0, // 激活的步骤
       performanceChecked: false, // 是否性能模式
       webValue: '1', // 浏览器选择
@@ -481,6 +482,17 @@ export default {
       deep: true,
       immediate: true,
     },
+    activeKey:{
+      handler(val){
+        if(val==='1'){
+          this.width = '500'
+        }else{
+          this.width = '700'
+        }
+      },
+      deep:true,
+      immediate:true
+    }
   },
   mounted() {
     this.expandAllNodes()
@@ -1019,7 +1031,7 @@ export default {
 
 .tree-name {
   display: inline-block;
-  width: 80%;
+  width: 97%;
   overflow: hidden;
   white-space: nowrap;
   /*不换行*/
