@@ -248,6 +248,8 @@ export default {
     onAddNode(id, parentId) {
       this.open = true
       this.formTitle = '新增模块'
+      this.form.id = ''
+      this.form.name = ''
       this.form.parentId = id
     },
     // 关闭弹窗

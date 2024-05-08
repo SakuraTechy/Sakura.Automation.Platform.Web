@@ -51,6 +51,16 @@ const vueConfig = {
         '@': resolve('src')
       }
     },
+    module: {
+      rules: [
+        // ...其他规则
+        {
+          test: /\.psd$/,
+          use: 'ignore-loader', // 或者干脆不包括此规则
+          exclude: /node_modules/,
+        },
+      ],
+    },
     // webpack plugins
     plugins: [
       // Ignore all locale files of moment.js

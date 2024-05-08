@@ -236,11 +236,11 @@ export default {
       }
     },
     // 获取该项目下的环境和域名
-    getSetting(id) {
-      getSettingInfo(id).then((response) => {
-        this.settingOptions = response.data
-      })
-    },
+    // getSetting(id) {
+    //   getSettingInfo(id).then((response) => {
+    //     this.settingOptions = response.data
+    //   })
+    // },
     // 环境改变
     onDomainChange(value) {
       const { action } = this.form.step

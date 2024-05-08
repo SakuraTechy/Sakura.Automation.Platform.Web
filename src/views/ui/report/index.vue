@@ -82,14 +82,14 @@
         <span slot="endTime" slot-scope="{ record }">
           {{ parseTime(record.endTime) }}
         </span>
-        <span
+        <!-- <span
           slot="status"
           slot-scope="{ record }"
           class="report-status"
           :style="{ backgroundColor: statusColor[record.status] }"
         >
           {{ findNodeId(reportStatusOptions, record.status, 'label') }}
-        </span>
+        </span> -->
         <span slot="operation" slot-scope="{ record }">
           <a @click="handleReportInfo(record, undefined)" v-hasPermi="['projectSetting:version:edit']"> 报告详情 </a>
           <a-divider type="vertical" v-hasPermi="['projectSetting:version:delete']" />
@@ -129,13 +129,13 @@
 <script>
 import AdvanceTable from '@/components/pt/table/AdvanceTable'
 import AntModal from '@/components/pt/dialog/AntModal'
-import { reportStatusOptions } from '@/utils/options'
+// import { reportStatusOptions } from '@/utils/options'
 export default {
   name: 'Report',
   components: { AdvanceTable, AntModal },
   data() {
     return {
-      reportStatusOptions,
+      // reportStatusOptions,
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
       statusColor: ['#5cbc31', '#f25f62', '#888c92'], // 控制用例状态颜色

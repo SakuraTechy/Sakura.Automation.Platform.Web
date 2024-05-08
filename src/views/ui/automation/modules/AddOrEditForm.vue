@@ -286,7 +286,6 @@ import {
   getUiNode
 } from '@/api/ui'
 import * as projectApis from '@/api/project'
-import { getSettingInfo } from '@/api/project'
 import Variant from './Variant.vue'
 import AddStepList from './OperationA.vue'
 import AddCaseList from './OperationB.vue'
@@ -514,11 +513,11 @@ export default {
       }
     },
     // 获取当前项目的环境
-    getSetting() {
-      getSettingInfo(this.projectId).then((response) => {
-        this.settingOptions = response.data.environments
-      })
-    },
+    // getSetting() {
+    //   projectApis.getSettingInfo(this.projectId).then((response) => {
+    //     this.settingOptions = response.data.environments
+    //   })
+    // },
     // 切换项目
     onChangeProject(value) {
       this.form.projectId = item.id

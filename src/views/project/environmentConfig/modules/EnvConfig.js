@@ -166,7 +166,7 @@ export const domainColumns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'createTime',
@@ -176,7 +176,7 @@ export const domainColumns = [
   {
     title: '更新时间',
     dataIndex: 'updateTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'updateTime',
@@ -403,7 +403,7 @@ export const serverColumns = [
   },
   {
     title: '密码',
-    width: 150,
+    width: 160,
     dataIndex: 'passWord',
     ellipsis: true,
     align: 'center',
@@ -563,14 +563,14 @@ export const dataBaseColumns = [
   {
     title: '数据库版本',
     dataIndex: 'version',
-    width: 150,
+    width: 160,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '数据库名称',
     dataIndex: 'name',
-    width: 150,
+    width: 160,
     ellipsis: true,
     align: 'center',
   },
@@ -639,7 +639,7 @@ export const dataBaseColumns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'createTime',
@@ -649,7 +649,7 @@ export const dataBaseColumns = [
   {
     title: '更新时间',
     dataIndex: 'updateTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'updateTime',
