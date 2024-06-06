@@ -9,21 +9,21 @@ export const versionColumns = [
   {
     title: '版本名称',
     dataIndex: 'name',
-    width: 230,
+    width: 250,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '版本描述',
     dataIndex: 'description',
-    width: 591,
+    width: 557,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '主线版本',
     dataIndex: 'status',
-    width: 90,
+    width: 100,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
@@ -68,7 +68,7 @@ export const versionColumns = [
   {
     title: '操作',
     dataIndex: 'operation',
-    width: 150,
+    width: 160,
     fixed: 'right',
     scopedSlots: {
       customRender: 'operation',
@@ -161,14 +161,14 @@ export const serverColumns = [
   {
     title: '服务器版本',
     dataIndex: 'version',
-    width: 130,
+    width: 150,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '主机名称',
     dataIndex: 'host',
-    width: 120,
+    width: 110,
     ellipsis: true,
     align: 'center',
   },
@@ -195,7 +195,7 @@ export const serverColumns = [
   },
   {
     title: '关联版本',
-    width: 181,
+    width: 157,
     dataIndex: 'description',
     scopedSlots: { customRender: 'description' },
     ellipsis: true,
@@ -204,7 +204,7 @@ export const serverColumns = [
   {
     title: '启用状态',
     dataIndex: 'status',
-    width: 90,
+    width: 100,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
@@ -228,7 +228,7 @@ export const serverColumns = [
     title: '操作',
     dataIndex: 'operation',
     fixed: 'right',
-    width: 150,
+    width: 160,
     scopedSlots: {
       customRender: 'operation',
     },
@@ -331,14 +331,14 @@ export const dataBaseColumns = [
   {
     title: '数据库版本',
     dataIndex: 'version',
-    width: 130,
+    width: 150,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '数据库名称',
     dataIndex: 'name',
-    width: 120,
+    width: 110,
     ellipsis: true,
     align: 'center',
   },
@@ -393,7 +393,7 @@ export const dataBaseColumns = [
   // },
   {
     title: '描述',
-    width: 181,
+    width: 157,
     dataIndex: 'description',
     ellipsis: true,
     align: 'center',
@@ -401,7 +401,7 @@ export const dataBaseColumns = [
   {
     title: '启用状态',
     dataIndex: 'status',
-    width: 90,
+    width: 100,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
@@ -424,7 +424,7 @@ export const dataBaseColumns = [
   {
     title: '操作',
     dataIndex: 'operation',
-    width: 150,
+    width: 160,
     fixed: 'right',
     scopedSlots: {
       customRender: 'operation',
@@ -458,7 +458,7 @@ export const projectColumns = [
   {
     title: '项目名称',
     dataIndex: 'name',
-    width: 240,
+    width: 250,
     ellipsis: true,
     align: 'center',
   },
@@ -575,20 +575,20 @@ export const jenkinsColumns = [
   {
     title: 'IP',
     dataIndex: 'ip',
-    width: 120,
+    width: 110,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '端口',
-    width: 80,
+    width: 60,
     dataIndex: 'port',
     ellipsis: true,
     align: 'center',
   },
   {
     title: '用户名',
-    width: 95,
+    width: 80,
     dataIndex: 'userName',
     ellipsis: true,
     align: 'center',
@@ -602,14 +602,14 @@ export const jenkinsColumns = [
   },
   {
     title: '地址',
-    width: 180,
+    width: 201,
     dataIndex: 'url',
     ellipsis: true,
     align: 'center',
   },
   {
     title: '关联项目',
-    width: '100%',
+    width: 230,
     dataIndex: 'job',
     ellipsis: true,
     align: 'center',
@@ -624,7 +624,7 @@ export const jenkinsColumns = [
   {
     title: '启用状态',
     dataIndex: 'status',
-    width: 90,
+    width: 100,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
@@ -663,7 +663,7 @@ export const jenkinsColumns = [
   {
     title: '操作',
     dataIndex: 'operation',
-    width: 150,
+    width: 160,
     fixed: 'right',
     scopedSlots: {
       customRender: 'operation',
@@ -730,14 +730,14 @@ export const environmentColumns = [
   {
     title: '环境名称',
     dataIndex: 'name',
-    width: 120,
+    width: 110,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '环境描述',
     dataIndex: 'description',
-    width: '100%',
+    width: 491,
     ellipsis: true,
     scopedSlots: { customRender: 'description' },
     align: 'center',
@@ -759,7 +759,7 @@ export const environmentColumns = [
   {
     title: '启用状态',
     dataIndex: 'status',
-    width: 90,
+    width: 100,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
@@ -792,7 +792,7 @@ export const environmentColumns = [
   {
     title: '操作',
     dataIndex: 'operation',
-    width: 150,
+    width: 160,
     fixed: 'right',
     scopedSlots: {
       customRender: 'operation',
@@ -867,14 +867,14 @@ export const browserColumns = [
   {
     title: '浏览器名称',
     dataIndex: 'name',
-    width: 120,
+    width: 110,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '浏览器版本',
     dataIndex: 'version',
-    width: 120,
+    width: 150,
     ellipsis: true,
     align: 'center',
   },
@@ -888,14 +888,14 @@ export const browserColumns = [
   {
     title: '浏览器驱动路径',
     dataIndex: 'driver',
-    width: '100%',
+    width: 541,
     ellipsis: true,
     align: 'center',
   },
   {
     title: '启用状态',
     dataIndex: 'status',
-    width: 90,
+    width: 100,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
@@ -928,7 +928,7 @@ export const browserColumns = [
   {
     title: '操作',
     dataIndex: 'operation',
-    width: 150,
+    width: 160,
     fixed: 'right',
     scopedSlots: {
       customRender: 'operation',

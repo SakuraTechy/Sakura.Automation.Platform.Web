@@ -4,7 +4,7 @@
     :modal-title="formTitle"
     :adjust-size="true"
     modalWidth="1650"
-    modalHeight="880"
+    modalHeight="887"
     @cancel="cancel"
   >
     <div slot="content">
