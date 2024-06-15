@@ -23,7 +23,7 @@
           <a href="https://github.com/fuzui/AiDex-Antdv" target="_blank">条款</a>
         </div>
         <div class="copyright">
-          Copyright &copy; 2023 <a target="_blank"></a>
+          Copyright &copy; 2024 <a target="_blank"></a>
         </div>
       </div>
     </div>

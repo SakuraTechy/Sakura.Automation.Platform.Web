@@ -187,6 +187,7 @@ import TestReport from './modules/TestReport.vue'
 
 import { testReportTriggerModeOptions, testReportExecutionModeOptions, testReportStatusOptions } from '../components/Config'
 import * as utils from '@/utils/sakura'
+import log from '@/utils/log'
 
 export default {
   name: 'Environment',
@@ -601,41 +602,41 @@ export default {
       }
     },
     handleImport() {},
-    // handleExport(row) {
-    //   var that = this
-    //   var ids1 = []
-    //   if (row.id !== undefined) {
-    //     ids1.push(row.id)
-    //   }
-    //   // row.id ? this.ids.push(row.id) : ''
-    //   // const ids = row.id || that.ids
-    //   const ids = ids1.length > 0 ? ids1 : that.ids
-    //   const names = row.name || that.names
-    //   // console.info(ids)
-    //   var param = {
-    //     projectId: row.projectId,
-    //     ids: ids,
-    //   }
-    //   that.$Modal.confirm({
-    //     title: '确认导出所选中数据?',
-    //     content: '当前选中为' + names + '的测试报告',
-    //     onOk() {
-    //       return api
-    //         .exporttestReport(param)
-    //         .then((res) => {
-    //           if (res.status != 404) {
-    //             that.readBlobDown(res, 'environment.yml', 'application/x-yaml')
-    //             that.$message.success('导出成功')
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           that.$message.error('导出失败')
-    //           reject(error)
-    //         })
-    //     },
-    //     onCancel() {},
-    //   })
-    // },
+    handleExport(row) {
+      // var that = this
+      // var ids1 = []
+      // if (row.id !== undefined) {
+      //   ids1.push(row.id)
+      // }
+      // // row.id ? this.ids.push(row.id) : ''
+      // // const ids = row.id || that.ids
+      // const ids = ids1.length > 0 ? ids1 : that.ids
+      // const names = row.name || that.names
+      // // console.info(ids)
+      // var param = {
+      //   projectId: row.projectId,
+      //   ids: ids,
+      // }
+      // that.$Modal.confirm({
+      //   title: '确认导出所选中数据?',
+      //   content: '当前选中为' + names + '的测试报告',
+      //   onOk() {
+      //     return api
+      //       .exporttestReport(param)
+      //       .then((res) => {
+      //         if (res.status != 404) {
+      //           that.readBlobDown(res, 'environment.yml', 'application/x-yaml')
+      //           that.$message.success('导出成功')
+      //         }
+      //       })
+      //       .catch((error) => {
+      //         that.$message.error('导出失败')
+      //         reject(error)
+      //       })
+      //   },
+      //   onCancel() {},
+      // })
+    },
     /**
      * 读取下载的文件流
      */
