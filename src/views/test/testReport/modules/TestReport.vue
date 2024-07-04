@@ -1465,7 +1465,7 @@ export default {
 }
 
 .container {
-  height: calc(100vh - 178px);
+  height: calc(100vh - 176px);
   width: 100%;
   position: relative;
 }
