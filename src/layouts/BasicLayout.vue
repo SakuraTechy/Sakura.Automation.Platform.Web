@@ -25,7 +25,18 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-        <img src="~@/assets/images/login/sakura-log.svg" class="logo" alt="logo">
+        <img src="../../public/ankki-icon.png" style="height: 30px; width: 30px;" alt="logo">
+        <h1 style="margin-left: 10px;">{{ title }}</h1>
+      </div>
+    </template>
+    <template v-slot:headerContentRender>
+      <page-header-wrapper :title="false"></page-header-wrapper>
+    </template>
+    <setting-drawer :settings="settings" @change="handleSettingChange" ref="settingRef"/>
+    <template v-slot:rightContentRender>
+      <right-content
+        :top-menu="settings.layout === 'topmenu'"
+        @showSetting="showSetting()"
         <h1 style="margin-left: 0px;">{{ title }}</h1>
       </div>
     </template>
@@ -68,7 +79,7 @@ import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
-import LogoSvg from '../assets/logo.png?inline'
+// import LogoSvg from '../../public/ankki-log1.png?inline'
 // import tabsView from './modules/tabs-view'
 
 export default {
@@ -77,7 +88,7 @@ export default {
     SettingDrawer,
     RightContent,
     GlobalFooter,
-    LogoSvg,
+    // LogoSvg,
     Ads,
     MultiTab
     // tabsView

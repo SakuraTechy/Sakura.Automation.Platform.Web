@@ -1,7 +1,7 @@
 {
   "name": "sakura.automation.platform",
   "version": "v1.0.0",
-  "description": "SakurA 自动化平台",
+  "description": "Ankki 自动化测试平台",
   "author": "刘智",
   "license": "MIT",
   "private": true,

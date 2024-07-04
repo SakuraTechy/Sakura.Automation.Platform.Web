@@ -31,7 +31,7 @@ export default {
   menu: {
     locale: true
   },
-  title: 'SakurA Platform',
+  title: 'Ankki Platform',
   pwa: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
