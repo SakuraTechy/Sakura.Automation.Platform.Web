@@ -8,7 +8,7 @@
               <!-- <img src="~@/assets/logo.svg" class="logo" alt="logo"> -->
               <img src=".././assets/images/login/sakura-log.svg" class="logo" alt="logo" />
               <!-- <span class="title">Sakura Sharp</span><br> -->
-              <div class="title">SakurA 自动化平台</div>
+              <div class="title">SakurA 自动化测试平台</div>
               <div class="title" style="font-size:18px">{{ version }}</div>
             </a>
           </div>
@@ -186,6 +186,7 @@ export default {
           color: transparent;
           font-family: auto;
           opacity: 0.8;
+          letter-spacing: 1.5px;
           text-shadow: -1px -1px 1px #deefff, 0 -1px 1px #152c48, 1px -1px 1px #0836b9, 1px 0 1px #013a4a,
             1px 1px 1px #134a5a, 0 1px 1px #32bee7, -1px 1px 1px #32bee7, -1px 0 1px #75cf13, 0 0 4px #56a7d7;
         }
