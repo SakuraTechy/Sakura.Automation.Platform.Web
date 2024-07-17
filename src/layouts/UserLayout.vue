@@ -187,11 +187,7 @@ export default {
           color: transparent;
           font-family: auto;
           opacity: 0.8;
-<<<<<<< HEAD
-          letter-spacing: 2px;
-=======
           letter-spacing: 1.5px;
->>>>>>> test
           text-shadow: -1px -1px 1px #deefff, 0 -1px 1px #152c48, 1px -1px 1px #0836b9, 1px 0 1px #013a4a,
             1px 1px 1px #134a5a, 0 1px 1px #32bee7, -1px 1px 1px #32bee7, -1px 0 1px #75cf13, 0 0 4px #56a7d7;
         }
