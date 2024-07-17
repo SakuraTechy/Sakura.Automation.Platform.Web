@@ -61,7 +61,7 @@ export const projectColumns = [
   {
     title: '项目描述',
     dataIndex: 'description',
-    width: 255,
+    width: 235,
     ellipsis: true,
     align: 'center',
   },
@@ -95,7 +95,7 @@ export const projectColumns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'createTime',
@@ -105,7 +105,7 @@ export const projectColumns = [
   {
     title: '更新时间',
     dataIndex: 'updateTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'updateTime',
@@ -184,7 +184,7 @@ export const jenkinsColumns = [
   },
   {
     title: '密码',
-    width: 150,
+    width: 130,
     dataIndex: 'passWord',
     ellipsis: true,
     align: 'center',
@@ -226,7 +226,7 @@ export const jenkinsColumns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'createTime',
@@ -236,7 +236,7 @@ export const jenkinsColumns = [
   {
     title: '更新时间',
     dataIndex: 'updateTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'updateTime',
@@ -306,7 +306,7 @@ export const environmentColumns = [
   {
     title: '环境描述',
     dataIndex: 'description',
-    width: 345,
+    width: 419,
     ellipsis: true,
     scopedSlots: { customRender: 'description' },
     align: 'center',
@@ -314,28 +314,28 @@ export const environmentColumns = [
   {
     title: '在线状态',
     dataIndex: 'offline',
-    width: 100,
+    width: 120,
     scopedSlots: { customRender: 'offline' },
     align: 'center',
   },
   {
     title: '使用状态',
     dataIndex: 'idle',
-    width: 100,
+    width: 120,
     scopedSlots: { customRender: 'idle' },
     align: 'center',
   },
   {
     title: '启用状态',
     dataIndex: 'status',
-    width: 100,
+    width: 120,
     scopedSlots: { customRender: 'status' },
     align: 'center',
   },
   {
     title: '同步人',
     dataIndex: 'createByName',
-    width: 100,
+    width: 120,
     align: 'center',
   },
   // {
@@ -351,7 +351,7 @@ export const environmentColumns = [
   {
     title: '同步时间',
     dataIndex: 'updateTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'updateTime',
@@ -477,7 +477,7 @@ export const browserColumns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'createTime',
@@ -487,7 +487,7 @@ export const browserColumns = [
   {
     title: '更新时间',
     dataIndex: 'updateTime',
-    width: 150,
+    width: 160,
     ellipsis: true,
     scopedSlots: {
       customRender: 'updateTime',
