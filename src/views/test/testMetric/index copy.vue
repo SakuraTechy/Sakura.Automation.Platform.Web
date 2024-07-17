@@ -429,11 +429,11 @@ export default {
       tabKey: '0',
       tab0: {
         tab0: {
-          name: 'UI自动化测试报表',
+          name: 'UI自动化测试度量',
           isVisible: true,
         },
         tab1: {
-          name: '接口自动化测试报表',
+          name: '接口自动化测试度量',
           isVisible: true,
         },
       },
