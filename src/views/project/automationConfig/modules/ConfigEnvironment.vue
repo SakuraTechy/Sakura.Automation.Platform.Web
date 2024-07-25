@@ -33,11 +33,11 @@
             v-hasPermi="['project:automationConfig:environmentConfig:export']">
             <a-icon type="upload" />批量导入
           </a-button>
-          <a-button type="danger" :disabled="multiple" @click="handleExport"
+          <a-button type="danger" :disabled="multiple1" @click="handleExport"
             v-hasPermi="['project:automationConfig:environmentConfig:export']">
             <a-icon type="download" />批量导出
           </a-button>
-          <a-button type="ghost" :disabled="multiple" @click="handleSync"
+          <a-button type="danger" :disabled="multiple1" @click="handleSync"
             v-hasPermi="['project:automationConfig:environmentConfig:add']">
             <a-icon type="cloud" />批量同步
           </a-button>
@@ -166,7 +166,7 @@ export default {
       // 非单个禁用
       single: true,
       // 非多个禁用
-      // multiple: true,
+      multiple1: true,
     };
   },
   computed: {
@@ -207,6 +207,7 @@ export default {
         this.loading = false
       })
       this.selectedRowKeys = []
+      this.multiple1 = !this.selectedRowKeys.length
       return this.$refs.SearchControl.handleQuery()
     },
     getList1(arr, param) {
@@ -268,6 +269,7 @@ export default {
     },
     resetQuery() {
       this.selectedRowKeys = []
+      this.multiple1 = !this.selectedRowKeys.length
       this.queryParam = {
         pageNum: 1,
         pageSize: 10,
@@ -382,6 +384,7 @@ export default {
       this.ids = this.selectedRows.map(item => item.id)
       this.names = this.selectedRows.map(item => item.name)
       this.single = selectedRowKeys.length !== 1
+      this.multiple1 = !this.selectedRowKeys.length
     },
     changeSize(current, pageSize) {
       this.queryParam.pageNum = current
@@ -510,7 +513,7 @@ export default {
     },
     handleDelete(row) {
       this.showAddModal = true
-      if (row.name !== undefined || this.selectedRowKeys.length > 0) {
+      if (row.id !== undefined || this.selectedRowKeys.length > 0) {
         this.$nextTick(() => (
           this.$refs.ConfigDataAddOrEdit.handleDelete(row, this.ids, this.names, 3)
         ))
@@ -528,8 +531,11 @@ export default {
         environment: record
       }
       projectApis.editAutomationEnvironment(params).then(response => {
+        this.$message.success('修改成功')
+      }).catch(error => {
+        this.$message.error('修改失败')
+      }).finally(() => {
         this.getList()
-        this.$message.success('修改成功',)
       })
     },
     handleDescription(record) {
