@@ -359,8 +359,11 @@ export default {
         servers: record
       }
       projectApis.editServer(params).then(response => {
+        this.$message.success('修改成功')
+      }).catch(error => {
+        this.$message.error('修改失败')
+      }).finally(() => {
         this.getList()
-        this.$message.success('修改成功',)
       })
     }
   },
