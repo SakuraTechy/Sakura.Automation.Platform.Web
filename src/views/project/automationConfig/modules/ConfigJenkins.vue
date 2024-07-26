@@ -24,11 +24,11 @@
           <a-button type="primary" :disabled="multiple" @click="handleImport" v-hasPermi="['project:automationConfig:jenkinsConfig:export']">
             <a-icon type="upload" />批量导入
           </a-button>
-          <a-button type="danger" :disabled="multiple" @click="handleExport"
+          <a-button type="danger" :disabled="multiple1" @click="handleExport"
             v-hasPermi="['project:automationConfig:jenkinsConfig:export']">
             <a-icon type="download" />批量导出
           </a-button>
-          <a-button type="danger" :disabled="multiple" @click="handleDelete"
+          <a-button type="danger" :disabled="multiple1" @click="handleDelete"
             v-hasPermi="['project:automationConfig:jenkinsConfig:remove']">
             <a-icon type="delete" />批量删除
           </a-button>
@@ -102,7 +102,7 @@ export default {
       // 非单个禁用
       single: true,
       // 非多个禁用
-      // multiple: true,
+      multiple1: true,
     };
   },
   computed: {
@@ -140,6 +140,7 @@ export default {
         this.loading = false
       })
       this.selectedRowKeys = []
+      this.multiple1 = !this.selectedRowKeys.length
     },
     getList1(arr, param) {
       let obj = []
@@ -195,6 +196,7 @@ export default {
     },
     resetQuery() {
       this.selectedRowKeys = []
+      this.multiple1 = !this.selectedRowKeys.length
       this.queryParam = {
         pageNum: 1,
         pageSize: 10,
@@ -295,6 +297,7 @@ export default {
       this.ids = this.selectedRows.map(item => item.id)
       this.names = this.selectedRows.map(item => item.ip)
       this.single = selectedRowKeys.length !== 1
+      this.multiple1 = !this.selectedRowKeys.length
     },
     changeSize(current, pageSize) {
       this.queryParam.pageNum = current
@@ -338,7 +341,7 @@ export default {
     },
     handleDelete(row) {
       this.showAddModal = true
-      if (row.name !==undefined || this.selectedRowKeys.length > 0 ) {
+      if (row.id !==undefined || this.selectedRowKeys.length > 0 ) {
         this.$nextTick(() => (
           this.$refs.ConfigDataAddOrEdit.handleDelete(row, this.ids, this.names, 2)
         ))
@@ -356,8 +359,11 @@ export default {
         jenkins: record
       }
       projectApis.editAutomationJenkins(params).then(response => {
+        this.$message.success('修改成功')
+      }).catch(error => {
+        this.$message.error('修改失败')
+      }).finally(() => {
         this.getList()
-        this.$message.success('修改成功',)
       })
     }
   },
