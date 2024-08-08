@@ -134,6 +134,8 @@
                   <a @click="handleConsoleUrl(record)" v-hasPermi="['ui:automation:exec']"> 日志 </a>
                   <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
                   <a @click="handleTestReportUrl(record)" v-hasPermi="['ui:automation:exec']"> 报告 </a>
+                  <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
+                  <a @click="handleTestVideoUrl(record)" v-hasPermi="['ui:automation:exec']"> 回放 </a>
                 </span>
               </advance-table>
         </template>
@@ -535,7 +537,7 @@ export default {
         {
           title: '场景名称',
           dataIndex: 'name',
-          width: 357,
+          width: 387,
           fixed: 'left',
           ellipsis: true,
           align: 'center',
@@ -687,7 +689,7 @@ export default {
           title: '操作',
           dataIndex: 'operation',
           fixed: 'right',
-          width: 120,
+          width: 150,
           scopedSlots: { customRender: 'operation' },
           align: 'center',
         },
@@ -1418,6 +1420,18 @@ export default {
         }, 500)
       } else {
         this.$message.error('获取测试报告失败，请先执行场景！', 3)
+      }
+    },
+    // 查看Jenkins测试回放视频
+    handleTestVideoUrl(record) {
+      const testReportUrl = this.getTestRecord(record.testRecordList, 'testPlanId').testReportUrl
+      if (testReportUrl) {
+        this.$message.success('获取测试视频成功！', 3)
+        setTimeout(() => {
+          window.open(testReportUrl.replace('/index.html', '/video/'+record.sceneId+'.mp4'))
+        }, 500)
+      } else {
+        this.$message.error('获取测试视频失败，请先执行场景！', 3)
       }
     },
     onShowSizeChange(current, pageSize) {

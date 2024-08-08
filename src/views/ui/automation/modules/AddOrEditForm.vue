@@ -431,6 +431,10 @@ export default {
           id: '5',
           name: '查看报告',
         },
+        {
+          id: '6',
+          name: '查看回放',
+        },
       ],
       // 责任人
       // memberOptions: [],
@@ -919,6 +923,20 @@ export default {
             }, 1000)
           } else {
             this.$message.error('获取测试报告失败，请先执行场景！', 3)
+          }
+        }).catch((error) => {
+          this.$message.error('接口请求失败，请稍后重试！', 3)
+        })
+      }else if (item.name === '查看回放') {
+        return getScenceInfo(id).then((res) => {
+          const debugRecordList = res.data.debugRecord?JSON.parse(res.data.debugRecord) : []
+          if (debugRecordList.length > 0 && debugRecordList[0].testReportUrl !== undefined) {
+            this.$message.success('获取测试回放成功！', 3)
+            setTimeout(() => {
+              window.open(debugRecordList[0].testReportUrl.replace('/index.html', '/video/'+record.sceneId+'.mp4'))
+            }, 1000)
+          } else {
+            this.$message.error('获取测试回放失败，请先执行场景！', 3)
           }
         }).catch((error) => {
           this.$message.error('接口请求失败，请稍后重试！', 3)
