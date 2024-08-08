@@ -33,7 +33,7 @@
                 @resetQuery="resetQuery"></ui-search>
               <a-divider style="margin: 10px 0px 0px 0px;"></a-divider>
               <!-- table表格 -->
-              <advance-table :scroll="{ x: 1500, y: 461 }" :columns="columns" :data-source="list" title="场景列表"
+              <advance-table :scroll="{ x: 1500, y: 420 }" :columns="columns" :data-source="list" title="场景列表"
                 :loading="loading" rowKey="id" @refresh="getList" size="middle" :components="isDragTable" bordered
                 tableKey="ui-test-automation-index-table"
                 :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :format-conditions="true"
@@ -200,6 +200,9 @@
                       </a-menu-item>
                       <a-menu-item>
                         <a @click="handleTestReportUrl(record)" v-hasPermi="['ui:automation:exec']"> 报告 </a>
+                      </a-menu-item>
+                      <a-menu-item>
+                        <a @click="handleTestVideoUrl(record)" v-hasPermi="['ui:automation:exec']"> 回放 </a>
                       </a-menu-item>
                     </a-menu>
                   </a-dropdown>
@@ -1001,6 +1004,18 @@ export default {
         }, 500)
       } else {
         this.$message.error('获取测试报告失败，请先执行场景！', 3)
+      }
+    },
+    // 查看Jenkins测试回放视频
+    handleTestVideoUrl(record) {
+      const testReportUrl = this.getDebugRecord(record.debugRecordList).testReportUrl
+      if (testReportUrl) {
+        this.$message.success('获取测试视频成功！', 3)
+        setTimeout(() => {
+          window.open(testReportUrl.replace('/index.html', '/video/'+record.sceneId+'.mp4'))
+        }, 500)
+      } else {
+        this.$message.error('获取测试视频失败，请先执行场景！', 3)
       }
     },
     // 查看控制台运行日志
