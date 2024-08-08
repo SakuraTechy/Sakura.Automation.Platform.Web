@@ -933,7 +933,7 @@ export default {
           if (debugRecordList.length > 0 && debugRecordList[0].testReportUrl !== undefined) {
             this.$message.success('获取测试回放成功！', 3)
             setTimeout(() => {
-              window.open(debugRecordList[0].testReportUrl.replace('index.html', record.sceneId+'.mp4'))
+              window.open(debugRecordList[0].testReportUrl.replace('/index.html', '/video/'+record.sceneId+'.mp4'))
             }, 1000)
           } else {
             this.$message.error('获取测试回放失败，请先执行场景！', 3)
