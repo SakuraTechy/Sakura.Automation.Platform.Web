@@ -16,7 +16,7 @@
         <a-card :bordered="false" class="container">
           <!-- table表格 -->
           <advance-table
-            :scroll="{ x: 1500, y: 500 }"
+            :scroll="{ x: 1500, y: 433 }"
             :columns="columns"
             :data-source="list"
             :loading="loading"
@@ -41,7 +41,7 @@
             }"
             :row-selection="rowSelection"
             :needTitle="false"
-          >
+            >
             <div class="table-operations" slot="button">
               <a-space :size="8" style="margin-right: 8px">
                 <a-button type="danger" :disabled="multiple" @click="handleExport" v-hasPermi="['test:testReport:export']">
@@ -693,7 +693,7 @@ export default {
 <style lang="less" scoped>
 .tab-title {
   background-color: white;
-  padding: 10px 10px 0 10px;
+  padding: 10px 10px 5px 10px;
   font-size: 16px;
   font-weight: 400;
   color: #101010;
