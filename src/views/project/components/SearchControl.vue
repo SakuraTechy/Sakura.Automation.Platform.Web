@@ -286,5 +286,8 @@ export default {
 .ant-calendar-picker {
   width: auto !important;
 }
+.ant-row {
+  width: 100%;
+}
 </style>
 
