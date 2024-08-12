@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false" style="width: 1676px;height: 160px;margin-bottom: 16px">
+    <a-card :bordered="false" style="width: 100%;height: 160px;margin-bottom: 16px">
       <div class="title-wrapper">项目列表</div>
       <SearchControl :queryData="queryData" @handleQuery="handleQuery" @resetQuery="resetQuery" />
     </a-card>

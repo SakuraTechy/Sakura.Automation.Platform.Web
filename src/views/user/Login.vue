@@ -187,7 +187,7 @@ export default {
           this.form['phoneNumber'] = ''
           this.form['no'] = '000000'
           this.form['sex'] = '0'
-          this.form['deptId'] = 'b0e21618dfb24023b9cb4fc24bbe34da'
+          this.form['deptId'] = '100'
           this.form['status'] = '0'
           this.form['userType'] = '1'
           this.form['postIds'] = ['9529010c93864105afd36719e0dfed8d']
