@@ -21,7 +21,7 @@ export default {
     //   message: `${process.env.VUE_APP_BASE_URL + '/swagger-ui/index.html'}`,
     // })
     return {
-      runnergo: `${process.env.VUE_APP_RUNNERGO_WEB_URL + '/work/#/apis'}`,
+      runnergo: `${process.env.VUE_APP_RUNNERGO_WEB_URL + '/#/index'}`,
       loading: true,
     }
   },
@@ -39,10 +39,9 @@ export default {
       this.loading = true;
       const url = `${process.env.VUE_APP_RUNNERGO_API_URL + '/permission/api/v1/auth/user_login'}`
       const body = {
-        // account: localStorage.getItem('nickName'),
+        account: localStorage.getItem('nickName'),
         // account: pinyin.getFullChars(localStorage.getItem('userName')),
-        account: '18694925429',
-        password: '18694925429',
+        password: '111111',
         is_auto_login: true,
       }
       try {
