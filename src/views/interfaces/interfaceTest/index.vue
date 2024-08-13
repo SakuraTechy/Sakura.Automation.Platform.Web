@@ -30,7 +30,7 @@ export default {
   computed: {},
   watch: {},
   mounted() {
-    // this.login()
+    this.login()
   },
   methods: {
     async login() {
