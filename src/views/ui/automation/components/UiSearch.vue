@@ -104,7 +104,7 @@
         <a-col :md="7">
           <a-form-item label="创建时间">
             <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }" style="width: 330px"
-              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @ok="onOk" allow-clear />
+              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="onOk" @ok="onOk" allow-clear />
           </a-form-item>
         </a-col>
         <!-- <a-col>

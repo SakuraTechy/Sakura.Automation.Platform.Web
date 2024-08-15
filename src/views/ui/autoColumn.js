@@ -66,7 +66,7 @@ export const columns = [
     title: '执行结果',
     dataIndex: 'debugRecordList[0].executeResult',
     scopedSlots: { customRender: 'executeResult' },
-    width: 80,
+    width: 90,
     ellipsis: true,
     align: 'center'
   },
