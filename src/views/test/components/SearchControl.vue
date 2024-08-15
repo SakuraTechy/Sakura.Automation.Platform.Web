@@ -115,6 +115,24 @@
             </a-select>
           </a-form-item>
         </a-col>
+        <a-col :md="7" v-if="queryData[3].label === '触发方式'">
+          <a-form-item style="width: 450px" :label="queryData[3].label">
+            <a-select v-model="queryParam[queryData[3].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(item, index) in testReportTriggerModeOptions" :key="index" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="7" v-if="queryData[4].label === '执行方式'">
+          <a-form-item style="width: 450px" :label="queryData[4].label">
+            <a-select v-model="queryParam[queryData[4].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(item, index) in testReportExecutionModeOptions" :key="index" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
         <a-col :md="7" v-if="queryData[4].label === '执行状态'">
           <a-form-item style="width: 450px" :label="queryData[4].label">
             <a-select v-model="queryParam[queryData[4].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
@@ -124,7 +142,7 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :md="7" v-if="queryData[4].label === '创建人'">
+        <a-col :md="7" v-if="queryData[4]!==undefined&&queryData[4].label === '创建人'">
           <a-form-item style="width: 450px" :label="queryData[4].label">
             <a-select v-model="queryParam[queryData[4].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
               <a-select-option v-for="(d, index) in memberOptions" :key="index" :value="d.name">
@@ -133,16 +151,79 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :md="7">
+        <a-col :md="7" v-if="queryData[5].label === '报告状态'">
           <a-form-item style="width: 450px" :label="queryData[5].label">
-            <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }"
-              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="change" @ok="onOk" allow-clear />
+            <a-select v-model="queryParam[queryData[5].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(item, index) in testReportStatusOptions" :key="index" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col>
           <span class="table-page-search-submitButtons" style="float: right">
             <a-button :disabled="multiple" @click="resetQuery"><a-icon type="redo" />重 置</a-button>
           </span>
+        </a-col>
+        <!-- <a-col :md="7" v-if="queryData[5].label === '创建人'||queryData[6].label === '创建人'">
+          <a-form-item style="width: 450px" :label="queryData[5].label">
+            <a-select v-model="queryParam[queryData[5].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(d, index) in memberOptions" :key="index" :value="d.name">
+                {{ d.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col> -->
+        <a-col :md="7" v-if="queryData[5]!==undefined&&queryData[5].label === '创建人'">
+          <a-form-item style="width: 450px" :label="queryData[5].label">
+            <a-select v-model="queryParam[queryData[5].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(d, index) in memberOptions" :key="index" :value="d.name">
+                {{ d.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="7" v-if="queryData[5]!==undefined&&queryData[5].label === '创建时间'">
+          <a-form-item style="width: 450px" :label="queryData[5].label">
+            <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }"
+              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="change" @ok="onOk" allow-clear />
+          </a-form-item>
+        </a-col>
+        <a-col :md="7" v-if="queryData[6]!==undefined&&queryData[6].label === '创建人'">
+          <a-form-item style="width: 450px" :label="queryData[6].label">
+            <a-select v-model="queryParam[queryData[6].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(d, index) in memberOptions" :key="index" :value="d.name">
+                {{ d.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <!-- <a-col :md="7" v-if="queryData[6].label === '创建时间'||queryData[7].label === '创建时间'">
+          <a-form-item style="width: 450px" :label="queryData[6].label||queryData[7].label">
+            <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }"
+              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="change" @ok="onOk" allow-clear />
+          </a-form-item>
+        </a-col> -->
+        <a-col :md="7" v-if="queryData[6]!==undefined&&queryData[6].label === '创建时间'">
+          <a-form-item style="width: 450px" :label="queryData[6].label">
+            <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }"
+              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="change" @ok="onOk" allow-clear showTime/>
+          </a-form-item>
+        </a-col>
+        <a-col :md="7" v-if="queryData[7]!==undefined&&queryData[7].label === '创建人'">
+          <a-form-item style="width: 450px" :label="queryData[7].label">
+            <a-select v-model="queryParam[queryData[7].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
+              <a-select-option v-for="(d, index) in memberOptions" :key="index" :value="d.name">
+                {{ d.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="7" v-if="queryData[7]!==undefined&&queryData[7].label === '创建时间'">
+          <a-form-item style="width: 450px" :label="queryData[7].label">
+            <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }"
+              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="change" @ok="onOk" allow-clear/>
+          </a-form-item>
         </a-col>
       </a-row>
     </a-form>
@@ -151,7 +232,7 @@
 
 <script>
 import log from '@/utils/log.js'
-import { testPlanTypeOptions, timedTaskTypeOptions, testPlanStatusOptions, timedTaskStatusOptions,testReportExecutionModeOptions,timedTaskExecStatusOptions } from '../components/Config.js'
+import { testPlanTypeOptions, testPlanStatusOptions,testReportTriggerModeOptions, testReportExecutionModeOptions,testReportStatusOptions,timedTaskTypeOptions,timedTaskStatusOptions,timedTaskExecStatusOptions } from '../components/Config.js'
 
 export default {
   name: 'SearchControl',
@@ -180,11 +261,13 @@ export default {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
       testPlanTypeOptions,
-      timedTaskTypeOptions,
       testPlanStatusOptions,
+      testReportTriggerModeOptions,
+      testReportExecutionModeOptions,
+      testReportStatusOptions,
+      timedTaskTypeOptions,
       timedTaskStatusOptions,
       timedTaskExecStatusOptions,
-      testReportExecutionModeOptions,
       createTime: undefined,
       queryParam: {
         name: '',
@@ -229,7 +312,9 @@ export default {
     // 选择时间
     change(value) {
       // console.log(value);
-      // this.createTime = value
+      this.createTime = value
+      this.queryParam.createStartTime = this.createTime[0]
+      this.queryParam.createEndTime = this.createTime[1]
     },
     onOk(value) {
       // console.log(value);

@@ -89,7 +89,7 @@
                 <a-switch
                   :checked="Boolean(record.status)"
                   @change="(value) => onchangeVersion(value, record)"
-                  :disabled="true"
+                  :disabled="false"
                 />
               </span>
               <span slot="createTime" slot-scope="{ record }">
@@ -1049,6 +1049,7 @@ export default {
       }
       projectApis.editVersion(params).then(response => {
         this.$message.success('启用成功')
+      }).finally(() => {
         this.getEnvironmentInfo(this.environmentId)
       })
     },
@@ -1063,6 +1064,7 @@ export default {
       }
       projectApis.editDomain(params).then(response => {
         this.$message.success('启用成功')
+      }).finally(() => {
         this.getEnvironmentInfo(this.environmentId)
       })
     },
@@ -1074,7 +1076,18 @@ export default {
       }
       projectApis.editServer(params).then(response => {
         this.$message.success('启用成功')
+      }).finally(() => {
         this.getEnvironmentInfo(this.environmentId)
+      })
+    },
+    onchangeDataBase(value, record) {
+      record.status = Number(value)
+      let params = {
+        id: this.environmentId,
+        dataBases: record
+      }
+      projectApis.editDataBase(params).then(response => {
+        
       })
     },
     handleViewVersion(record) {
@@ -1203,6 +1216,7 @@ export default {
       }
       projectApis.editAutomationProject(params).then(response => {
         this.$message.success('启用成功')
+      }).finally(() => {
         this.getAutomationInfo(this.automation.id)
       })
     },
@@ -1214,6 +1228,7 @@ export default {
       }
       projectApis.editAutomationJenkins(params).then(response => {
         this.$message.success('启用成功')
+      }).finally(() => {
         this.getAutomationInfo(this.automation.id)
       })
     },
@@ -1227,6 +1242,7 @@ export default {
         }
         projectApis.editAutomationEnvironment(params).then(response => {
           this.$message.success('启用成功')
+        }).finally(() => {
           this.getAutomationInfo(this.automation.id)
         })
       } else if (record.active.offline.status === 0) {
@@ -1246,6 +1262,7 @@ export default {
       }
       projectApis.editAutomationBrowser(params).then(response => {
         this.$message.success('启用成功')
+      }).finally(() => {
         this.getAutomationInfo(this.automation.id)
       })
     },
@@ -1258,10 +1275,11 @@ export default {
       }
       projectApis.syncAutomationEnvironment(params).then(response => {
         this.$message.success('同步成功')
-        this.getAutomationInfo(this.automation.id)
       }).catch(err => {
         console.log('同步失败', err)
         this.$message.error('同步失败')
+      }).finally(() => {
+        this.getAutomationInfo(this.automation.id)
       })
     },
     handleSync(record) {
@@ -1280,10 +1298,11 @@ export default {
       }
       projectApis.syncAutomationEnvironment(params).then(response => {
         this.$message.success('同步成功')
-        this.getAutomationInfo(this.automation.id)
       }).catch(err => {
         console.log('同步失败', err)
         this.$message.error('同步失败')
+      }).finally(() => {
+        this.getAutomationInfo(this.automation.id)
       })
     },
     handleViewEnvironment(record) {

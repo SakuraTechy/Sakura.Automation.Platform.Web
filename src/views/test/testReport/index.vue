@@ -124,15 +124,25 @@
             <span slot="runTime" slot-scope="{ record }">
               {{ formatDuration(record.runTime) }}
             </span>
-            <span slot="status" slot-scope="{ record }">
-              <!-- <a-button style="height: 25px;">
+            <!--<span slot="status" slot-scope="{ record }">
+               <a-button style="height: 25px;">
                 {{ findJsonArray(testReportStatusOptions,"id",record.status,"name") }}
-              </a-button> -->
+              </a-button> 
               <a-button v-for="(item, index) in getFilterArray(testReportStatusOptions, (item) => item.id === record.status)" :key="index"
                :style="{ height: '25px', color: 'white', backgroundColor: getButtonStyle(record.status)[0], borderColor: getButtonStyle(record.status)[1] }"
               > {{ item.name }} 
               </a-button>
-            </span>
+            </span>-->
+            <div slot="status" slot-scope="{ record }">
+              <span v-for="(item, index) in getFilterArray(testReportStatusOptions, (item) => item.id === record.status)" :key="index"
+                :class="{
+                  'execute-status': true,
+                  'inprogress': item.name === '生成中',
+                  'success': item.name === '通过',
+                  'error': item.name === '不通过'
+                }"> {{ item.name }} 
+              </span>
+            </div>
             <span slot="createTime" slot-scope="{ record }">
               {{ parseTime(record.createTime) }}
             </span>
@@ -217,8 +227,16 @@ export default {
           value: 'name',
         },
         {
+          label: '触发方式',
+          value: 'triggerMode',
+        },
+        {
           label: '执行方式',
           value: 'executionMode',
+        },
+        {
+          label: '报告状态',
+          value: 'status',
         },
         {
           label: '创建人',
@@ -717,6 +735,50 @@ export default {
   width: 100%; /* 当前分辨率为1920x1080时，width为1676px */
   height: calc(100vh - 305px);
   margin-top: -20px;
+}
+
+.execute-status {
+  /* 定义颜色变量 */
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+
+  /* 使用变量 */
+  background-color: var(--status-background-color);
+  color: var(--status-color);
+  border-radius: 4px;
+  padding: 4px 15px;
+  font-weight: 500;
+}
+/* 定义不同的状态颜色 */
+.execute-status.remove {
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+}
+.execute-status.inprogress {
+  --status-background-color: #ebf1ff;
+  --status-color: #3370ff;
+}
+.execute-status.success {
+  --status-background-color: #e5f9ef;
+  --status-color: #00c261;
+}
+
+.execute-status.error {
+  --status-background-color: #fce4e4;
+  --status-color: #e45649;
+}
+
+.execute-status.warning {
+  --status-background-color: #fff3cd;
+  --status-color: #ffc107;
+}
+.scene-pass-rate {
+
+}
+.execute-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 当屏幕宽度小于等于1920px时，根据当前的width自适应相应大小 */

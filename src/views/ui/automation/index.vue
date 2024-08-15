@@ -114,14 +114,28 @@
                 <span slot="tags" slot-scope="{ record }">
                   {{ getTags(record.tags) }}
                 </span>
-                <span slot="executeStatus" slot-scope="{ record }">
-                  {{ record.debugRecordList.length>0 ? record.debugRecordList[0].executeStatus :'未开始' }}
+                <span :class="{
+                  'execute-status': true,
+                  'remove': record.debugRecordList[0].executeStatus === '未开始',
+                  'inprogress': record.debugRecordList[0].executeStatus === '进行中',
+                  'success': record.debugRecordList[0].executeStatus === '已完成'
+                }" slot="executeStatus" slot-scope="{ record }">
+                  {{ record.debugRecordList[0].executeStatus }}
+                  <!-- {{ record.debugRecordList.length>0 ? record.debugRecordList[0].executeStatus :'未开始' }} -->
                 </span>
-                <span slot="scenePassRate" slot-scope="{ record }">
+                <span class="scene-pass-rate" slot="scenePassRate" slot-scope="{ record }">
                   {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].scenePassRate : '-' }}
                 </span>
-                <span slot="executeResult" slot-scope="{ record }">
-                  {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].executeResult : '-' }}
+                <span class="execute-result" slot="executeResult" slot-scope="{ record }">
+                  <!-- <img src="~@/assets/icons/inprogress.svg" style="width: 15px; height: 15px; margin-right: 5px;" alt="sakura" /> -->
+                  <!-- <i v-if="record.debugRecordList[0].executeResult==='-'" class="el-icon-remove" style="color: #c7c7cb;font-size: 15px;padding-right: 3px;"></i> -->
+                  <i v-if="record.debugRecordList[0].executeResult!=='-'" 
+                    :class="record.debugRecordList[0].executeResult === '不通过' ? 'el-icon-error' : 'el-icon-success'"
+                    :style="record.debugRecordList[0].executeResult === '不通过' ? 'color: #f54a45;' : 'color: #34c724;'"
+                    class="execute-icon" style="font-size: 15px; padding-right: 3px;">
+                  </i>
+                  {{ record.debugRecordList[0].executeResult }}
+                  <!-- {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].executeResult : '未执行' }} -->
                 </span>
                 <span slot="duration" slot-scope="{ record }">
                   {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? formatDuration(record.debugRecordList[0].duration) : '-' }}
@@ -1136,6 +1150,57 @@ export default {
   padding: 2px 5px;
   color: #fff;
   border-radius: 5%;
+}
+
+.execute-status1 {
+    background-color: #e5f9ef;
+    color: #00c261;
+    border-radius: 4px;
+    padding: 3px 10px 3px 10px;
+    font-weight: 500;
+}
+.execute-status {
+  /* 定义颜色变量 */
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+
+  /* 使用变量 */
+  background-color: var(--status-background-color);
+  color: var(--status-color);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-weight: 500;
+}
+/* 定义不同的状态颜色 */
+.execute-status.remove {
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+}
+.execute-status.inprogress {
+  --status-background-color: #ebf1ff;
+  --status-color: #3370ff;
+}
+.execute-status.success {
+  --status-background-color: #e5f9ef;
+  --status-color: #00c261;
+}
+
+.execute-status.error {
+  --status-background-color: #fce4e4;
+  --status-color: #ff4d4f;
+}
+
+.execute-status.warning {
+  --status-background-color: #fff3cd;
+  --status-color: #ffc107;
+}
+.scene-pass-rate {
+
+}
+.execute-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ::v-deep .advanced-table .header-bar.middle{
