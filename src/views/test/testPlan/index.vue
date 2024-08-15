@@ -99,6 +99,27 @@
                 <a>查看</a>
               </a-popover>
             </span>
+            <!--<span slot="status" slot-scope="{ record }">
+              <a-button v-for="(item, index) in getFilterArray(testPlanStatusOptions, (item) => item.id === record.status)" :key="index"
+               :style="{ height: '25px', color: 'white', backgroundColor: getButtonStyle(record.status)[0], borderColor: getButtonStyle(record.status)[1] }"
+              > {{ item.name }} 
+              </a-button>
+              <a-button 
+                v-if="record.status === '1'" 
+                type="primary" 
+                style="height: 20px;background-color: #05d966;border-color: #05d966;"
+              > 已完成 </a-button> 
+            </span>-->
+            <div slot="status" slot-scope="{ record }">
+              <span v-for="(item, index) in getFilterArray(testPlanStatusOptions, (item) => item.id === record.status)" :key="index"
+                :class="{
+                  'execute-status': true,
+                  'remove': item.name === '未开始',
+                  'inprogress': item.name === '进行中',
+                  'success': item.name === '已完成'
+                }"> {{ item.name }} 
+              </span>
+            </div>
             <span slot="testProgress" slot-scope="{ record }">
               <a-progress style="padding: 0px 5px 0px 0px;"
                 size="small" 
@@ -112,17 +133,6 @@
                 :percent="100"
                 status="normal"
               /> -->
-            </span>
-            <span slot="status" slot-scope="{ record }">
-              <a-button v-for="(item, index) in getFilterArray(testPlanStatusOptions, (item) => item.id === record.status)" :key="index"
-               :style="{ height: '25px', color: 'white', backgroundColor: getButtonStyle(record.status)[0], borderColor: getButtonStyle(record.status)[1] }"
-              > {{ item.name }} 
-              </a-button>
-              <!-- <a-button 
-                v-if="record.status === '1'" 
-                type="primary" 
-                style="height: 20px;background-color: #05d966;border-color: #05d966;"
-              > 已完成 </a-button> -->
             </span>
             <span slot="createTime" slot-scope="{ record }">
               {{ parseTime(record.createTime) }}
@@ -275,7 +285,7 @@ export default {
         // },
         {
           title: '计划名称',
-          width: 308,
+          width: 312,
           dataIndex: 'name',
           ellipsis: true,
           align: 'center',
@@ -310,17 +320,17 @@ export default {
           align: 'center',
         },
         {
+          title: '计划状态',
+          width: 90,
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' },
+          align: 'center',
+        },
+        {
           title: '测试进度',
           width: 120,
           dataIndex: 'testProgress',
           scopedSlots: { customRender: 'testProgress' },
-          align: 'center',
-        },
-        {
-          title: '计划状态',
-          width: 100,
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' },
           align: 'center',
         },
         {
@@ -813,6 +823,50 @@ export default {
 
 .ant-progress-line {
   padding: 0px 5px 0px 0px;
+}
+
+.execute-status {
+  /* 定义颜色变量 */
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+
+  /* 使用变量 */
+  background-color: var(--status-background-color);
+  color: var(--status-color);
+  border-radius: 4px;
+  padding: 4px 15px;
+  font-weight: 500;
+}
+/* 定义不同的状态颜色 */
+.execute-status.remove {
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+}
+.execute-status.inprogress {
+  --status-background-color: #ebf1ff;
+  --status-color: #3370ff;
+}
+.execute-status.success {
+  --status-background-color: #e5f9ef;
+  --status-color: #00c261;
+}
+
+.execute-status.error {
+  --status-background-color: #fce4e4;
+  --status-color: #e45649;
+}
+
+.execute-status.warning {
+  --status-background-color: #fff3cd;
+  --status-color: #ffc107;
+}
+.scene-pass-rate {
+
+}
+.execute-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 当屏幕宽度小于等于1920px时，根据当前的width自适应相应大小 */
