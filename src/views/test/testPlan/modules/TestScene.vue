@@ -158,21 +158,46 @@
                 <!-- <span slot="status" slot-scope="{ record }">
                   {{ findNodeId(statusOptions, record.status, 'label') }}
                 </span> -->
-                <span slot="executeStatus" slot-scope="{ record }">
+                <!-- <span slot="executeStatus" slot-scope="{ record }">
                   <a-button v-for="(item, index) in getFilterArray(testPlanStatusOptions, (item) => item.name === getTestRecord(record.testRecordList,'testPlanId').executeStatus)" :key="index"
                     :style="{ height: '25px', color: 'white', backgroundColor: getButtonStyle(record)[0], borderColor: getButtonStyle(record)[1] }"
                     > {{ item.name }} 
                   </a-button>
-                </span>
+                </span> -->
+                <div slot="executeStatus" slot-scope="{ record }">
+                  <span
+                    v-for="(item, index) in getFilterArray(testPlanStatusOptions, (item) => item.name === getTestRecord(record.testRecordList, 'testPlanId').executeStatus)" :key="index" 
+                    :class="{
+                      'execute-status': true,
+                      'remove': item.name === '未开始',
+                      'inprogress': item.name === '进行中',
+                      'success': item.name === '已完成'
+                    }">
+                    {{ item.name }}
+                  </span>
+                </div>
                 <span slot="casePassRate" slot-scope="{ record }">
                   {{ getTestRecord(record.testRecordList,"testPlanId").casePassRate }}
                 </span>
-                <span slot="executeResult" slot-scope="{ record }">
-                  <a-button v-for="(item, index) in getFilterArray(resultOptions, (item) => item.label === getTestRecord(record.testRecordList,'testPlanId').executeResult)" :key="index"
-                      :style="{ height: '25px', color: 'white', backgroundColor: getButtonStyle1(record)[0], borderColor: getButtonStyle1(record)[1] }"
-                    > {{ item.label }} 
+                <!-- <span slot="executeResult" slot-scope="{ record }">
+                  <a-button
+                    v-for="(item, index) in getFilterArray(resultOptions, (item) => item.label === getTestRecord(record.testRecordList, 'testPlanId').executeResult)"
+                    :key="index"
+                    :style="{ height: '25px', color: 'white', backgroundColor: getButtonStyle1(record)[0], borderColor: getButtonStyle1(record)[1] }">
+                    {{ item.label }}
                   </a-button>
+                </span> -->
+                <div slot="executeResult" slot-scope="{ record }">
+                <span v-for="(item, index) in getFilterArray(resultOptions, (item) => item.label === getTestRecord(record.testRecordList, 'testPlanId').executeResult)"
+                  :key="index" class="execute-result">
+                  <i v-if="item.label!=='-'" 
+                    :class="item.label === '不通过' ? 'el-icon-error' : 'el-icon-success'"
+                    :style="item.label === '不通过' ? 'color: #f54a45;' : 'color: #34c724;'"
+                    class="execute-icon" style="font-size: 15px; padding-right: 3px;">
+                  </i>
+                  {{ item.label }}
                 </span>
+                </div>
                 <span slot="duration" slot-scope="{ record }">
                   {{ formatDuration(getTestRecord(record.testRecordList,'testPlanId').duration) }}
                 </span>
@@ -447,7 +472,7 @@ export default {
         {
           title: '场景名称',
           dataIndex: 'name',
-          width: 308,
+          width: 338,
           ellipsis: true,
           align: 'center',
         },
@@ -475,7 +500,7 @@ export default {
         {
           title: '执行状态',
           // dataIndex: 'status',
-          width: 100,
+          width: 80,
           scopedSlots: { customRender: 'executeStatus' },
           align: 'center',
         },
@@ -489,7 +514,7 @@ export default {
         },
         {
           title: '执行结果',
-          width: 100,
+          width: 90,
           // dataIndex: 'testRecordList[0].executeResult',
           // dataIndex: 'testRecordList1',
           scopedSlots: { customRender: 'executeResult' },
@@ -1375,6 +1400,50 @@ export default {
   padding: 0px 0px 0px 0px;
   display: flex;
   justify-content: space-between;
+}
+
+.execute-status {
+  /* 定义颜色变量 */
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+
+  /* 使用变量 */
+  background-color: var(--status-background-color);
+  color: var(--status-color);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-weight: 500;
+}
+/* 定义不同的状态颜色 */
+.execute-status.remove {
+  --status-background-color: #ededf1;
+  --status-color: #2e2e2e;
+}
+.execute-status.inprogress {
+  --status-background-color: #ebf1ff;
+  --status-color: #3370ff;
+}
+.execute-status.success {
+  --status-background-color: #e5f9ef;
+  --status-color: #00c261;
+}
+
+.execute-status.error {
+  --status-background-color: #fce4e4;
+  --status-color: #e45649;
+}
+
+.execute-status.warning {
+  --status-background-color: #fff3cd;
+  --status-color: #ffc107;
+}
+.scene-pass-rate {
+
+}
+.execute-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ::v-deep .ant-layout .ant-table-pagination.ant-pagination {

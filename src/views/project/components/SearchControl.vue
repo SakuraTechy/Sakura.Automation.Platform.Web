@@ -133,7 +133,7 @@
         <a-col :md="7">
           <a-form-item style="width: 450px" :label="queryData[5].label">
             <a-range-picker v-model="createTime" :show-time="{ format: 'HH:mm:ss' }"
-              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change='change' @ok="onOk" allow-clear />
+              format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change='onOk' @ok="onOk" allow-clear />
           </a-form-item>
         </a-col>
         <a-col>
