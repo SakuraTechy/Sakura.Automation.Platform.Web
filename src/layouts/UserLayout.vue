@@ -18,9 +18,9 @@
 
       <div class="footer">
         <div class="links">
-          <a href="https://github.com/fuzui/AiDex-Antdv" target="_blank">帮助</a>
-          <a href="https://github.com/fuzui/AiDex-Antdv" target="_blank">隐私</a>
-          <a href="https://github.com/fuzui/AiDex-Antdv" target="_blank">条款</a>
+          <a href="https://sakura.hk.cn" target="_blank">帮助</a>
+          <a href="https://sakura.hk.cn" target="_blank">隐私</a>
+          <a href="https://sakura.hk.cn" target="_blank">条款</a>
         </div>
         <div class="copyright">
           Copyright &copy; 2024 <a target="_blank"></a>

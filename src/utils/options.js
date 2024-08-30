@@ -1157,6 +1157,26 @@ export const operations = [
     id: '12',
     children: [
       {
+        id: 'custom-database-operations',
+        name: '自定义数据库操作',
+        config: [
+          { paramsName: 'className', paramsValue: `com.mysql.jdbc.Driver`},
+          { paramsName: 'url', paramsValue: `jdbc:mysql://172.19.5.229:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT`},
+          { paramsName: 'userName', paramsValue: "root"},
+          { paramsName: 'password', paramsValue: `123456`},
+          { paramsName: 'type', paramsValue: `executeUpdate`},
+          { paramsName: 'sql', paramsValue: `INSERT INTO JDBC VALUES (1, '小王', 5/3,5/3,sysdate);`},
+          { paramsName: 'type', paramsValue: `executeQuery`},
+          { paramsName: 'sql', paramsValue: `SELECT * FROM JDBC;`},
+          { paramsName: 'type', paramsValue: `executeQueryOut`},
+          { paramsName: 'sql', paramsValue: `SELECT name FROM JDBC WHERE id = 1;`},
+          { paramsName: 'details', paramsValue: `key:Proportion1`},
+          { paramsName: 'type', paramsValue: `prepareCall`},
+          { paramsName: 'sql', paramsValue: `{call JDBC_TEST(?,?,?,?)};`},
+          { paramsName: 'params', paramsValue: `[1, '小王', 1, 1]`},
+        ],
+      },
+      {
         id: 'db-insertw',
         name: '数据库插入',
         config: [
