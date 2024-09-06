@@ -670,7 +670,7 @@ export const operations = [
           { paramsName: 'value', paramsValue: `(//div[@class='body-content'])[1]`},
           { paramsName: 'expect', paramsValue: `验证码错误`},
           { paramsName: 'message', paramsValue: `(//button[@type='button'][contains(text(),'确定')])[1]`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -689,7 +689,7 @@ export const operations = [
         config: [
           { paramsName: 'value', paramsValue: `1`},
           { paramsName: 'locator', paramsValue: `xpath=(//iframe[@region='center'])[1]`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -713,7 +713,7 @@ export const operations = [
         name: '元素点击',
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//button[@type='button'][contains(text(),'确定')])[1]`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -722,7 +722,7 @@ export const operations = [
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请选择'])[2]`},
           { paramsName: 'value', paramsValue: `(//span[contains(text(),'一般告警')])[1]`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -732,7 +732,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请选择'])[1]`},
           { paramsName: 'value', paramsValue: `姓名`},
           { paramsName: 'element', paramsValue: `(//span[contains(text(),'姓名')])[1]`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
     ],
@@ -770,7 +770,7 @@ export const operations = [
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请输入开始地址'])[1]`},
           { paramsName: 'value', paramsValue: `172.19.5.29`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -780,7 +780,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请选择'])[4]`},
           { paramsName: 'key', paramsValue: `HH:mm`},
           { paramsName: 'keys', paramsValue: `-60*4`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -790,7 +790,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@type='file'])[1]`},
           { paramsName: 'localpath', paramsValue: `D:/Jenkins/workspace/Sakura.Web.UI.Automation.Test/TestData/Zip/system_update_9.9.9.zip`},
           { paramsName: 'delete', paramsValue: `false`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -801,7 +801,7 @@ export const operations = [
           { paramsName: 'catalogue', paramsValue: `user.home`},
           { paramsName: 'localpath', paramsValue: '/Downloads/${manualBackup}'},
           { paramsName: 'delete', paramsValue: `false`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -812,7 +812,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@type='file'])[1]`},
           { paramsName: 'catalogue', paramsValue: `user.dir`},
           { paramsName: 'localpath', paramsValue: `/TestData/License/`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -820,7 +820,7 @@ export const operations = [
         name: '输入框清空',
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请选择'])[4]`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
     ],
@@ -836,7 +836,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//div[@class='body-content'])[1]`},
           { paramsName: 'expect', paramsValue: `这里填写预期结果`},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -846,7 +846,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//div[@class='body-content'])[1]`},
           { paramsName: 'expect', paramsValue: `这里填写预期结果`},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -857,7 +857,7 @@ export const operations = [
           { paramsName: 'value', paramsValue: 'title'},
           { paramsName: 'expect', paramsValue: `这里填写预期结果`},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -868,7 +868,7 @@ export const operations = [
           { paramsName: 'value', paramsValue: '/Downloads/${manualBackup}'},
           { paramsName: 'expect', paramsValue: `这里填写预期结果`},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -878,7 +878,7 @@ export const operations = [
           { paramsName: 'details', paramsValue: `condition:Proportion1;subject:xxxx`},
           { paramsName: 'expect', paramsValue: `这里填写预期结果`},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -906,7 +906,17 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//div[contains(@class,'one-list-title scroll-wrap')])[1]`},
           { paramsName: 'regex', paramsValue: '^(.*(Between :V001 And :V002)).*$'},
           { paramsName: 'message', paramsValue: '审计失败，操作语句错误(实际结果和预期结果不一致)'},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+        ],
+      },
+      {
+        id: 'web-check-file-exists',
+        name: '检查指定路径的文件是否存在',
+        config: [
+          { paramsName: 'value', paramsValue: `C:\Users\Ankki\Downloads\test.txt`},
+          { paramsName: 'expect', paramsValue: 'true'},
+          { paramsName: 'message', paramsValue: '指定文件不存在(实际结果和预期结果不一致)'},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
     ],
@@ -945,7 +955,7 @@ export const operations = [
           { paramsName: 'regex', paramsValue: `(?&lt;=共\s)(.*?)(?=\s条)`},
           { paramsName: 'regex', paramsValue: `\d{1,3}\.\d{1,3}\.\d{1,3}\.`},
           { paramsName: 'details', paramsValue: `key:fail`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
       {
@@ -1066,7 +1076,7 @@ export const operations = [
           { paramsName: 'state', paramsValue: `today`},
           { paramsName: 'value', paramsValue: `55`},
           { paramsName: 'details', paramsValue: `x:-12;y:0`},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       }
     ],
@@ -1261,7 +1271,7 @@ export const operations = [
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//div[@class='body-content'])[1]`},
           { paramsName: 'expect', paramsValue: "文件成"},
-          { paramsName: 'skip', paramsValue: `false（默认false，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
     ],
