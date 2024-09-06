@@ -913,7 +913,7 @@ export const operations = [
         id: 'web-check-file-exists',
         name: '检查指定路径的文件是否存在',
         config: [
-          { paramsName: 'value', paramsValue: `C:\Users\Ankki\Downloads\test.txt`},
+          { paramsName: 'value', paramsValue: `C:/Users/user06/Downloads/test.txt`},
           { paramsName: 'expect', paramsValue: 'true'},
           { paramsName: 'message', paramsValue: '指定文件不存在(实际结果和预期结果不一致)'},
           { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
