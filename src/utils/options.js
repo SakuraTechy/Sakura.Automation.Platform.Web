@@ -910,11 +910,13 @@ export const operations = [
         ],
       },
       {
-        id: 'web-check-file-exists',
-        name: '检查指定路径的文件是否存在',
+        id: 'web-check-path-file-by-patterns',
+        name: '检查指定路径下的文件是否匹配模式',
         config: [
           { paramsName: 'catalogue', paramsValue: `user.home`},
-          { paramsName: 'localpath', paramsValue: '/Downloads/test.txt'},
+          { paramsName: 'localpath', paramsValue: '/Downloads'},
+          { paramsName: 'localpath', paramsValue: '/Downloads/test.xlsx'},
+          { paramsName: 'regex', paramsValue: `[*.xlsx, clientInfoFile*.info, *]`},
           { paramsName: 'expect', paramsValue: 'true'},
           { paramsName: 'message', paramsValue: '指定文件不存在(实际结果和预期结果不一致)'},
           { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
