@@ -916,7 +916,7 @@ export const operations = [
           { paramsName: 'locator', paramsValue: `xpath=(//div[contains(@class,'one-list-title scroll-wrap')])[1]`},
           { paramsName: 'regex', paramsValue: '^(.*SaveDefinition.*)$'},
           { paramsName: 'message', paramsValue: '审计失败，操作语句错误(实际结果和预期结果不一致)'},
-          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和regex，跳过后会标记为成功）`}
         ],
       },
       {
