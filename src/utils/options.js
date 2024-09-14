@@ -910,6 +910,16 @@ export const operations = [
         ],
       },
       {
+        id: 'web-regex-check',
+        name: '正则检查Web界面元素的内容',
+        config: [
+          { paramsName: 'locator', paramsValue: `xpath=(//div[contains(@class,'one-list-title scroll-wrap')])[1]`},
+          { paramsName: 'regex', paramsValue: '^(.*SaveDefinition.*)$'},
+          { paramsName: 'message', paramsValue: '审计失败，操作语句错误(实际结果和预期结果不一致)'},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和regex，跳过后会标记为成功）`}
+        ],
+      },
+      {
         id: 'web-check-path-file-by-patterns',
         name: '检查指定路径下的文件是否匹配模式',
         config: [
