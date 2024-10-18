@@ -162,14 +162,16 @@ export default {
         principalName: undefined,
         createStartTime: '',
         createEndTime: '',
-      }
+      },
     }
   },
   created() {
     // this.getAllUsers()
+    
   },
   computed: {
     newSearchParam() {
+      // console.log(JSON.stringify(this.searchParam))
       var newSearchParam = JSON.stringify(this.searchParam, (key, value) => {
         return typeof value === 'undefined' ? '' : value
       })
@@ -182,9 +184,9 @@ export default {
         let newValStr = JSON.stringify(newVal)
         let oldValStr = JSON.stringify(oldVal)
         // console.info(newValStr, oldValStr)
-        if (newValStr !== oldValStr) {
-          // console.info("符合条件，触发查询")
-          this.$emit('changeParam', newVal)
+        if (newValStr !== oldValStr && this.searchParam.versionId !== undefined) {
+          // console.log("符合条件，触发查询")
+          this.$emit('changeParam', newValStr)
         }
       },
       // deep: true,
