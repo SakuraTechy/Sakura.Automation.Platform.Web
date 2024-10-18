@@ -750,6 +750,8 @@ export default {
     getList() {
       const params = {
         ...this.queryParam,
+        projectId: this.record.projectId,
+        versionId: this.record.versionId,
         testPlanId: this.record.testPlanId,
         testSceneState: this.testPlan.testSceneState,
         buildNumber: this.record.statisticAnalysis.ui.buildNumber
