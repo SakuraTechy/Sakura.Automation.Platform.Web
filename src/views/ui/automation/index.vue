@@ -124,7 +124,7 @@
                   <!-- {{ record.debugRecordList.length>0 ? record.debugRecordList[0].executeStatus :'未开始' }} -->
                 </span>
                 <span class="scene-pass-rate" slot="scenePassRate" slot-scope="{ record }">
-                  {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].scenePassRate : '-' }}
+                  {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].casePassRate : '-' }}
                 </span>
                 <span class="execute-result" slot="executeResult" slot-scope="{ record }">
                   <!-- <img src="~@/assets/icons/inprogress.svg" style="width: 15px; height: 15px; margin-right: 5px;" alt="sakura" /> -->

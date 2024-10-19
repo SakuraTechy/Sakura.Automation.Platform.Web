@@ -209,6 +209,8 @@
                   <a @click="handleConsoleUrl(record)" v-hasPermi="['ui:automation:exec']"> 日志 </a>
                   <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
                   <a @click="handleTestReportUrl(record)" v-hasPermi="['ui:automation:exec']"> 报告 </a>
+                  <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
+                  <a @click="handleTestVideoUrl(record)" v-hasPermi="['ui:automation:exec']"> 回放 </a>
                 </span>
               </advance-table>
         </template>
@@ -282,6 +284,8 @@
                   <a @click="handleConsoleUrl(record)" v-hasPermi="['ui:automation:exec']"> 日志 </a>
                   <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
                   <a @click="handleTestReportUrl(record)" v-hasPermi="['ui:automation:exec']"> 报告 </a>
+                  <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
+                  <a @click="handleTestVideoUrl(record)" v-hasPermi="['ui:automation:exec']"> 回放 </a>
                 </span>
            </advance-table>
         </template>
@@ -355,6 +359,8 @@
                   <a @click="handleConsoleUrl(record)" v-hasPermi="['ui:automation:exec']"> 日志 </a>
                   <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
                   <a @click="handleTestReportUrl(record)" v-hasPermi="['ui:automation:exec']"> 报告 </a>
+                  <a-divider type="vertical" v-hasPermi="['ui:automation:exec']" />
+                  <a @click="handleTestVideoUrl(record)" v-hasPermi="['ui:automation:exec']"> 回放 </a>
                 </span>
            </advance-table>
         </template>
