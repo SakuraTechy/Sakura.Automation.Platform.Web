@@ -22,9 +22,9 @@
                 {{ d.versionName }}
               </a-select-option>
             </a-select> -->
-            <a-select v-model="searchParam.versionId" placeholder="请选择" style="width: 250px"
+            <a-select v-model="version.id" placeholder="请选择" style="width: 250px"
               option-filter-prop="children" show-search allowClear>
-              <a-select-option v-for="(d, index) in versionOptions" :key="index" :value="d.id" @click="handleOptionClick(d)">
+              <a-select-option v-for="(d,index) in versionOptions" :key="index" :value="d.id" @click="handleOptionClick(d)">
                 {{ d.name }}
               </a-select-option>
             </a-select>
@@ -163,14 +163,22 @@ export default {
         createStartTime: '',
         createEndTime: '',
       },
+      version: {
+        id: '',
+        name: ''
+      }
     }
   },
   created() {
     // this.getAllUsers()
+    // console.log(JSON.stringify(this.version))
   },
   computed: {
-    // console.log(JSON.stringify(this.searchParam))
     newSearchParam() {
+      // console.log(JSON.stringify(this.searchParam))
+      // console.log(JSON.stringify(this.version))
+      this.searchParam.versionId = this.version.id
+      // this.searchParam.versionName = this.version.name
       var newSearchParam = JSON.stringify(this.searchParam, (key, value) => {
         return typeof value === 'undefined' ? '' : value
       })
@@ -183,9 +191,9 @@ export default {
         let newValStr = JSON.stringify(newVal)
         let oldValStr = JSON.stringify(oldVal)
         // console.info(newValStr, oldValStr)
-        if (newValStr !== oldValStr && this.searchParam.versionId !== undefined) {
+        if (newValStr !== oldValStr) {
           // console.info("符合条件，触发查询")
-          this.$emit('changeParam', newValStr)
+          this.$emit('changeParam', newVal)
         }
       },
       // deep: true,
@@ -226,15 +234,17 @@ export default {
     //     this.versionOptions = versionOptions
     //   })
     // },
-    onChangeVersion(value) {
-      // console.log('Clicked:', value)
-      this.searchParam.versionId = value
-      // this.searchParam.versionName = value
+    onChangeVersion(option) {
+      // console.log('Clicked:', option)
+      this.searchParam.versionId = option.id
+      // this.searchParam.versionName = option
       // this.$emit('handleQuery', versionId)
     },
     handleOptionClick(option) {
       // console.log('Clicked:', option)
-      this.searchParam.versionName = option.name
+      // this.searchParam.versionId = option.id
+      // this.searchParam.versionName = option.name
+      this.version = { ...option }
     },
     handleQuery() {
       this.$emit('handleQuery')

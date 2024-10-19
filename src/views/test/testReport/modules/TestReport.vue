@@ -72,7 +72,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -147,7 +147,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -220,7 +220,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -293,7 +293,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,

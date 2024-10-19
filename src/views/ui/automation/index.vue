@@ -40,7 +40,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -487,8 +487,8 @@ export default {
                 if (item.status === 1) {
                   this.version = item
                   this.queryParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionName = item.name
+                  this.$refs.uiSearch.version.id = item.id
+                  this.$refs.uiSearch.version.name = item.name
                 }
               }
             })

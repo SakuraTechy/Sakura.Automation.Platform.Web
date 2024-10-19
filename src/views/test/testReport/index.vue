@@ -30,6 +30,7 @@
             :pagination="{
               current: queryParam.pageNum,
               pageSize: queryParam.pageSize,
+              pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
               total: total,
               showSizeChanger: true,
               showLessItems: true,
@@ -512,7 +513,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         orderByColumn: 'a.project_id, a.name',
-        isAsc: 'asc',
+        isAsc: 'desc',
       }
       this.handleQuery(this.queryParam)
     },
