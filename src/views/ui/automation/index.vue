@@ -507,7 +507,7 @@ export default {
       localStorage.setItem('name', this.projectOptions[index].name);
       localStorage.setItem('abbreviate', this.projectOptions[index].abbreviate);
       this.$refs.treeList.clearSelectedkeys()
-      this.$refs.uiSearch.resetQuery()
+      // this.$refs.uiSearch.resetQuery()
       this.getAllVersions()
     },
     getTags(tags) {
@@ -526,6 +526,7 @@ export default {
     // 获取树形结构
     getTreeData() {
       // const { projectId } = this
+      console.log(this.queryParam.versionId);
       if(this.queryParam.versionId!==''){
         getUiNode(this.projectId, this.queryParam.versionId).then((response) => {
           this.treeData = response?.data || {}
