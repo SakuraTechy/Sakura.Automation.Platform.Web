@@ -31,7 +31,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -100,7 +100,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -315,6 +315,7 @@
       ref="TestSceneAddForm"
       :tab="tab"
       :projectId="record.projectId"
+      :versionOptions="versionOptions"
       :memberOptions="memberOptions"
       :testPlanId="testPlan.id"
       @getList="getList"
@@ -528,54 +529,54 @@ export default {
           scopedSlots: { customRender: 'duration' },
           align: 'center',
         },
-        // {
-        //   title: '用例数',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].caseTotal',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '通过',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].casePass',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '失败',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].caseFail',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '跳过',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].caseSkip',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '步骤数',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].stepTotal',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '通过',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].stepPass',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '失败',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].stepFail',
-        //   align: 'center',
-        // },
-        // {
-        //   title: '跳过',
-        //   width: 60,
-        //   dataIndex: 'testRecordList[0].stepSkip',
-        //   align: 'center',
-        // },
+        {
+          title: '用例数',
+          width: 60,
+          dataIndex: 'testRecordList[0].caseTotal',
+          align: 'center',
+        },
+        {
+          title: '通过',
+          width: 60,
+          dataIndex: 'testRecordList[0].casePass',
+          align: 'center',
+        },
+        {
+          title: '失败',
+          width: 60,
+          dataIndex: 'testRecordList[0].caseFail',
+          align: 'center',
+        },
+        {
+          title: '跳过',
+          width: 60,
+          dataIndex: 'testRecordList[0].caseSkip',
+          align: 'center',
+        },
+        {
+          title: '步骤数',
+          width: 60,
+          dataIndex: 'testRecordList[0].stepTotal',
+          align: 'center',
+        },
+        {
+          title: '通过',
+          width: 60,
+          dataIndex: 'testRecordList[0].stepPass',
+          align: 'center',
+        },
+        {
+          title: '失败',
+          width: 60,
+          dataIndex: 'testRecordList[0].stepFail',
+          align: 'center',
+        },
+        {
+          title: '跳过',
+          width: 60,
+          dataIndex: 'testRecordList[0].stepSkip',
+          align: 'center',
+        },
         {
           title: '创建人',
           dataIndex: 'createByName',
@@ -760,8 +761,8 @@ export default {
                 if (item.status === 1) {
                   this.version = item
                   this.queryParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionName = item.name
+                  this.$refs.uiSearch.version.id = item.id
+                  this.$refs.uiSearch.version.name = item.name
                 }
               }
             })
@@ -990,6 +991,8 @@ export default {
     handleAdd() {
       this.$nextTick(() => {
         this.$refs.TestSceneAddForm.handleAdd()
+        this.$refs.TestSceneAddForm.queryParam.versionId = this.queryParam.versionId
+        this.$refs.TestSceneAddForm.queryParam.versionName = this.queryParam.versionName
       })
     },
     // 编辑场景

@@ -95,7 +95,7 @@ export default {
   created() {
     // this.getAllProjectList()
     // console.log('this.environmentId', this.environmentId)
-    console.log(this.record);
+    // console.log(this.record);
     if (this.record) {
       Object.keys(this.form).forEach(key => this.form[key] = this.record[key]);
       this.form.status = parseInt(this.record.status ?? 0)

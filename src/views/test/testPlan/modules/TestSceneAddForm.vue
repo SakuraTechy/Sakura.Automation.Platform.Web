@@ -54,7 +54,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -167,6 +167,10 @@ export default {
     memberOptions: {
       type: Array,
     },
+    versionOptions: {
+      type: Array,
+      required: true
+    },
     testPlanId: {
       type: String,
     },
@@ -204,7 +208,7 @@ export default {
       levelOptions,
       statusOptions,
       resultOptions: [],
-      versionOptions: [],
+      // versionOptions: [],
 
       environment_Id: '',
       loading: false,
@@ -500,6 +504,12 @@ export default {
     },
     // 获取当前计划项目环境下的所有版本
     async getAllVersions() {
+      this.$nextTick(() => {
+        this.$refs.uiSearch.version.id = this.queryParam.versionId
+        this.$refs.uiSearch.version.name = this.queryParam.versionName
+      })
+    },
+    async getAllVersions1() {
       const queryParam = {
         projectId: this.projectId,
       }
@@ -515,8 +525,8 @@ export default {
                 if (item.status === 1) {
                   this.version = item
                   this.queryParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionName = item.name
+                  this.$refs.uiSearch.version.id = item.id
+                  this.$refs.uiSearch.version.name = item.name
                 }
               }
             })

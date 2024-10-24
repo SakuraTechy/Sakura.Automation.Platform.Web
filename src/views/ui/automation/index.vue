@@ -40,7 +40,7 @@
                 :pagination="{
                   current: queryParam.pageNum,
                   pageSize: queryParam.pageSize,
-                  pageSizeOptions: ['10', '20', '30', '40', '50', '1000'],
+                  pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
                   total: total,
                   showSizeChanger: true,
                   showLessItems: true,
@@ -124,7 +124,7 @@
                   <!-- {{ record.debugRecordList.length>0 ? record.debugRecordList[0].executeStatus :'未开始' }} -->
                 </span>
                 <span class="scene-pass-rate" slot="scenePassRate" slot-scope="{ record }">
-                  {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].scenePassRate : '-' }}
+                  {{ record.debugRecordList.length>0&&record.debugRecordList[0].executeStatus==='已完成' ? record.debugRecordList[0].casePassRate : '-' }}
                 </span>
                 <span class="execute-result" slot="executeResult" slot-scope="{ record }">
                   <!-- <img src="~@/assets/icons/inprogress.svg" style="width: 15px; height: 15px; margin-right: 5px;" alt="sakura" /> -->
@@ -487,8 +487,8 @@ export default {
                 if (item.status === 1) {
                   this.version = item
                   this.queryParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionId = item.id
-                  this.$refs.uiSearch.searchParam.versionName = item.name
+                  this.$refs.uiSearch.version.id = item.id
+                  this.$refs.uiSearch.version.name = item.name
                 }
               }
             })
@@ -507,7 +507,7 @@ export default {
       localStorage.setItem('name', this.projectOptions[index].name);
       localStorage.setItem('abbreviate', this.projectOptions[index].abbreviate);
       this.$refs.treeList.clearSelectedkeys()
-      this.$refs.uiSearch.resetQuery()
+      // this.$refs.uiSearch.resetQuery()
       this.getAllVersions()
     },
     getTags(tags) {
@@ -526,6 +526,7 @@ export default {
     // 获取树形结构
     getTreeData() {
       // const { projectId } = this
+      console.log(this.queryParam.versionId);
       if(this.queryParam.versionId!==''){
         getUiNode(this.projectId, this.queryParam.versionId).then((response) => {
           this.treeData = response?.data || {}
