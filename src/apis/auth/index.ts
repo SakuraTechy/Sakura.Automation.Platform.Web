@@ -44,3 +44,8 @@ export const getUserInfo = () => {
 export const getUserRoute = () => {
   return http.get<T.RouteItem[]>(`${BASE_URL}/route`)
 }
+
+/** @desc 获取手机区号 */
+export const getPhoneCountryCode = () => {
+  return http.get(`https://restcountries.com/v3.1/all`)
+}

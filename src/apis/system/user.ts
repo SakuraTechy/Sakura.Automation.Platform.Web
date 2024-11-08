@@ -18,6 +18,11 @@ export function getUser(id: string) {
   return http.get<T.UserDetailResp>(`${BASE_URL}/${id}`)
 }
 
+/** @desc 注册用户 */
+export function signup(data: any) {
+  return http.post(`${BASE_URL}/signup`, data)
+}
+
 /** @desc 新增用户 */
 export function addUser(data: any) {
   return http.post(`${BASE_URL}`, data)

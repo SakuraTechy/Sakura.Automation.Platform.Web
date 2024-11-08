@@ -2,25 +2,13 @@
   <a-form ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
     :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin">
     <a-form-item field="username" hide-label>
-      <a-input ref="inputRef" v-model="form.username" :placeholder="getPlaceholder()" allow-clear>
-        <template #prefix>
-          <icon-user />
-        </template>
-      </a-input>
+      <a-input v-model="form.username" placeholder="请设置用户名，5-20个字符" allow-clear />
     </a-form-item>
     <a-form-item field="password" hide-label>
-      <a-input-password v-model="form.password" :placeholder=" !isRegister ? '请输入登录密码' : '请设置登录密码'">
-        <template #prefix>
-          <icon-lock />
-        </template>
-      </a-input-password>
+      <a-input-password v-model="form.password" placeholder="请设置登录密码" />
     </a-form-item>
     <a-form-item field="captcha" hide-label>
-      <a-input v-model="form.captcha" placeholder="请输入验证码" :max-length="4" allow-clear style="flex: 1 1">
-        <template #prefix>
-          <icon-safe />
-        </template>
-      </a-input>
+      <a-input v-model="form.captcha" placeholder="请输入验证码" :max-length="4" allow-clear style="flex: 1 1" />
       <div class="captcha-container" @click="getCaptcha">
         <img :src="captchaImgBase64" alt="验证码" class="captcha" />
         <div v-if="form.expired" class="overlay">
@@ -31,12 +19,12 @@
     <a-form-item>
       <a-row justify="space-between" align="center" class="w-full">
         <a-checkbox v-model="loginConfig.rememberMe">记住我</a-checkbox>
-        <a-link v-if="!isRegister" @click="authStore.toggleMode">忘记密码</a-link>
+        <!-- <a-link>忘记密码</a-link> -->
       </a-row>
     </a-form-item>
     <a-form-item>
       <a-space direction="vertical" fill class="w-full">
-        <a-button class="btn" type="primary" :loading="loading" html-type="submit" size="large" long>{{ !isRegister ? '立 即 登 录' : '开 始 体 验' }}</a-button>
+        <a-button class="btn" type="primary" :loading="loading" html-type="submit" size="large" long>开始体验</a-button>
       </a-space>
     </a-form-item>
   </a-form>
@@ -47,29 +35,20 @@ import { type FormInstance, Message } from '@arco-design/web-vue'
 import { useStorage } from '@vueuse/core'
 import { getImageCaptcha } from '@/apis/common'
 import { useTabsStore, useUserStore } from '@/stores'
-import { useAuthStore } from '@/stores/modules/auth'
 import { encryptByRsa } from '@/utils/encrypt'
 import { timeFix } from '@/utils'
 
-// 定义组件的 props
-const props = defineProps({
-  isRegister: {
-    type: Boolean
-  }
-})
-const inputRef = ref<HTMLInputElement | null>(null)
-
 const loginConfig = useStorage('login-config', {
-  rememberMe: props.isRegister,
+  rememberMe: true,
   username: '',
   password: ''
 })
 
 const formRef = ref<FormInstance>()
 const form = reactive({
-  username: !props.isRegister ? loginConfig.value.username : '',
+  username: '',
   nickname: '',
-  password: !props.isRegister ? loginConfig.value.password : '',
+  password: '',
   gender: 0,
   deptId: 1,
   roleIds: ['547888897925840928'],
@@ -122,31 +101,21 @@ const userStore = useUserStore()
 const tabsStore = useTabsStore()
 const router = useRouter()
 const loading = ref(false)
-
-const getPlaceholder = () => {
-  return !props.isRegister ? '请输入用户名' : '请设置用户名，5-20个字符'
-}
-
-const authStore = useAuthStore()
-// const toggleForgotPasswordMode = inject<() => void>('toggleForgotPasswordMode')
-
-// 登录或注册
+// 注册并登录
 const handleLogin = async () => {
   try {
     const isInvalid = await formRef.value?.validate()
     if (isInvalid) return
     loading.value = true
-    if (props.isRegister) {
-      await userStore.accountSignup({
-        username: form.username,
-        nickname: form.username,
-        password: encryptByRsa(form.password) || '',
-        gender: 0,
-        deptId: 1,
-        roleIds: ['547888897925840928'],
-        status: 1
-      })
-    }
+    await userStore.accountSignup({
+      username: form.username,
+      nickname: form.username,
+      password: encryptByRsa(form.password) || '',
+      gender: 1,
+      deptId: 1,
+      roleIds: ['547888897925840928'],
+      status: 1
+    })
     await userStore.accountLogin({
       username: form.username,
       password: encryptByRsa(form.password) || '',
@@ -163,16 +132,11 @@ const handleLogin = async () => {
     })
     const { rememberMe } = loginConfig.value
     loginConfig.value.username = rememberMe ? form.username : ''
-    loginConfig.value.password = rememberMe ? form.password : ''
-    if (props.isRegister) {
-      Message.success(`注册成功，${form.username} ${timeFix()}，欢迎使用`)
-    } else {
-      Message.success(`登录成功，${form.username} ${timeFix()}，欢迎使用`)
-    }
+    Message.success(`注册成功，${form.username} ${timeFix()}，欢迎使用`)
   } catch (error) {
     getCaptcha()
     form.captcha = ''
-    // Message.error(String(error))
+    Message.error(String(error))
   } finally {
     loading.value = false
   }
@@ -180,7 +144,6 @@ const handleLogin = async () => {
 
 onMounted(() => {
   getCaptcha()
-  inputRef.value?.focus()
 })
 </script>
 

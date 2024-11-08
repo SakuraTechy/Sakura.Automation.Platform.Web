@@ -196,6 +196,11 @@ export default {
   line-height: 30px;
   color: #fff;
 }
+.verify-txt {
+  padding-left: 10px; /* 文本靠左 10px */
+  white-space: nowrap; /* 防止文本换行 */
+  line-height: 30px; /* 垂直居中对齐文本 */
+}
 .suc-bg {
   background-color: rgba(92, 184, 92, 0.5);
   filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7f5CB85C, endcolorstr=#7f5CB85C);

@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
+import { useAuthStore } from './auth'
 import { resetRouter } from '@/router'
 import {
   type AccountLoginReq,
+  type AccountSignupReq,
   type EmailLoginReq,
   type PhoneLoginReq,
+  type PhoneSignupReq,
   type UserInfo,
   accountLogin as accountLoginApi,
   emailLogin as emailLoginApi,
@@ -13,6 +16,7 @@ import {
   phoneLogin as phoneLoginApi,
   socialLogin as socialLoginApi
 } from '@/apis'
+import { signup as accountSignupApi } from '@/apis/system'
 import { clearToken, getToken, setToken } from '@/utils/auth'
 import { resetHasRouteFlag } from '@/router/permission'
 import getAvatar from '@/utils/avatar'
@@ -47,8 +51,12 @@ const storeSetup = () => {
     clearToken()
     resetHasRouteFlag()
   }
+  // 账号注册
+  const accountSignup = async (req: AccountSignupReq) => {
+    await accountSignupApi(req)
+  }
 
-  // 登录
+  // 账号登录
   const accountLogin = async (req: AccountLoginReq) => {
     const res = await accountLoginApi(req)
     setToken(res.data.token)
@@ -62,6 +70,10 @@ const storeSetup = () => {
     token.value = res.data.token
   }
 
+  // 手机号注册
+  const PhoneSignup = async (req: PhoneSignupReq) => {
+    await accountSignupApi(req)
+  }
   // 手机号登录
   const phoneLogin = async (req: PhoneLoginReq) => {
     const res = await phoneLoginApi(req)
@@ -83,6 +95,11 @@ const storeSetup = () => {
     pwdExpiredShow.value = true
     resetToken()
     resetRouter()
+    // useRouter().push('/login')
+    useAuthStore().activeKey = '3'
+    useAuthStore().isRegister = true
+    useAuthStore().isEmailLogin = true
+    useAuthStore().toggleRegisterMode()
   }
 
   // 退出登录
@@ -115,8 +132,10 @@ const storeSetup = () => {
     roles,
     permissions,
     pwdExpiredShow,
+    accountSignup,
     accountLogin,
     emailLogin,
+    PhoneSignup,
     phoneLogin,
     socialLogin,
     logout,

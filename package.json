@@ -2,10 +2,10 @@
   "name": "sakura.automation.platform",
   "type": "module",
   "version": "v1.0.0",
+  "private": "true",
   "description": "SakurA 自动化测试平台",
   "author": "刘智",
   "license": "MIT",
-  "private": "true",
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
@@ -23,6 +23,9 @@
     "@codemirror/lang-vue": "^0.1.2",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@ddietr/codemirror-themes": "^1.4.2",
+    "@vue-office/docx": "1.6.0",
+    "@vue-office/excel": "1.7.1",
+    "@vue-office/pdf": "1.6.4",
     "@vueuse/components": "^10.5.0",
     "@vueuse/core": "^10.5.0",
     "aieditor": "^1.0.13",
@@ -55,10 +58,7 @@
     "vue-json-pretty": "^2.4.0",
     "vue-router": "^4.3.3",
     "xe-utils": "^3.5.7",
-    "xgplayer": "^2.31.6",
-    "@vue-office/docx": "1.6.0",
-    "@vue-office/excel": "1.7.1",
-    "@vue-office/pdf": "1.6.4"
+    "xgplayer": "^2.31.6"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.16.3",

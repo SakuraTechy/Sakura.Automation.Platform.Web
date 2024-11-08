@@ -1,16 +1,32 @@
 <template>
-  <div class="login-bg">
-    <div class="fly bg-fly-circle1"></div>
+  <div :class="appStore.theme === 'light' ? 'login-bg' : 'login-bg1'">
+    <!-- <div class="fly bg-fly-circle1"></div>
     <div class="fly bg-fly-circle2"></div>
     <div class="fly bg-fly-circle3"></div>
-    <div class="fly bg-fly-circle4"></div>
+    <div class="fly bg-fly-circle4"></div> -->
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useAppStore } from '@/stores'
+
+const appStore = useAppStore()
+</script>
 
 <style lang="scss" scoped>
 .login-bg {
+  width: 100%;
+  min-height: 100%;
+  background: #e2effc url(@/assets/background.jpg);
+  background-size: 100%;
+  vertical-align: middle;
+  display: flex;
+  position: fixed;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.login-bg1 {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -23,6 +39,7 @@
   position: fixed;
   z-index: 9999;
 }
+
 .bg-fly-circle1 {
   left: 40px;
   top: 100px;

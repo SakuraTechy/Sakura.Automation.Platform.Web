@@ -20,11 +20,9 @@
         >
 </div>
         <transition name="tips">
-          <span
-              v-if="tipWords"
-              class="verify-tips"
-              :class="passFlag ? 'suc-bg' : 'err-bg'"
-          >{{ tipWords }}</span
+          <div v-if="tipWords" class="verify-tips" :class="passFlag ? 'suc-bg' : 'err-bg'">
+            <span class="verify-txt">{{ tipWords }}</span>
+          </div
           >
         </transition>
       </div>
@@ -306,21 +304,21 @@ export default {
             }
             passFlag.value = true
             tipWords.value = `${(
-                (endMovetime.value - startMoveTime.value)
-                / 1000
-            ).toFixed(2)}s验证成功`
+              (endMovetime.value - startMoveTime.value)
+              / 1000
+            ).toFixed(2)}s 验证成功`
             const captchaVerification = secretKey.value
               ? encryptByAes(
-                    `${backToken.value}---${JSON.stringify({
-                      x: moveLeftDistance,
-                      y: 5.0
-                    })}`,
-                    secretKey.value
-              )
-              : `${backToken.value}---${JSON.stringify({
+                `${backToken.value}---${JSON.stringify({
                   x: moveLeftDistance,
                   y: 5.0
-                })}`
+                })}`,
+                secretKey.value
+              )
+              : `${backToken.value}---${JSON.stringify({
+                x: moveLeftDistance,
+                y: 5.0
+              })}`
             setTimeout(() => {
               tipWords.value = ''
               proxy.$parent.closeBox()

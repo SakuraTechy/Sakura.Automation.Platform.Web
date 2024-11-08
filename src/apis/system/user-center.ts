@@ -18,6 +18,11 @@ export function updateUserPassword(data: { oldPassword: string, newPassword: str
   return http.patch(`${BASE_URL}/password`, data)
 }
 
+/** @desc 修改密码 */
+export function updatePassword(data) {
+  return http.post(`${BASE_URL}/password`, data)
+}
+
 /** @desc 修改手机号 */
 export function updateUserPhone(data: { phone: string, captcha: string, oldPassword: string }) {
   return http.patch(`${BASE_URL}/phone`, data)
