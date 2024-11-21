@@ -25,7 +25,7 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-        <img src="~@/assets/images/login/sakura-log.svg" class="logo" alt="logo">
+        <img src="~@/assets/images/login/ankki-icon.png" class="logo" alt="logo">
         <h1 style="margin-left: 0px;">{{ title }}</h1>
       </div>
     </template>

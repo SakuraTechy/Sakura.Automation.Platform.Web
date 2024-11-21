@@ -6,9 +6,9 @@
           <div class="header">
             <a href="/">
               <!-- <img src="~@/assets/logo.svg" class="logo" alt="logo"> -->
-              <img src=".././assets/images/login/sakura-log.svg" class="logo" alt="logo" />
+              <img src=".././assets/images/login/ankki-log3.png" class="logo" alt="logo" />
               <!-- <span class="title">Sakura Sharp</span><br> -->
-              <div class="title">SakurA 自动化测试平台</div>
+              <div class="title">自动化测试平台</div>
               <div class="title" style="font-size:18px">{{ version }}</div>
             </a>
           </div>
