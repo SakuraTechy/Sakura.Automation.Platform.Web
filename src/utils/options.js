@@ -850,6 +850,14 @@ export const operations = [
         ],
       },
       {
+        id: 'web-check-invisible',
+        name: '检查Web界面元素消失不可见',
+        config: [
+          { paramsName: 'locator', paramsValue: `xpath=(//div[@class='body-content'])[1]`},
+          { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
+        ],
+      },
+      {
         id: 'web-checkvalue',
         name: '检查Web界面元素的属性值',
         config: [
