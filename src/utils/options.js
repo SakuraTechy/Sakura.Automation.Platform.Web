@@ -1140,6 +1140,20 @@ export const operations = [
           { paramsName: 'delete', paramsValue: `true`},
         ],
       },
+      {
+        id: 'zip-file',
+        name: '获取本地zip文件，压缩或解压到指定目录',
+        config: [
+          { paramsName: 'type', paramsValue: `压缩文件`},
+          { paramsName: 'type', paramsValue: `解压文件`},
+          { paramsName: 'catalogue', paramsValue: `user.home`},
+          { paramsName: 'localpath', paramsValue: "/Downloads/${manualBackup}"},
+          { paramsName: 'remotepath', paramsValue: "/Downloads/${manualBackup}"},
+          { paramsName: 'regex', paramsValue: `^(.*SaveDefinition.*)$`},
+          { paramsName: 'value', paramsValue: "0"},
+          { paramsName: 'details', paramsValue: `key:file`},
+        ],
+      },
     ],
   },
   {
