@@ -526,7 +526,7 @@ export default {
     // 获取树形结构
     getTreeData() {
       // const { projectId } = this
-      console.log(this.queryParam.versionId);
+      // console.log(this.queryParam.versionId);
       if(this.queryParam.versionId!==''){
         getUiNode(this.projectId, this.queryParam.versionId).then((response) => {
           this.treeData = response?.data || {}
@@ -606,7 +606,7 @@ export default {
     // 监听查询参数改变
     changeParam(searchParam) {
       // console.log(searchParam);
-      this.queryParam = Object.assign(this.queryParam, searchParam)
+      this.queryParam = Object.assign(this.queryParam, JSON.parse(searchParam))
       this.handleQuery()
     },
     close() {
