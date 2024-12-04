@@ -665,11 +665,11 @@ export const operations = [
         name: '获取图片验证码',
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='验证码'])[1]`},
-          { paramsName: 'url', paramsValue: `(//img[@title='点击刷新'])[1]`},
-          { paramsName: 'element', paramsValue: `(//button[contains(text(),'登录')])[1]`},
-          { paramsName: 'value', paramsValue: `(//div[@class='body-content'])[1]`},
+          { paramsName: 'url', paramsValue: `xpath=(//img[@title='点击刷新'])[1]`},
+          { paramsName: 'element', paramsValue: `xpath=(//button[contains(text(),'登录')])[1]`},
+          { paramsName: 'value', paramsValue: `xpath=(//div[@class='body-content'])[1]`},
           { paramsName: 'expect', paramsValue: `验证码错误`},
-          { paramsName: 'message', paramsValue: `(//button[@type='button'][contains(text(),'确定')])[1]`},
+          { paramsName: 'message', paramsValue: `xpath=(//button[@type='button'][contains(text(),'确定')])[1]`},
           { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
@@ -713,7 +713,9 @@ export const operations = [
         name: '元素点击',
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//button[@type='button'][contains(text(),'确定')])[1]`},
-          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'waitTime', paramsValue: `1000`},
+          { paramsName: 'invisible', paramsValue: `true`},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator,expect和invisible，跳过后会标记为成功）`}
         ],
       },
       {
@@ -721,8 +723,10 @@ export const operations = [
         name: '选项框点击',
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请选择'])[2]`},
-          { paramsName: 'value', paramsValue: `(//span[contains(text(),'一般告警')])[1]`},
-          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'value', paramsValue: `xpath=(//span[contains(text(),'一般告警')])[1]`},
+          { paramsName: 'waitTime', paramsValue: `1000`},
+          { paramsName: 'invisible', paramsValue: `true`},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator,expect和invisible，跳过后会标记为成功）`}
         ],
       },
       {
@@ -731,8 +735,10 @@ export const operations = [
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//input[@placeholder='请选择'])[1]`},
           { paramsName: 'value', paramsValue: `姓名`},
-          { paramsName: 'element', paramsValue: `(//span[contains(text(),'姓名')])[1]`},
-          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+          { paramsName: 'element', paramsValue: `xpath=(//span[contains(text(),'姓名')])[1]`},
+          { paramsName: 'waitTime', paramsValue: `1000`},
+          { paramsName: 'invisible', paramsValue: `true`},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator,expect和invisible，跳过后会标记为成功）`}
         ],
       },
     ],
