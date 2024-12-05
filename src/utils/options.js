@@ -1315,7 +1315,7 @@ export const operations = [
         name: '滚动到指定元素',
         config: [
           { paramsName: 'locator', paramsValue: `xpath=(//div[@class='body-content'])[1]`},
-          { paramsName: 'expect', paramsValue: "文件成"},
+          { paramsName: 'element', paramsValue: "xpath=(//div[@class='body-content'])[2]"},
           { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ],
       },
