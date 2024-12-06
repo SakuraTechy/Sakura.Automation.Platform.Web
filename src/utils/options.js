@@ -36,7 +36,7 @@ export const stepOptions = [
   {
     label: '选择内嵌网页',
     value: '4',
-    tip: '从当前 window 选择 frame(对 frame 标签起作用)',
+    tip: '从当前 window 选择 frame(对 frame 标签起作用)'
   }
 ]
 export const switchOptions = [
@@ -288,7 +288,7 @@ export const waitOptions = [
   {
     label: '等待元素不可编辑',
     value: '6'
-  },
+  }
 ]
 export const childSelectOperations = [
   {
@@ -647,18 +647,15 @@ export const operations = [
       },
       {
         id: 'web-close',
-        name: '关闭当前标签页',
-        config:null
+        name: '关闭当前标签页'
       },
       {
         id: 'web-quit',
-        name: '关闭全部标签页',
-        config:null
+        name: '关闭全部标签页'
       },
       {
         id: 'web-refresh',
-        name: '页面刷新',
-        config:null
+        name: '页面刷新'
       },
       {
         id: 'web-getcode',
@@ -675,8 +672,7 @@ export const operations = [
       },
       {
         id: 'switch-window',
-        name: '切换当前最新窗口',
-        config:null
+        name: '切换当前最新窗口'
       },
       {
         id: 'switch-windows',
@@ -694,13 +690,11 @@ export const operations = [
       },
       {
         id: 'return-Iframe',
-        name: '返回上一级Iframe控件',
-        config:null
+        name: '返回上一级Iframe控件'
       },
       {
         id: 'quit-Iframe',
-        name: '返回最上级Iframe控件',
-        config:null
+        name: '返回最上级Iframe控件'
       },
     ],
   },
@@ -805,13 +799,11 @@ export const operations = [
     children: [
       {
         id: 'click-ok',
-        name: '点击浏览器弹框确定键',
-        config:null
+        name: '点击浏览器弹框确定键'
       },
       {
         id: 'click-cancel',
-        name: '点击浏览器弹框取消键',
-        config:null
+        name: '点击浏览器弹框取消键'
       },
       {
         id: 'click-text',
