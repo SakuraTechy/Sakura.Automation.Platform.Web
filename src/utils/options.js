@@ -696,7 +696,14 @@ export const operations = [
         id: 'quit-Iframe',
         name: '返回最上级Iframe控件'
       },
-    ],
+      {
+        id: 'javascript-executor',
+        name: 'Web端执行js脚本操作',
+        config: [
+          { paramsName: 'script', paramsValue: `document.getElementsByClassName('el-input__inner')[0].maxLength = 64`}
+        ]
+      }
+    ]
   },
   {
     name: '点击操作',
@@ -999,6 +1006,17 @@ export const operations = [
           { paramsName: 'regex', paramsValue: `[*.xlsx, clientInfoFile*.info, *]`},
           { paramsName: 'expect', paramsValue: 'true'},
           { paramsName: 'message', paramsValue: '指定文件不存在(实际结果和预期结果不一致)'},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+        ]
+      },
+      {
+        id: 'web-check-file-content',
+        name: '检查文件内容是否与预期值相等',
+        config: [
+          { paramsName: 'localpath', paramsValue: '/Downloads'},
+          { paramsName: 'state', paramsValue: 'true(是否带标题)'},
+          { paramsName: 'expect', paramsValue: '这里填写预期结果'},
+          { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
           { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
         ]
       }
