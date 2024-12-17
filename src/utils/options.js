@@ -1013,7 +1013,9 @@ export const operations = [
         id: 'web-check-file-content',
         name: '检查文件内容是否与预期值相等',
         config: [
+          { paramsName: 'catalogue', paramsValue: `user.home`},
           { paramsName: 'localpath', paramsValue: '/SENSITIVE_TYPES_ALL_TXT_带标题.txt'},
+          { paramsName: 'localpath', paramsValue: 'D:/SENSITIVE_TYPES_ALL_TXT_带标题.txt'},
           { paramsName: 'state', paramsValue: 'true(是否带标题)'},
           { paramsName: 'expect', paramsValue: '这里填写预期结果'},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
