@@ -1,4 +1,3 @@
-
 window.config = {
   api: {
     baseUrl: 'https://api.example.com11',
