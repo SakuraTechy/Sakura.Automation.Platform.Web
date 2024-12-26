@@ -466,5 +466,36 @@ export function dragTable(columns) {
         return h('th', { ...restProps, class: 'resize-table-th' }, [...children, drag])
       },
     },
+  }
+}
+
+// 深度遍历对象
+// this.traverseDeep(this.queryParam1, (key, value) => {}
+export function traverseDeep(obj, callback) {
+  function recurse(currentObj) {
+    for (const key in currentObj) {
+      if (currentObj.hasOwnProperty(key)) {
+        const value = currentObj[key]
+        if (typeof value === 'object' && value !== null) {
+          if (Array.isArray(value)) {
+            // 处理数组中的每一项
+            value.forEach(item => {
+              if (typeof item === 'object' && item !== null) {
+                recurse(item)
+              } else {
+                callback(key, item)
+              }
+            })
+          } else {
+            // 递归处理对象
+            recurse(value)
+          }
+        } else {
+          // 对非对象类型的值执行回调函数
+          callback(key, value)
+        }
+      }
     }
+  }
+  recurse(obj)
 }

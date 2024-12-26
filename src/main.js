@@ -42,6 +42,8 @@ moment.locale('zh-cn') // 设置语言 或 moment.lang('zh-cn')
 // 挂载全局使用的方法
 import VueDraggableResizable from 'vue-draggable-resizable'
 
+const config = require('../public/config.js')
+
 // 全局方法挂载
 Vue.prototype.moment = moment // 挂载到当前vue实例对象
 Vue.prototype.uuidv1 = uuidv1
@@ -97,6 +99,7 @@ Vue.use(VueLazyload, {
 })
 
 Vue.config.productionTip = false
+Vue.prototype.$config = config
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
 new Vue({
