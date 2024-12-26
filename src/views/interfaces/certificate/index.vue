@@ -352,6 +352,9 @@ export default {
   },
   created() {
     this.Login()
+    // console.log(this.$config.api.baseUrl)
+    // const abbreviate = '防统方系统'
+    // console.log(this.$config[abbreviate].clientInfoId)
   },
   beforeRouteUpdate(to, from, next) {
     // console.log('Route parameter changed')
