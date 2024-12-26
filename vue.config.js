@@ -6,6 +6,8 @@ const buildDate = JSON.stringify(new Date().toLocaleString())
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ZipPlugin = require('zip-webpack-plugin')
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -76,6 +78,17 @@ const vueConfig = {
         test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
         threshold: 10240,
         minRatio: 0.8
+      }),
+      new ZipPlugin({
+        path: '../',
+        filename: 'dist.zip'
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: 'public/config.js', to: 'config.js'
+          }
+        ]
       })
     ],
     // if prod, add externals

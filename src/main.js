@@ -42,7 +42,7 @@ moment.locale('zh-cn') // 设置语言 或 moment.lang('zh-cn')
 // 挂载全局使用的方法
 import VueDraggableResizable from 'vue-draggable-resizable'
 
-const config = require('../public/config.js')
+// const config = require('../public/config.js')
 
 // 全局方法挂载
 Vue.prototype.moment = moment // 挂载到当前vue实例对象
