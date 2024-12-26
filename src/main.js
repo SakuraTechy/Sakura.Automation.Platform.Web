@@ -99,7 +99,10 @@ Vue.use(VueLazyload, {
 })
 
 Vue.config.productionTip = false
-Vue.prototype.$config = config
+
+// Vue.prototype.$config = config
+Vue.prototype.$config = window.config
+
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
 new Vue({
