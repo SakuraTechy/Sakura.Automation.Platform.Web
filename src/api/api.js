@@ -893,3 +893,20 @@ export function cleanJobLog () {
     method: 'delete'
   })
 }
+
+// 清空定时任务执行日志
+export function uploadFile (data) {
+  return request({
+    url: '/system/file/upload',
+    method: 'post',
+    data: data
+  })
+}
+
+export function uploadFiles (data) {
+  return request({
+    url: '/system/file/uploads',
+    method: 'post',
+    data: data
+  })
+}
