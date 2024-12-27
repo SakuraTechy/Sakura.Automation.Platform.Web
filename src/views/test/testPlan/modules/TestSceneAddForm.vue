@@ -629,7 +629,7 @@ export default {
     // 监听查询参数改变
     changeParam(searchParam) {
       // console.log(searchParam);
-      this.queryParam = Object.assign(this.queryParam, searchParam)
+      this.queryParam = Object.assign(this.queryParam, JSON.parse(searchParam))
       this.handleQuery()
     },
     async handleQuery() {
