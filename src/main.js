@@ -29,7 +29,7 @@ import draggable from '@/utils/drag'
 import './global.less' // global style
 import { getDicts, getAllDicts } from '@/api/system/dict/data'
 import { getConfigKey } from '@/api/system/config'
-import { parseTime, formatDuration, findNodeId, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, downloadTask, downloadByPath, handleTree, appendTreeNode, removeTreeNode, expandTree,dragTable } from '@/utils/sakura'
+import { addDaysToDate, parseTime, formatDuration, findNodeId, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, downloadTask, downloadByPath, handleTree, appendTreeNode, removeTreeNode, expandTree, dragTable } from '@/utils/sakura'
 import Highlight from './utils/highlight'
 import uuidv1 from 'uuid/v1'
 import './mock'
@@ -51,6 +51,7 @@ Vue.prototype.findNodeId = findNodeId
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getAllDicts = getAllDicts
 Vue.prototype.getConfigKey = getConfigKey
+Vue.prototype.addDaysToDate = addDaysToDate
 Vue.prototype.parseTime = parseTime
 Vue.prototype.formatDuration = formatDuration
 Vue.prototype.dragTable = dragTable

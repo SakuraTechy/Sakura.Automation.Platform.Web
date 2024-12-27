@@ -102,6 +102,13 @@ export function getWeekStartAndEnd() {
   }
 }
 
+// 当前时间戳+?天数
+export function addDaysToDate(date, days) {
+  const result = new Date(date); // 创建一个新的 Date 对象以避免修改原始日期
+  result.setDate(result.getDate() + days); // 增加指定的天数
+  return result.getTime(); // 返回新的日期作为时间戳
+}
+
 // 获取本周开始和结束时间
 export function getWeekStartAndEnd1() {
   const currentDate = new Date()
