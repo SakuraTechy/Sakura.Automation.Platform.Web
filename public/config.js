@@ -16,16 +16,16 @@ window.config = {
     productVersions: '/productManage/productVersions',
     applications: '/certificateApply/applications',
     parseCaptcha: '/common/parseCaptcha',
-    // pythonPath: 'D:/Program/Python/3.9.0/python.exe',
-    // pythonScript: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.py',
-    // captchaUrl: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.png',
-    // captchaPath: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.png',
-    // captchaSave: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.txt',
-    pythonPath: '/www/server/panel/pyenv/bin/python3',
-    pythonScript: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.py',
-    captchaUrl: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.png',
-    captchaPath: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.png',
-    captchaSave: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.txt',
+    pythonPath: 'D:/Program/Python/3.9.0/python.exe',
+    pythonScript: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.py',
+    captchaUrl: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.png',
+    captchaPath: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.png',
+    captchaSave: 'D:/King/Sakura/Gitee/Sakura.Automation.Platform.Api/ddddocr/code.txt',
+    // pythonPath: '/www/server/panel/pyenv/bin/python3',
+    // pythonScript: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.py',
+    // captchaUrl: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.png',
+    // captchaPath: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.png',
+    // captchaSave: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/Code/code.txt',
     license: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData',
     downloadFile: '/system/file/downloadFile',
     savePath: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/license',
@@ -37,6 +37,8 @@ window.config = {
     id: 'AAS_P',
     // 客户全称-ANKKI内部测试
     clientInfoId: 17,
+    // 代理商
+    agent: '',
     // 产品-防统方系统
     productId: 4,
     // 版本号-V6.5.6版本号-V6.5.6
@@ -61,7 +63,7 @@ window.config = {
     authorizationDeadlineTime: 1893340800000,
     // 维保期限
     maintenanceWarnDate: 1893340800000,
-    // 代理商
+    // 订单编号
     orderId: '',
     // 机器码文件
     MachineCodeFile: '',
@@ -75,6 +77,7 @@ window.config = {
   数据库综合安全防护系统: {
     id: 'AAS_DBSG',
     clientInfoId: 17,
+    agent: '',
     productId: 6,
     applyTotal: 1,
     maxInstance: 128,

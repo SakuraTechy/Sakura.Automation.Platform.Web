@@ -52,7 +52,7 @@
                 <a-button
                   type="danger"
                   :disabled="multiple"
-                  @click="handleMakes1"
+                  @click="handleMakes"
                   v-hasPermi="['test:timedTask:remove']"
                 >
                   <a-icon type="snippets" />批量制作
@@ -119,16 +119,16 @@
           </advance-table>
           <!-- 增加 -->
           <TimedTaskAddForm
-            v-if="showAddModal"
+            v-show="showAddModal"
             ref="timedTaskAddForm"
             :projectOptions="projectOptions"
             :token="token"
             @ok="getList"
             @close="showAddModal = false"
-            @handleMakes="handleMakes"
+            @handleMakes="handleMakes1"
           />
           <TimedTaskLog
-            v-if="showAddModal"
+            v-show="showAddModal"
             ref="timedTaskLog"
             :projectOptions="projectOptions"
             :token="token"
@@ -419,87 +419,107 @@ export default {
       })
     },
     async Login() {
-      this.loading = true
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-        let checkcodeResponse = await axios.get(buildUrl(this.$config.environment.checkcode))
-        // console.log('Checkcode Response:', checkcodeResponse)
-        let captchaImage = `data:image/jpg;base64,${checkcodeResponse.data.data.checkCodeImg}`
-        let parseCaptchaBody = {
-          pythonPath: this.$config.environment.pythonPath,
-          pythonScript: this.$config.environment.pythonScript,
-          captchaUrl: captchaImage,
-          captchaPath: this.$config.environment.captchaPath,
-          captchaSave: this.$config.environment.captchaSave
+      try {
+        this.loading = true
+        const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
+        // 先获取验证码
+        const checkcodeResponse = await axios.get(buildUrl(this.$config.environment.checkcode))
+        // 然后处理验证码
+        const parseCaptchaResponse = await this.getParseCaptcha(checkcodeResponse.data.data.checkCodeImg)
+        const loginFormData = this.createLoginFormData(
+          checkcodeResponse.data.data,
+          parseCaptchaResponse.data.data.code
+        )
+        const loginResponse = await this.attemptLogin(buildUrl, loginFormData)
+        if (loginResponse?.data?.data?.user) {
+          this.token = loginResponse.data.data.user
+          await Promise.all([
+            this.getAllProjectList(),
+            this.getList()
+          ])
         }
-        let parseCaptchaResponse = await axios.post(process.env.VUE_APP_BASE_URL + this.$config.environment.parseCaptcha, parseCaptchaBody)
-        // console.log('Parse Captcha Response:', parseCaptchaResponse)
-
-        let loginFormData = new FormData()
-        loginFormData.append('username', this.$config.environment.username)
-        loginFormData.append('password', this.$config.environment.password)
-        loginFormData.append('checkCode', parseCaptchaResponse.data.data.code)
-        loginFormData.append('checkCodeValue', checkcodeResponse.data.data.checkCodeValue)
-        loginFormData.append('createTime', checkcodeResponse.data.data.createTime)
-
-        const maxRetries = 10
-        let loginResponse
-        for (let attempt = 1; attempt <= maxRetries; attempt++) {
-          try {
-            // Step 3: Attempt login
-            loginResponse = await axios.post(buildUrl(this.$config.environment.login), loginFormData)
-            // console.log('Login Response:', loginResponse)
-            if (loginResponse.data.data && loginResponse.data.data.user) {
-              this.token = loginResponse.data.data.user
-              if (this.token) {
-                this.getAllProjectList()
-                this.getList()
-              }
-              break
-            } else {
-              // console.warn(`Login attempt ${attempt} failed. Response:`, loginResponse)
-              if (attempt === maxRetries) {
-                throw new Error('Login failed after maximum retries')
-              }
-              checkcodeResponse = await axios.get(buildUrl(this.$config.environment.checkcode))
-              captchaImage = `data:image/jpg;base64,${checkcodeResponse.data.data.checkCodeImg}`
-              parseCaptchaBody = {
-                pythonPath: this.$config.environment.pythonPath,
-                pythonScript: this.$config.environment.pythonScript,
-                captchaUrl: captchaImage,
-                captchaPath: this.$config.environment.captchaPath,
-                captchaSave: this.$config.environment.captchaSave
-              }
-              parseCaptchaResponse = await axios.post(process.env.VUE_APP_BASE_URL + this.$config.environment.parseCaptcha, parseCaptchaBody)
-              loginFormData = new FormData()
-              loginFormData.append('username', this.$config.environment.username)
-              loginFormData.append('password', this.$config.environment.password)
-              loginFormData.append('checkCode', parseCaptchaResponse.data.data.code)
-              loginFormData.append('checkCodeValue', checkcodeResponse.data.data.checkCodeValue)
-              loginFormData.append('createTime', checkcodeResponse.data.data.createTime)
-              await new Promise(resolve => setTimeout(resolve, 1000))
-            }
-          } catch (error) {
-            // console.error(`Login attempt ${attempt} failed with error:`, error)
-            if (attempt === maxRetries) {
-              throw error
-            }
-            await new Promise(resolve => setTimeout(resolve, 1000))
-          }
-        }
+      } catch (error) {
+        console.error('Login failed:', error)
+        this.$message.error('登录失败，请重试')
+      } finally {
+        this.loading = false
+      }
     },
+    async getParseCaptcha(checkCodeImg) {
+      const captchaImage = `data:image/jpg;base64,${checkCodeImg}`
+      const parseCaptchaBody = {
+        pythonPath: this.$config.environment.pythonPath,
+        pythonScript: this.$config.environment.pythonScript,
+        captchaUrl: captchaImage,
+        captchaPath: this.$config.environment.captchaPath,
+        captchaSave: this.$config.environment.captchaSave
+      }
+      return axios.post(
+        process.env.VUE_APP_BASE_URL + this.$config.environment.parseCaptcha,
+        parseCaptchaBody
+      )
+    },
+
+    createLoginFormData(checkCodeData, code) {
+      const formData = new FormData()
+      formData.append('username', this.$config.environment.username)
+      formData.append('password', this.$config.environment.password)
+      formData.append('checkCode', code)
+      formData.append('checkCodeValue', checkCodeData.checkCodeValue)
+      formData.append('createTime', checkCodeData.createTime)
+      return formData
+    },
+
+    async attemptLogin(buildUrl, loginFormData) {
+      const maxRetries = 10
+      let lastError = null
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await axios.post(
+            buildUrl(this.$config.environment.login),
+            loginFormData
+          )
+          if (response.data.data?.user) {
+            return response
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
+        } catch (error) {
+          lastError = error
+          if (attempt === maxRetries) {
+            throw error
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
+        }
+      }
+      throw lastError
+    },
+
+    // 其他方法优化
     async getList() {
-      this.loading = true
-      const url = `${this.$config.environment.url + this.$config.environment.makes}?keyword=${this.keyword}&page=${this.queryParam.pageNum}&size=${this.queryParam.pageSize}&certificateStateQuery=`
-      await axios.get(url, {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
+      if (!this.token) return
+      try {
+        this.loading = true
+        const url = `${this.$config.environment.url}${this.$config.environment.makes}`
+        const params = {
+          keyword: this.keyword,
+          page: this.queryParam.pageNum,
+          size: this.queryParam.pageSize,
+          certificateStateQuery: ''
+        }
+        const response = await axios.get(url, {
+          params,
+          headers: { 'Authorization': this.token }
+        })
         this.list = response.data.data.list
         this.total = response.data.data.total
-      }).finally(
+        this.selectedRowKeys = []
+        this.multiple = true
+      } catch (error) {
+        console.error('Failed to fetch list:', error)
+        this.$message.error('获取列表失败')
+      } finally {
         this.loading = false
-      )
-      this.selectedRowKeys = []
-      this.multiple = !this.selectedRowKeys.length
+      }
     },
     getList1() {
       this.list1 = []
@@ -616,13 +636,12 @@ export default {
       })
       if (response.data.code === 0) {
         this.$message.success('证书制作成功！')
-        this.getList()
-        this.setbhook()
       } else {
         this.$message.error('证书制作失败！')
       }
+      await this.setbhook()
     },
-    async handleMakes1() {
+    async handleMakes() {
       let code
       for (const certificateId of this.certificateIds) {
         const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
@@ -640,10 +659,9 @@ export default {
       } else {
         this.$message.error('部分证书批量制作失败，请检查后重试！')
       }
-      this.getList()
-      this.setbhook()
+      await this.setbhook()
     },
-    async handleMakes(certificateList) {
+    async handleMakes1(certificateList) {
       let code
       this.certificateList = certificateList ?? this.certificateList
       for (const certificate of this.certificateList) {
@@ -662,17 +680,25 @@ export default {
       } else {
         this.$message.error('部分证书批量制作失败，请检查后重试！')
       }
-      this.getList()
-      this.setbhook()
+      await this.setbhook()
     },
     async setbhook() {
+      await this.getList()
       await this.downloadFile()
       await this.webhook()
     },
     async downloadFile() {
       this.markdownList = []
+      this.certificateList1 = []
+      for (var item of this.certificateList) {
+        for (var item1 of this.list) {
+          if (item.orderId === item1.orderId) {
+            this.certificateList1.push(item1)
+          }
+        }
+      }
       await Promise.all(
-        this.certificateList.map(async (record) => {
+        this.certificateList1.map(async (record) => {
           const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
           const formData = new FormData()
           formData.append('url', buildUrl(this.$config.environment.download) + '?certificateId=' + record.certificateId)
@@ -692,12 +718,17 @@ export default {
     async getMarkdownList(record, fileName) {
       const markdown = {
         orderId: record.orderId,
-        name: record.applyUser.name,
+        userName: localStorage.getItem('userName'),
         productChName: record.product.productChName,
         productVersionNumber: record.productVersion.productVersionNumber,
         typeName: record.productType.typeName,
         machineCodeMd: record.machineCodeMd5,
         uploadFileName: record.uploadFileName,
+        makeUserName: record.makeUser.name,
+        certificateState: record.certificateState === 4 ? '制作成功' : '制作失败',
+        makeTime: this.parseTime(record.makeTime),
+        authorizationDeadlineTime: this.parseTime(record.authorizationDeadlineTime),
+        maintenanceWarnDate: this.parseTime(record.maintenanceWarnDate),
         fileName: this.$config.environment.downloadPath + fileName
       }
       this.markdownList.push(markdown)
@@ -727,12 +758,17 @@ export default {
         markdown: {
           content: `产品证书一键自动化制作成功，<font color="warning">共1个</font>，详情如下，请相关同事注意。
            >申请编号：<font color="info"> ${record.orderId}</font>
-           >申请姓名：<font color="info"> ${record.applyUser.name}</font>
+           >申请人名：<font color="info"> ${localStorage.getItem('userName')}</font>
            >产品名称：<font color="comment"> ${record.product.productChName}</font>
            >产品版本：<font color="comment"> ${record.productVersion.productVersionNumber}</font>
            >产品型号：<font color="comment"> ${record.productType.typeName}</font>
            >证书编码：<font color="comment"> ${record.machineCodeMd5}</font>
            >机器码名：<font color="comment"> ${record.uploadFileName}</font>
+           >制作人名：<font color="info"> ${record.makeUser.name}</font>
+           >制作状态：<font color="info"> ${record.certificateState}</font>
+           >制作时间：<font color="info"> ${record.makeTime}</font>
+           >授权期限：<font color="info"> ${record.authorizationDeadlineTime}</font>
+           >维保期限：<font color="info"> ${record.maintenanceWarnDate}</font>
            >产品证书： [点击下载](${this.$config.environment.downloadPath + fileName})`
         }
       }

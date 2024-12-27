@@ -363,6 +363,7 @@ export default {
       const applicationsFormData = new FormData();
         [
           ['clientInfoId', this.$config[abbreviate].clientInfoId],
+          ['agent', this.$config[abbreviate].agent],
           ['productId', this.$config[abbreviate].productId],
           ['productVersionId', this.$config[abbreviate].productVersionId],
           ['productTypeId', this.$config[abbreviate].productTypeId],
@@ -408,6 +409,7 @@ export default {
         const applicationsFormData = new FormData();
         [
           ['clientInfoId', this.$config[abbreviate].clientInfoId],
+          ['agent', this.$config[abbreviate].agent],
           ['productId', this.$config[abbreviate].productId],
           ['productVersionId', this.$config[abbreviate].productVersionId],
           ['productTypeId', this.$config[abbreviate].productTypeId],

@@ -47,7 +47,8 @@ export default {
       certificate: undefined,
       infoItems: [
         { id: 'clientInfo.fullName', label: '客户名称', value: '' },
-        { id: 'orderId', label: '代理商', value: '' },
+        { id: 'clientInfo.agent', label: '代理商', value: '' },
+        { id: 'orderId', label: '订单编号', value: '' },
         { id: 'applyTotal', label: '申请总数', value: '' },
         { id: 'maxInstance', label: '最大实例数', value: '' },
         { id: 'maxPerformance', label: '流量限制', value: '' },
