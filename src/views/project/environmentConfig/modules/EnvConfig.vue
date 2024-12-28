@@ -39,7 +39,7 @@
           <ConfigAccount :environment_Id="environment_Id"></ConfigAccount>
         </a-tab-pane>
         <a-tab-pane key="4" tab="服务器配置">
-          <ConfigServer :environment_Id="environment_Id"></ConfigServer>
+          <ConfigServer :projectOptions="projectOptions" :environment_Id="environment_Id"></ConfigServer>
         </a-tab-pane>
         <a-tab-pane key="5" tab="数据库配置">
           <ConfigDataBase :environment_Id="environment_Id"></ConfigDataBase>

@@ -17,9 +17,14 @@
           onShowSizeChange: onSizeChange,
         }" :row-selection="rowSelection" :needTitle="false">
       <div class="table-operations" slot="button">
-        <a-button type="primary" @click="handleAdd()" v-hasPermi="['project:environmentConfig:serverConfig:add']">
-          <a-icon type="plus-square" />新建服务器
-        </a-button>
+        <a-space :size="8" style="margin-right: 8px">
+          <a-button type="primary" @click="handleAdd()" v-hasPermi="['project:environmentConfig:serverConfig:add']">
+            <a-icon type="plus-square" />新建服务器
+          </a-button>
+          <a-button type="primary" @click="handleAdd1()" v-hasPermi="['project:environmentConfig:serverConfig:add']">
+            <a-icon type="upload" />上传证书
+          </a-button>
+        </a-space>
         <a-space :size="8" style="margin-right: 8px">
           <a-button type="primary" @click="handleImport" v-hasPermi="['project:environmentConfig:serverConfig:export']">
             <a-icon type="upload" />批量导入
@@ -63,24 +68,34 @@
     </advance-table>
     <ConfigDataAddOrEdit v-if="showAddModal" :environment_Id="environment_Id" :statusOptions="statusOptions"
       ref="ConfigDataAddOrEdit" @getList="getList" @close="showAddModal = false" />
+    <CertificateAddForm
+      ref="CertificateAddForm"
+      v-show="showAddModal"
+      :projectOptions="projectOptions"
+      :serverOptions="this.list1"
+      @close="showAddModal = false"
+     />
   </div>
 </template>
 <script type="text/javascript">
 import * as projectApis from '@/api/project'
-import SearchControl from '../../components/SearchControl.vue';
+import SearchControl from '../../components/SearchControl.vue'
 import AdvanceTable from '@/components/pt/table/AdvanceTable'
 import ConfigDataAddOrEdit from './ConfigDataAddOrEdit.vue'
+import CertificateAddForm from './CertificateAddForm.vue'
 import { serverType, serverQueryData, serverColumns } from './EnvConfig'
-import ConfigIndex from '@/views/system/config/ConfigIndex.vue';
 
 export default {
-  name: "ConfigVersion",
+  name: "ConfigServer",
   props: {
     environment_Id: {
       type: String,
+    },
+    projectOptions: {
+      type: Array,
     }
   },
-  components: { SearchControl, AdvanceTable, ConfigDataAddOrEdit },
+  components: { SearchControl, AdvanceTable, ConfigDataAddOrEdit, CertificateAddForm },
   data() {
     return {
       queryData: serverQueryData,
@@ -323,6 +338,12 @@ export default {
       this.showAddModal = true
       this.$nextTick(() => (
         this.$refs.ConfigDataAddOrEdit.handleAdd(4)
+      ))
+    },
+    handleAdd1() {
+      this.showAddModal = true
+      this.$nextTick(() => (
+        this.$refs.CertificateAddForm.handleAdd(4)
       ))
     },
     handleView(record) {

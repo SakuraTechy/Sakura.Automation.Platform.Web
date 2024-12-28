@@ -1,7 +1,7 @@
 <template>
   <ant-modal
     modalWidth="630"
-    modalHeight="500"
+    modalHeight="550"
     :visible="open"
     :modal-title="formTitle"
     :adjust-size="true"
@@ -15,16 +15,23 @@
         :label-col="{ span: 4 }"
         :wrapper-col="{ span: 14 }"
       >
-        <a-form-model-item label="所属项目" prop="projectId">
-          <a-select v-model="form.projectId" placeholder="请选择所属项目" option-filter-prop="children" show-search allowClear>
-            <a-select-option v-for="(item, index) in projectOptions" :key="index" :value="item.productId" @click="handleChangeProject(item)">
-              {{ item.productChName }}
+        <a-form-model-item label="所属项目" prop="abbreviate">
+          <a-select v-model="form.abbreviate" placeholder="请选择所属项目" option-filter-prop="children" show-search allowClear>
+            <a-select-option v-for="(item, index) in projectOptions" :key="index" :value="item.abbreviate" @click="handleChangeProject(item)">
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="所属环境" prop="host">
+          <a-select v-model="form.host" placeholder="请选择所属环境" option-filter-prop="children" show-search allowClear>
+            <a-select-option v-for="(item, index) in serverOptions" :key="index" :value="item.host" @click="handleChangeServer(item)">
+              {{ item.host }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
       </a-form-model>
       <div class="form-item-row">
-        <span class="form-item-label">机器码：</span>
+        <span class="form-item-label">产品证书：</span>
         <!-- <el-upload
           class="upload-demo"
           ref="upload"
@@ -43,7 +50,7 @@
         >
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload2">上传到服务器</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传.info | .lic文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">只能上传.lic文件，且不超过500kb</div>
         </el-upload> -->
         <el-upload
           class="upload-demo"
@@ -58,21 +65,20 @@
           :file-list="fileList"
           :auto-upload="false"
           :limit="limit"
-          accept=".info,"
+          accept=".lic"
           multiple
           drag
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div slot="tip" class="el-upload__tip">只能上传.info文件，且不超过500kb</div>
+          <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload2">上传到服务器</el-button> -->
+          <div slot="tip" class="el-upload__tip">只能上传.lic文件，且不超过500kb</div>
         </el-upload>
       </div>
     </div>
     <template slot="footer">
       <a-button @click="cancel"> 取消 </a-button>
-      <!-- <a-button type="primary" @click="submitForm2"> 上传到自动化环境 </a-button> -->
-      <a-button type="primary" @click="submitForm"> 立即申请 </a-button>
-      <a-button type="primary" @click="submitForm1"> 一键制作 </a-button>
+      <a-button type="primary" @click="submitForm"> 立即上传 </a-button>
     </template>
   </ant-modal>
 </template>
@@ -84,13 +90,13 @@ import { randomUUID } from '@/utils/util'
 import AntModal from '@/components/pt/dialog/AntModal'
 
 export default {
-  name: 'CreateForm',
+  name: 'CertificateAddForm',
   props: {
     projectOptions: {
       type: Array
     },
-    token: {
-      type: String
+    serverOptions: {
+      type: Array
     }
   },
   components: {
@@ -99,7 +105,7 @@ export default {
   data() {
     return {
       uploadUrl: 'https://jsonplaceholder.typicode.com/posts/',
-      limit: 10,
+      limit: 1,
       fileList: [],
       License_Path: '',
 
@@ -110,40 +116,30 @@ export default {
       loading: false,
       formTitle: '',
       switchStatus: true,
-      project: {
-          productId: '',
-          productChName: '',
-          productDesc: ''
-      },
-      projectId: '',
+
       // 表单参数
       form: {
-        projectId: '',
-        id: '',
-        name: '',
-        description: '',
-        runEnvironment: '',
-        cronExpression: '',
-        concurrent: '1',
-        misfirePolicy: '1',
-        status: '0',
-        createBy: ''
+        abbreviate: undefined,
+        host: undefined
       },
       sceneList: [],
       open: false,
       rules: {
-        projectId: [{ required: true, message: '项目不能为空', trigger: 'blur' }]
+        abbreviate: [{ required: true, message: '所属项目不能为空', trigger: 'blur' }],
+        host: [{ required: true, message: '所属环境不能为空', trigger: 'blur' }]
       }
     }
   },
   filters: {},
   created() {
     // console.log(this.$config)
-    // console.log(this.token)
+    // console.log(this.projectOptions)
   },
   computed: {},
   watch: {},
-  mounted() {},
+  mounted() {
+    // console.log(this.serverOptions)
+  },
   methods: {
     // 取消按钮
     cancel() {
@@ -154,18 +150,10 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
-      this.form = {
-        projectId: undefined,
-        type: undefined,
-        id: '',
-        name: '',
-        description: '',
-        runEnvironment: '',
-        cronExpression: '',
-        concurrent: '1',
-        misfirePolicy: '1',
-        status: '0'
-      }
+      // this.form = {
+      //   id: '',
+      //   host: undefined
+      // }
     },
     // 选择时间
     change(value) {
@@ -181,7 +169,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.open = true
-      this.formTitle = '添加证书申请'
+      this.formTitle = '导入产品证书'
       this.resetForm()
     },
     /** 修改按钮操作 */
@@ -198,18 +186,15 @@ export default {
       this.getSceneList(this.form.testPlan)
     },
     handleChangeProject(project) {
-      this.project = project
-      this.projectId = project.productId
-      if (this.$config[this.project.productChName] && this.$config[this.project.productChName].id) {
-        this.License_Path = this.$config.environment.license + '/' + this.$config[this.project.productChName].id + '/License'
-      } else {
-        this.$message.warning('该产品项目暂未支持，请联系平台管理员！')
-        this.resetForm()
-      }
+      // this.form.abbreviate  = project.abbreviate
+    },
+    handleChangeServer(server) {
+      // this.host = server.id
+      this.License_Path = this.$config.environment.license + '/' + this.form.abbreviate + '/License'
     },
     getEnvironmentList() {
       const queryParam = {
-        projectId: this.project.id
+        host: this.project.id
       }
       projectApis.getEnvironmentList(queryParam).then((response) => {
         response.data.list.forEach((item, index) => {
@@ -270,8 +255,12 @@ export default {
       this.$message.warning(`当前限制选择 ${this.limit} 个文件。这次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     beforeUpload(type) {
-      if (!this.project.productId) {
+      if (!this.form.abbreviate) {
         this.$message.warning('请选择所属项目!')
+        return
+      }
+      if (!this.form.host) {
+        this.$message.warning('请选择所属环境!')
         return
       }
       if (this.fileList.length === 0) {
@@ -326,6 +315,7 @@ export default {
     submitUpload2() {
       if (this.beforeUpload('.lic')) {
         this.customUploads()
+        this.cancel()
       }
     },
     // 单个文件上传
@@ -349,8 +339,10 @@ export default {
         // 打印原始文件名
         // console.log('Original filename:', file.raw.name)
         // 创建新的文件名
-        this.form.host = this.form.host.replace(/\./g, '_')
-        const newName = file.raw.name.replacee(/^(.*?)(?=(_audit\.lic)$)/, this.form.host)
+        const host = this.form.host.replace(/\./g, '_')
+        // console.log('host:', host)
+        const newName = file.raw.name.replace(/^(.*?)(?=(_audit\.lic)$)/, host)
+        // console.log('newName:', newName)
         // 使用 Blob 构造函数创建一个新的文件对象，同时保持原有的文件内容
         const newFile = new File([file.raw], newName, { type: file.raw.type })
         // 打印修改后的文件名
@@ -490,20 +482,6 @@ export default {
     submitForm () {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.submitUpload()
-        }
-      })
-    },
-    submitForm1 () {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.submitUpload1()
-        }
-      })
-    },
-    submitForm2 () {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
           this.submitUpload2()
         }
       })
@@ -524,13 +502,13 @@ export default {
 }
 
 .form-item-label {
-  margin-top: -30px;
-  margin-left: 22px;
+  font-size: 13.5px;
+  margin-left: 23px;
   // font-weight: bold;
 }
 
 .upload-demo {
-  margin-left: 20px; /* 设置间距 */
+  margin-left: 7px; /* 设置间距 */
   flex: 1; /* 使上传组件占据剩余空间 */
 
   ::v-deep .el-upload-dragger {

@@ -725,7 +725,7 @@ export default {
         machineCodeMd: record.machineCodeMd5,
         uploadFileName: record.uploadFileName,
         makeUserName: record.makeUser.name,
-        certificateState: record.certificateState === 4 ? '制作成功' : '制作失败',
+        certificateState: record.certificateState === 4 ? '成功' : '失败',
         makeTime: this.parseTime(record.makeTime),
         authorizationDeadlineTime: this.parseTime(record.authorizationDeadlineTime),
         maintenanceWarnDate: this.parseTime(record.maintenanceWarnDate),
