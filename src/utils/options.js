@@ -720,6 +720,17 @@ export const operations = [
         ]
       },
       {
+        id: 'web-clicks',
+        name: '元素指定方式点击',
+        config: [
+          { paramsName: 'locator', paramsValue: `xpath=(//button[@type='button'][contains(text(),'确定')])[1]`},
+          { paramsName: 'type', paramsValue: `presenceOfElementLocated|visibilityOfElementLocated|invisibilityOfElementLocated|elementToBeClickable`},
+          { paramsName: 'waitTime', paramsValue: `1000`},
+          { paramsName: 'invisible', paramsValue: `true`},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator,expect和invisible，跳过后会标记为成功）`}
+        ]
+      },
+      {
         id: 'select-click',
         name: '选项框点击',
         config: [

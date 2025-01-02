@@ -1,7 +1,7 @@
 <template>
   <ant-modal
     modalWidth="630"
-    modalHeight="500"
+    modalHeight="580"
     :visible="open"
     :modal-title="formTitle"
     :adjust-size="true"
@@ -19,6 +19,13 @@
           <a-select v-model="form.projectId" placeholder="请选择所属项目" option-filter-prop="children" show-search allowClear>
             <a-select-option v-for="(item, index) in projectOptions" :key="index" :value="item.productId" @click="handleChangeProject(item)">
               {{ item.productChName }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="所属版本" prop="productVersionId">
+          <a-select v-model="form.productVersionId" placeholder="请选择所属版本" option-filter-prop="children" show-search allowClear>
+            <a-select-option v-for="(item, index) in productVersions" :key="index" :value="item.productVersionId" @click="handleChangeVersion(item)">
+              {{ item.productVersionNumber }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
@@ -116,9 +123,13 @@ export default {
           productDesc: ''
       },
       projectId: '',
+      productVersions: [],
+      versionId: '',
+
       // 表单参数
       form: {
-        projectId: '',
+        projectId: undefined,
+        productVersionId: undefined,
         id: '',
         name: '',
         description: '',
@@ -132,7 +143,8 @@ export default {
       sceneList: [],
       open: false,
       rules: {
-        projectId: [{ required: true, message: '项目不能为空', trigger: 'blur' }]
+        projectId: [{ required: true, message: '产品项目不能为空', trigger: 'blur' }],
+        productVersionId: [{ required: true, message: '产品版本不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -154,18 +166,20 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
-      this.form = {
-        projectId: undefined,
-        type: undefined,
-        id: '',
-        name: '',
-        description: '',
-        runEnvironment: '',
-        cronExpression: '',
-        concurrent: '1',
-        misfirePolicy: '1',
-        status: '0'
-      }
+      this.fileList = []
+      // this.form = {
+      //   projectId: undefined,
+      //   productVersionId: undefined,
+      //   type: undefined,
+      //   id: '',
+      //   name: '',
+      //   description: '',
+      //   runEnvironment: '',
+      //   cronExpression: '',
+      //   concurrent: '1',
+      //   misfirePolicy: '1',
+      //   status: '0'
+      // }
     },
     // 选择时间
     change(value) {
@@ -205,6 +219,25 @@ export default {
       } else {
         this.$message.warning('该产品项目暂未支持，请联系平台管理员！')
         this.resetForm()
+      }
+      this.getVersionList()
+    },
+    getVersionList() {
+      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
+      axios.get(buildUrl(this.$config.environment.productVersions + '?productId=' + this.projectId), {
+        headers: { 'Authorization': this.token }
+      }).then((response) => {
+        this.productVersions = response.data.data.list
+        if (this.$config[this.project.productChName] && this.$config[this.project.productChName].productVersionId) {
+          this.form.productVersionId = this.$config[this.project.productChName].productVersionId
+        }
+      })
+    },
+    handleChangeVersion(item) {
+      if (this.projectId === '') {
+        this.$message.warning('请先选择项目！')
+      } else {
+        this.form.productVersionId = item.productVersionId
       }
     },
     getEnvironmentList() {
@@ -393,7 +426,7 @@ export default {
           ['clientInfoId', this.$config[abbreviate].clientInfoId],
           ['agent', this.$config[abbreviate].agent],
           ['productId', this.$config[abbreviate].productId],
-          ['productVersionId', this.$config[abbreviate].productVersionId],
+          ['productVersionId', this.form.productVersionId],
           ['productTypeId', this.$config[abbreviate].productTypeId],
           ['maxInstance', this.$config[abbreviate].maxInstance],
           ['maxStorage', this.$config[abbreviate].maxStorage],
@@ -439,7 +472,7 @@ export default {
           ['clientInfoId', this.$config[abbreviate].clientInfoId],
           ['agent', this.$config[abbreviate].agent],
           ['productId', this.$config[abbreviate].productId],
-          ['productVersionId', this.$config[abbreviate].productVersionId],
+          ['productVersionId', this.form.productVersionId],
           ['productTypeId', this.$config[abbreviate].productTypeId],
           ['maxInstance', this.$config[abbreviate].maxInstance],
           ['maxStorage', this.$config[abbreviate].maxStorage],

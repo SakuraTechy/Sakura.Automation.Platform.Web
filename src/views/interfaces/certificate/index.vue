@@ -724,11 +724,11 @@ export default {
         typeName: record.productType.typeName,
         machineCodeMd: record.machineCodeMd5,
         uploadFileName: record.uploadFileName,
-        makeUserName: record.makeUser.name,
+        makeUserName: record.makeUser?.name || '',
         certificateState: record.certificateState === 4 ? '成功' : '失败',
-        makeTime: this.parseTime(record.makeTime),
-        authorizationDeadlineTime: this.parseTime(record.authorizationDeadlineTime),
-        maintenanceWarnDate: this.parseTime(record.maintenanceWarnDate),
+        makeTime: this.parseTime(record.makeTime) || '',
+        authorizationDeadlineTime: this.parseTime(record.authorizationDeadlineTime) || '',
+        maintenanceWarnDate: this.parseTime(record.maintenanceWarnDate) || '',
         fileName: this.$config.environment.downloadPath + fileName
       }
       this.markdownList.push(markdown)
