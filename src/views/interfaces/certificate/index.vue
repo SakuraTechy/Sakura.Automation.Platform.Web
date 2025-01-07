@@ -704,7 +704,7 @@ export default {
           formData.append('url', buildUrl(this.$config.environment.download) + '?certificateId=' + record.certificateId)
           formData.append('authorization', this.token)
           formData.append('savePath', this.$config.environment.savePath)
-          const fileName = record.product.productChName + '-' + record.productType.typeName + '.zip'
+          const fileName = record.product.productChName + '_' + record.productVersion.productVersionNumber + '_' + record.productType.typeName + '_' + record.machineCodeMd5 + '.zip'
           formData.append('fileName', fileName)
           const response = await axios.post(process.env.VUE_APP_BASE_URL + this.$config.environment.downloadFile, formData, {
             headers: { 'Authorization': 'Bearer ' + storage.get(ACCESS_TOKEN) }
