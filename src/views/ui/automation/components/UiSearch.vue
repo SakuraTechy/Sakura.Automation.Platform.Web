@@ -177,7 +177,7 @@ export default {
     newSearchParam() {
       // console.log(JSON.stringify(this.searchParam))
       // console.log(JSON.stringify(this.version))
-      this.searchParam.versionId = this.version.id
+      // this.searchParam.versionId = this.version.id
       // this.searchParam.versionName = this.version.name
       var newSearchParam = JSON.stringify(this.searchParam, (key, value) => {
         return typeof value === 'undefined' ? '' : value
@@ -186,12 +186,19 @@ export default {
     }
   },
   watch: {
+    'version.id': {
+      handler(newValue) {
+        // console.log('watch version.id', newValue)
+        this.searchParam.versionId = newValue
+      },
+      immediate: true
+    },
     newSearchParam: {
       handler(newVal, oldVal) {
-        let newValStr = JSON.stringify(newVal)
-        let oldValStr = JSON.stringify(oldVal)
+        const newValStr = JSON.stringify(newVal)
+        const oldValStr = JSON.stringify(oldVal)
         // console.info(newValStr, oldValStr)
-        if (newValStr !== oldValStr && this.searchParam.versionId !== undefined) {
+        if (newValStr !== oldValStr && this.searchParam.versionId !== '') {
           // console.log("符合条件，触发查询")
           this.$emit('changeParam', newValStr)
         }

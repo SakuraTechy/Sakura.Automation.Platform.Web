@@ -681,14 +681,14 @@ export default {
         estate: '',
       }
     },
-    getAllPageList() {
+    async getAllPageList() {
       this.selectedRowKeys = []
       this.multiple = !this.selectedRowKeys.length
       this.sceneList = []
-      this.getAllVersions()
-      this.handleQuery()
+      await this.getAllVersions()
+      // await this.handleQuery()
     },
-    //切换tab标签后设置场景信息
+    // 切换tab标签后设置场景信息
     setSceneList(record) {
       this.sceneList = []
       this.sceneList.push(record)

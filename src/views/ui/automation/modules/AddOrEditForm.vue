@@ -874,7 +874,7 @@ export default {
       if (item.name === '本地调试') {
         // console.log(this.sceneList);
         this.$nextTick(() => {
-          this.$refs.executScenceForm.handleAdd(undefined,"1",item)
+          this.$refs.executScenceForm.handleAdd(this.sceneList,"1",item)
         })
         // this.$Modal.confirm({
         //   title: '是否确认执行?',
@@ -897,7 +897,7 @@ export default {
         // })
       } else if (item.name === '远程调试') {
         this.$nextTick(() => {
-          this.$refs.executScenceForm.handleAdd(undefined,"1",item)
+          this.$refs.executScenceForm.handleAdd(this.sceneList,"1",item)
         })
       } else if (item.name === '查看日志') {
         return getScenceInfo(id).then((res) => {

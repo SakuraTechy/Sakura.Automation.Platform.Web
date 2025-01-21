@@ -1227,13 +1227,12 @@ export default {
     },
     async handleExecutAll(record,type) {
       // console.log(record);
-      // console.log(key);
       if (this.queryParam.versionId !== '') {
         // this.queryParam.pageSize = 1000
         this.sceneListTitle = '所有场景'
         await this.getList()
-        this.$nextTick(() => {
-          this.$refs.executScenceForm.handleAdd(record,"1",type)
+        await this.$nextTick(() => {
+          this.$refs.executScenceForm.handleAdd(this.sceneList1,"1",type)
         })
         this.sceneListTitle = ''
         // setTimeout(() => {

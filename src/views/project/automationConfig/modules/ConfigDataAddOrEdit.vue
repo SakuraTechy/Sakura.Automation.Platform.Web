@@ -249,7 +249,7 @@ export default {
         url: [{ required: true, message: `地址不能为空`, trigger: 'blur' }],
         // job: [{ required: true, message: `项目不能为空`, trigger: 'blur' }],
         path: [{ required: true, message: `路径不能为空`, trigger: 'blur' }],
-        type: [{ required: true, message: `选择类型不能为空`, trigger: 'blur' }],
+        type: [{ required: true, message: `类型不能为空`, trigger: 'blur' }],
         userName: [{ required: true, message: `用户名不能为空`, trigger: 'blur' }],
         passWord: [{ required: true, message: `密码不能为空`, trigger: 'blur' }],
         driver: [{ required: true, message: `驱动地址不能为空`, trigger: 'blur' }],

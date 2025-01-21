@@ -866,7 +866,7 @@ export default {
     },
     handleExecuts(type) {
       if (this.queryParam.versionId !== '') {
-        this.$refs.executScenceForm.handleAdd(undefined,"1",type)
+        this.$refs.executScenceForm.handleAdd(this.sceneList,"1",type)
       } else {
         this.$message.error('请选择场景版本！')
       }
@@ -877,7 +877,7 @@ export default {
         this.sceneListTitle = '所有场景'
         await this.getList()
         this.$nextTick(() => {
-          this.$refs.executScenceForm.handleAdd(undefined,"1",type)
+          this.$refs.executScenceForm.handleAdd(this.sceneList,"1",type)
         })
         this.sceneListTitle = ''
       } else {

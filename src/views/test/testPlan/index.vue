@@ -633,7 +633,7 @@ export default {
     },
     handleDelete(row) {
       var that = this
-      row.id ? this.ids.push(row.id) : ''
+      row.id && this.ids.push(row.id)
       const ids = this.ids
       const names = row.name || this.names
       this.$Modal.confirm({
@@ -646,6 +646,7 @@ export default {
               if (res.code === 200) {
                 that.$message.success('删除成功')
                 that.getList()
+                that.handleDelete1(ids)
                 // that.onSelectChange([], [])
               }
             })
@@ -653,9 +654,42 @@ export default {
               that.$message.error('删除失败', 3)
               reject(error)
             })
-        },
+        }
       })
       this.ids = []
+    },
+    handleDelete1(ids) {
+      // row.id && this.ids.push(row.id)
+      ids.forEach((id) => {
+        this.getTestReportList(id)
+        this.getTimedTaskList(id)
+      })
+    },
+    getTestReportList(id) {
+      const ids = []
+      const queryParam = {
+        testPlanId: id
+      }
+      // this.queryParam = Object.assign(this.queryParam, queryParam)
+      api.getTestReportList(queryParam).then((response) => {
+        response.data.list.forEach((item) => {
+          ids.push(item.id)
+        })
+        api.deleteTestReport({ ids })
+      })
+    },
+    getTimedTaskList(id) {
+      const ids = []
+      const queryParam = {
+        testPlanId: id
+      }
+      // this.queryParam = Object.assign(this.queryParam, queryParam)
+      api.getTimedTaskList(queryParam).then((response) => {
+        response.data.list.forEach((item) => {
+          ids.push(item.id)
+        })
+        api.deleteTimedTask({ ids })
+      })
     },
     handleExecut1(record) {
       this.tab='功能测试'

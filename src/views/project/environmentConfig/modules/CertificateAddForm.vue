@@ -150,6 +150,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+      this.fileList = []
       // this.form = {
       //   id: '',
       //   host: undefined

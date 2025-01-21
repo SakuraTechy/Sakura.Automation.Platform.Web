@@ -193,7 +193,7 @@ export default {
           this.form['postIds'] = ['9529010c93864105afd36719e0dfed8d']
           this.form['roleIds'] = ['c6676868d24e43098e4724014a096800']
         }
-        console.log(this.form)
+        // console.log(this.form)
         if (valid) {
           this.name === '登录'
             ? this.Login(this.form)
@@ -293,7 +293,7 @@ export default {
     },
   },
   mounted() {
-    console.info(this)
+    // console.info(this)
   },
 }
 </script>

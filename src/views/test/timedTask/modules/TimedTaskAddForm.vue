@@ -55,12 +55,15 @@
       </a-form-model-item> -->
       <a-form-model-item label="运行环境" prop="runEnvironment">
         <a-radio-group v-model="form.runEnvironment" button-style="solid">
-          <!-- <a-radio-button value="1">产品环境</a-radio-button>
-          <a-radio-button value="2">自动化环境</a-radio-button> -->
-          <a-radio-button v-for="(item, index) in timedTaskRunEnvironmentOptions" :key="index" :value="item.id" @click="handleRunEnvironment(item)">
+          <a-radio-button v-for="item in timedTaskRunEnvironmentOptions" :key="item.id" :value="item.id" @click="handleRunEnvironment(item)">
             {{ item.name }}
           </a-radio-button>
         </a-radio-group>
+        <!-- <el-checkbox-group v-model="form.runEnvironment" size="small" button-style="solid">
+          <el-checkbox-button v-for="item in timedTaskRunEnvironmentOptions" :key="item.id" :label="item.id" @change="handleRunEnvironment(item)">
+            {{ item.name }}
+          </el-checkbox-button>
+        </el-checkbox-group> -->
       </a-form-model-item>
       <a-form-model-item label="运行规则" prop="cronExpression">
         <div style="display: flex; align-items: center">
@@ -161,7 +164,7 @@ export default {
       form: {
         testPlan: {
           id: undefined,
-          name: '',
+          name: ''
         },
         testPlanId: '',
         type: undefined,
@@ -173,7 +176,7 @@ export default {
         concurrent: '1',
         misfirePolicy: '1',
         status: '0',
-        createBy: '',
+        createBy: ''
       },
       sceneList: [],
       open: false,
@@ -189,10 +192,25 @@ export default {
   },
   filters: {},
   created() {
-    
+    // this.$nextTick(() => {
+    //   if (this.timedTaskRunEnvironmentOptions.length > 0) {
+    //     this.form.runEnvironment = this.timedTaskRunEnvironmentOptions[0].id
+    //   }
+    // })
   },
   computed: {},
-  watch: {},
+  watch: {
+    // timedTaskRunEnvironmentOptions: {
+    //   handler(newVal) {
+    //     if (newVal.length > 0 && !this.form.runEnvironment) {
+    //       this.form.runEnvironment = newVal[0].id
+    //       // 如果需要触发点击事件
+    //       this.handleRunEnvironment(newVal[0])
+    //     }
+    //   },
+    //   immediate: true
+    // }
+  },
   mounted() {},
   methods: {
     // 取消按钮
@@ -211,7 +229,7 @@ export default {
         cronExpression: '',
         concurrent: '1',
         misfirePolicy: '1',
-        status: '0',
+        status: '0'
       }
     },
     // 选择时间
@@ -237,6 +255,7 @@ export default {
       this.formTitle = '修改定时任务'
       this.okButton = '确定'
       this.form = Object.assign(this.form, row)
+      this.form.runEnvironment = '1'
       this.testPlanOptions.forEach((item) => {
         if (item.id === this.form.testPlanId) {
           this.form.testPlan = item
@@ -249,6 +268,7 @@ export default {
       this.formTitle = '复制定时任务'
       this.okButton = '确定'
       this.form = Object.assign(this.form, row)
+      this.form.runEnvironment = '1'
       this.testPlanOptions.forEach((item) => {
         if (item.id === this.form.testPlanId) {
           this.form.testPlan = item
@@ -257,47 +277,66 @@ export default {
       this.getSceneList(this.form.testPlan)
       this.form.id = ''
     },
-    getSceneList(testPlan){
+    getSceneList1(testPlan) {
       this.form.testPlan = testPlan
       const queryParam = {
         name: this.form.testPlan.name
       }
       api.getTestPlanList(queryParam).then((response) => {
         var uiTestScene = response.data.list[0].uiTestScene
-        uiTestScene = uiTestScene.substring(1, uiTestScene.length - 1).split(',');
-        uiTestScene = uiTestScene.map(scene => scene.trim());
+        uiTestScene = uiTestScene.substring(1, uiTestScene.length - 1).split(',')
+        uiTestScene = uiTestScene.map(scene => scene.trim())
         this.sceneList = []
         uiTestScene.forEach(id => {
-          if(id){
+          if (id) {
             automationApis.getScenceInfo(id).then((response) => {
-            if(response.data){
+              if (response.data) {
                 this.$delete(response.data, 'caseMsg')
                 this.$delete(response.data, 'debugRecord')
                 this.$delete(response.data, 'testRecord')
                 this.sceneList.push(response.data)
               }
             })
-          }else{
+          } else {
             this.$message.warning('测试计划关联测试场景为空，请先关联测试场景!')
           }
         })
-        this.sceneList.sort((a, b) => a.sceneId - b.sceneId);
-        console.log(this.sceneList);
+        this.sceneList.sort((a, b) => a.sceneId - b.sceneId)
+        // console.log(this.sceneList);
       })
     },
-    handleRunEnvironment(key) {
-      // console.log('当前选中的选项值为：', key);
+    async getSceneList(testPlan) {
+      const params = {
+        executeResultType: 'plan',
+        testSceneState: 'select',
+        testPlanId: testPlan.id
+      }
+      try {
+        const response = await automationApis.getSceneList(params)
+        this.list = response.data.list
+        this.list.forEach((item, index) => {
+          item.caseList = item.caseMsg ? JSON.parse(item.caseMsg) : []
+          item.testRecordList = item.testRecord ? JSON.parse(item.testRecord) : []
+        })
+        this.sceneList = this.list
+      } catch (error) {
+        console.error('Error fetching scene list:', error)
+      }
+    },
+    async handleRunEnvironment(key) {
+      // console.log('当前选中的选项值为：', key)
       const type = {
         id: '4',
         name: '定时任务'
       }
-      if(this.form.testPlanId===undefined){
+      if (this.form.testPlanId === undefined) {
         this.$message.warning('请先选择所属计划!')
-      }else if(this.sceneList.length<1){
+      } else if (this.sceneList.length === 0) {
         this.$message.warning('测试计划关联测试场景为空，请先关联测试场景!')
-      }else{
-        this.$nextTick(() => {
-          this.$refs.executScenceForm.handleAdd(undefined,key.id,type)
+      } else {
+        // await this.getSceneList(this.form.testPlan)
+        await this.$nextTick(() => {
+          this.$refs.executScenceForm.handleAdd(this.sceneList, key.id, type)
         })
       }
     },
@@ -311,14 +350,12 @@ export default {
               this.$message.success('新增成功')
               this.open = false
               this.$emit('ok')
-              this.form.runEnvironment=''
             })
           } else {
             api.updateTimedTask(this.form).then((response) => {
               this.$message.success('修改成功')
               this.open = false
               this.$emit('ok')
-              this.form.runEnvironment=''
             })
           }
         } else {

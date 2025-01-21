@@ -948,7 +948,7 @@ export const sceneColumns = [
   {
     title: '场景名称',
     dataIndex: 'name',
-    width: 300,
+    width: 381,
     ellipsis: true,
     align: 'center',
   },
@@ -1049,7 +1049,8 @@ export const sceneColumns = [
   // },
   {
     title: '上次结果',
-    dataIndex: 'executeResult',
+    scopedSlots: { customRender: 'executeResult' },
+    // dataIndex: 'debugRecordList[0].executeResult',
     width: 80,
     ellipsis: true,
     align: 'center'

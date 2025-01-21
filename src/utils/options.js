@@ -1114,7 +1114,10 @@ export const operations = [
         config: [
           { paramsName: 'key', paramsValue: "${total4}/(${total4}+${total5}+${total6})*100"},
           { paramsName: 'keys', paramsValue: `#.00`},
-          { paramsName: 'details', paramsValue: `key:Proportion1`}
+          { paramsName: 'value', paramsValue: `formatSize`},
+          { paramsName: 'details', paramsValue: `key:Proportion1`},
+          { paramsName: 'value', paramsValue: `CustomRules`},
+          { paramsName: 'details', paramsValue: `scale:1;keepTrailingZeros:false;useGrouping:false;isUnit:true;key:sys_disk_total`}
         ]
       }
     ]

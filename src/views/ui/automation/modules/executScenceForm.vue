@@ -559,14 +559,14 @@
       <a-modal
         title="是否确认执行以下场景?"
         v-model="showDialog"
-        width="840px"
+        width="920px"
         :confirm-loading="confirmLoading"
         @ok="handleOk"
         @close="closeModal"
       >
         <div style="height: 550px">
           <advance-table
-            style="margin-top: -10px"
+            style="margin-top: -10px; width: 100%"
             :scroll="{ x: '100%', y: 420 }"
             :columns="sceneColumns"
             :data-source="pagedData"
@@ -576,6 +576,9 @@
             size="middle"
             title="测试场景执行列表"
           >
+            <span slot="executeResult" slot-scope="{ record }">
+              {{ record.debugRecordList?.[0].executeResult ? record.debugRecordList[0].executeResult : record.testRecordList[0].executeResult }}
+            </span>
           </advance-table>
           <a-pagination
             style="float: right; margin-top: 10px"
@@ -630,11 +633,11 @@ export default {
     //   required: true,
     // },
     testPlan: {
-      type: Object,
+      type: Object
     },
     sceneList: {
       type: Array,
-      required: true,
+      required: true
     }
   },
   data() {
@@ -851,6 +854,7 @@ export default {
   },
   created() {
     // console.log(this.testPlan);
+    // this.getSceneList()
   },
   watch: {
     activeKey: {
@@ -861,8 +865,8 @@ export default {
         } else {
           this.getAutomationList()
         }
-      },
-    },
+      }
+    }
   },
   methods: {
     handlePageChange(page) {
@@ -888,16 +892,13 @@ export default {
       this.getEnvironmentList()
       this.getAutomationList()
     },
-    handleAdd(record,key,type) {
-      // console.log(record);
-      // console.log(key);
-      // console.log(type);
-      // console.log(this.sceneList);
+    handleAdd(record, key, type) {
+      // console.log(record, key, type)
       this.open = true
       this.activeKey = key
       this.formTitle = '环境配置信息确认'
-      this.project.id = record?record.projectId:this.sceneList[0].projectId
-      this.versionName = record?record.versionName:this.sceneList[0].versionName
+      this.project.id = record.projectId ? record.projectId : record[0].projectId
+      this.versionName = record.versionName ? record.versionName : record[0].versionName
       // this.executionMode = key || record.key
       // const keys = ['0', '1', '3'];
       // this.optionName = keys.includes(key) ? '远程调试' : '本地调试';
@@ -906,20 +907,20 @@ export default {
       // this.optionName = key==='0'||key==='1'||key==='3'?'远程调试':'本地调试'
       // this.Aids.length > 0 ? this.Aids : this.Aids.push(record.id)
       this.getProjectList()
-      if(key==='1'){
+      if (key === '1') {
         this.getEnvironmentList()
       }
       // this.handleSyncAll()
       // this.getAutomationList()
     },
     changeEnvironment(id) {
-      if (id != undefined) {
+      if (id !== undefined) {
         this.getProjectList()
         this.getEnvironmentInfo(id)
       }
     },
     changeAutomation(id) {
-      if (id != undefined) {
+      if (id !== undefined) {
         this.getAutomationInfo(id)
       }
     },
@@ -1548,7 +1549,7 @@ export default {
           this.showDialog = true
           // this.sceneList1 = this.sceneList.length>1?this.sceneList:this.getScence(this.sceneList[0].id)
           // console.log(this.sceneList);
-          this.sceneList1 = this.filterArrayItems(this.sceneList)
+          // this.sceneList1 = this.filterArrayItems(this.sceneList)
         }
       }else{
         this.$message.warning('产品版本和场景版本不匹配，请检查后重试！')

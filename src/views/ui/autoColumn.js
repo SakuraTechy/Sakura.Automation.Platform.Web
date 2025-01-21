@@ -18,7 +18,7 @@ export const columns = [
   {
     title: '场景名称',
     dataIndex: 'name',
-    width: 368,
+    width: 360,
     // fixed: 'left',
     ellipsis: true,
     align: 'center',

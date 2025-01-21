@@ -48,7 +48,7 @@
                 <a-icon type="question-circle" style="font-size: 18px;" />
               </a-popover>
             </template>
-            <UITestEcharts 
+            <UITestEcharts
               class="card-grid-item large-item"
               ref="echarts"
               :seriesData="ui.functionalModule"
@@ -64,7 +64,7 @@
                 <a-icon type="question-circle" style="font-size: 18px;" />
               </a-popover>
             </template>
-            <UITestEcharts 
+            <UITestEcharts
               class="card-grid-item large-item"
               ref="echarts"
               :seriesData="ui.automationScene"

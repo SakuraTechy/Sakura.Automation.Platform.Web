@@ -121,8 +121,9 @@ export default {
           type: 'scroll',
           // type: 'html',
           orient: 'vertical',
-          top: '20%',
+          top: seriesData.length > 6 ? '0%' : '20%',
           left: '60%',
+          height: '90%',
           // right: '-10%',
           algin: 'right',
           padding: [0, 0, 0, 0],
@@ -131,12 +132,35 @@ export default {
             fontSize: 15,
             fontWeight: 'normal',
             fontFamily: 'PingFang SC',
+            rich: {
+              name: {
+                width: 120,
+                align: 'left',
+                fontSize: 15,
+                fontWeight: 'normal',
+                fontFamily: 'PingFang SC'
+              },
+              value: {
+                width: 80,
+                align: 'right',
+                color: '#666',
+                fontSize: 15,
+                fontWeight: 'normal',
+                fontFamily: 'PingFang SC'
+              }
+            }
           },
+          // 翻页按钮配置
+          pageButtonPosition: 'end', // 'start' | 'end'
+          pageButtonGap: 10,
+          pageButtonItemGap: 5,
+          pageIconSize: 12,
+          pageIconColor: '#666',
+          pageIconInactiveColor: '#aaa',
           formatter: function (name) {
-            let data = seriesData.find((item) => item.name === name)
-            return `${name}                    ${data.value}`
-            // return `<div class="legend-item" style="text-align: right;">${name} (${data.value})</div>`;
-          },
+            const data = seriesData.find((item) => item.name === name)
+            return `{name|${name}}{value|${data.value}}`
+          }
         },
         series: [
           {
@@ -253,8 +277,9 @@ export default {
           type: 'scroll',
           // type: 'html',
           orient: 'vertical',
-          top: '20%',
+          top: seriesData.length > 6 ? '0%' : '20%',
           left: '60%',
+          height: '90%',
           // right: '-10%',
           algin: 'right',
           padding: [0, 0, 0, 0],
@@ -263,12 +288,35 @@ export default {
             fontSize: 15,
             fontWeight: 'normal',
             fontFamily: 'PingFang SC',
+            rich: {
+              name: {
+                width: 120,
+                align: 'left',
+                fontSize: 15,
+                fontWeight: 'normal',
+                fontFamily: 'PingFang SC'
+              },
+              value: {
+                width: 80,
+                align: 'right',
+                color: '#666',
+                fontSize: 15,
+                fontWeight: 'normal',
+                fontFamily: 'PingFang SC'
+              }
+            }
           },
+          // 翻页按钮配置
+          pageButtonPosition: 'end', // 'start' | 'end'
+          pageButtonGap: 10,
+          pageButtonItemGap: 5,
+          pageIconSize: 12,
+          pageIconColor: '#666',
+          pageIconInactiveColor: '#aaa',
           formatter: function (name) {
-            let data = seriesData.find((item) => item.name === name)
-            return `${name}                    ${data.value}`
-            // return `<div class="legend-item" style="text-align: right;">${name} (${data.value})</div>`;
-          },
+            const data = seriesData.find((item) => item.name === name)
+            return `{name|${name}}{value|${data.value}}`
+          }
         },
         series: [
           {
@@ -415,9 +463,11 @@ export default {
 .flex-container {
   display: flex;
 }
+
 .flex-item {
   flex: 1;
 }
+
 .card-container {
   // background-color: white;
   // width: 100%;
@@ -430,6 +480,7 @@ export default {
     height: 255px;
   }
 }
+
 .chart {
   // margin-right: 40px;
   flex: 1;
