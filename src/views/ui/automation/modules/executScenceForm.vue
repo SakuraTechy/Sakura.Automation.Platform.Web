@@ -1571,7 +1571,7 @@ export default {
               triggerMode: '1',
               executionMode: this.executionMode || '',
             },
-            sysSceneList: this.sceneList1,
+            sysSceneList: this.sceneList,
             projectConfig: this.project,
             automationConfig: this.automation,
           },
@@ -1597,7 +1597,7 @@ export default {
             triggerMode: '0',
             executionMode: this.executionMode || '',
           },
-          sysSceneList: this.sceneList1,
+          sysSceneList: this.sceneList,
           projectConfig: this.project,
           automationConfig: this.automation,
         }
