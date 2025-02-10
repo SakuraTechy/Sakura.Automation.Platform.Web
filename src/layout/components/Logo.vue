@@ -10,7 +10,7 @@
 import { useAppStore } from '@/stores'
 
 const props = withDefaults(defineProps<Props>(), {
-  collapsed: false
+  collapsed: false,
 })
 const appStore = useAppStore()
 const title = computed(() => appStore.getTitle())
@@ -32,6 +32,7 @@ const toHome = () => {
   padding: 0 12px;
   color: var(--color-text-1);
   font-size: 20px;
+  font-weight: bold;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -51,8 +52,8 @@ const toHome = () => {
   }
 
   .logo {
-    width: 32px;
-    height: 32px;
+    width: 42px;
+    height: 42px;
     border-radius: 6px;
     transition: all 0.2s;
     overflow: hidden;
@@ -60,7 +61,7 @@ const toHome = () => {
   }
 
   .system-name {
-    padding-left: 6px;
+    padding-left: 0px;
     white-space: nowrap;
     transition: color 0.3s;
 

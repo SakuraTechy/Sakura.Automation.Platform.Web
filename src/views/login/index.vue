@@ -10,8 +10,9 @@
       <a-col :xs="0" :sm="10" :md="11">
         <div class="login-left">
           <!-- <img class="login-left__img" src="@/assets/images/banner.png" alt="banner" /> -->
-          <img class="login-left__log" src="/logo.svg" alt="logo" />
-          <div class="login-left__title">SakurA 自动化测试平台</div>
+          <img v-if="logo" class="login-left__log" :src="logo" alt="logo" />
+          <img v-else class="login-left__log" src="/logo.svg" alt="logo" />
+          <div class="login-left__title">SakurA 自动化平台</div>
           <div class="login-left__version">{{ version }}</div>
         </div>
       </a-col>
@@ -62,8 +63,7 @@
     <div v-if="isDesktop" class="footer">
       <div class="beian">
         <div class="below text">
-          {{ appStore.getCopyright() }}{{ appStore.getForRecord() ? ` ·
-          ${appStore.getForRecord()}` : '' }}
+          {{ appStore.getCopyright() }}{{ appStore.getForRecord() ? ` ·${appStore.getForRecord()}` : '' }}
         </div>
       </div>
     </div>
@@ -122,7 +122,7 @@ import { useDevice } from '@/hooks'
 import { useAuthStore } from '@/stores/modules/auth'
 
 defineOptions({
-  name: 'Login'
+  name: 'Login',
   // created() {
   //   this.version = config.version
   // }
@@ -148,7 +148,7 @@ const keyMap = {
   1: '3',
   2: '4',
   3: '1',
-  4: '2'
+  4: '2',
 }
 // 切换注册模式
 const toggleRegisterMode = () => {
@@ -503,9 +503,9 @@ onMounted(() => {
     &__title {
       color: var(--color-text-1);
       font-weight: 500;
-      font-size: 20px;
+      font-size: 22px;
       line-height: 32px;
-      margin-bottom: 25px;
+      margin-bottom: 40px;
     }
 
     &__form {

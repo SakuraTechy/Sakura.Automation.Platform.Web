@@ -2,8 +2,8 @@
   <div style="position: relative">
     <div class="verify-img-out">
       <div
-          class="verify-img-panel"
-          :style="{
+        class="verify-img-panel"
+        :style="{
           'width': setSize.imgWidth,
           'height': setSize.imgHeight,
           'background-size': `${setSize.imgWidth} ${setSize.imgHeight}`,
@@ -11,26 +11,26 @@
         }"
       >
         <div
-            v-show="showRefresh"
-            class="verify-refresh"
-            style="z-index: 3"
-            @click="refresh"
+          v-show="showRefresh"
+          class="verify-refresh"
+          style="z-index: 3"
+          @click="refresh"
         >
           <i class="iconfont icon-refresh"></i>
         </div>
         <img
-            ref="canvas"
-            :src="`data:image/png;base64,${pointBackImgBase}`"
-            alt=""
-            style="width: 100%; height: 100%; display: block"
-            @click="bindingClick ? canvasClick($event) : undefined"
+          ref="canvas"
+          :src="`data:image/png;base64,${pointBackImgBase}`"
+          alt=""
+          style="width: 100%; height: 100%; display: block"
+          @click="bindingClick ? canvasClick($event) : undefined"
         />
 
         <div
-            v-for="(tempPoint, index) in tempPoints"
-            :key="index"
-            class="point-area"
-            :style="{
+          v-for="(tempPoint, index) in tempPoints"
+          :key="index"
+          class="point-area"
+          :style="{
             'background-color': '#1abd6c',
             'color': '#fff',
             'z-index': 9999,
@@ -50,8 +50,8 @@
     </div>
 
     <div
-        class="verify-bar-area"
-        :style="{
+      class="verify-bar-area"
+      :style="{
         'width': setSize.imgWidth,
         'color': barAreaColor,
         'border-color': barAreaBorderColor,
@@ -70,11 +70,11 @@ import {
   onMounted,
   reactive,
   ref,
-  toRefs
+  toRefs,
 } from 'vue'
 import {
   checkBehaviorCaptcha,
-  getBehaviorCaptcha
+  getBehaviorCaptcha,
 } from '@/apis/common/captcha'
 import { resetSize } from '@/utils/verify'
 import { encryptByAes } from '@/utils/encrypt'
@@ -85,34 +85,34 @@ export default {
     // 弹出式pop，固定fixed
     mode: {
       type: String,
-      default: ''
+      default: '',
     },
     captchaType: {
-      type: String
+      type: String,
     },
     // 间隔
     vSpace: {
       type: Number,
-      default: 5
+      default: 5,
     },
     imgSize: {
       type: Object,
       default() {
         return {
           width: '310px',
-          height: '155px'
+          height: '155px',
         }
-      }
+      },
     },
     barSize: {
       type: Object,
       default() {
         return {
           width: '310px',
-          height: '40px'
+          height: '40px',
         }
-      }
-    }
+      },
+    },
   },
   setup(props) {
     const { mode, captchaType } = toRefs(props)
@@ -129,7 +129,7 @@ export default {
       imgHeight: 0,
       imgWidth: 0,
       barHeight: 0,
-      barWidth: 0
+      barWidth: 0,
     })
     const tempPoints = reactive([])
     const text = ref('')
@@ -141,7 +141,7 @@ export default {
     // 请求背景图片和验证图片
     function getPicture() {
       const data = {
-        captchaType: captchaType.value
+        captchaType: captchaType.value,
       }
       getBehaviorCaptcha(data).then((res) => {
         pointBackImgBase.value = res.data.originalImageBase64
@@ -226,7 +226,7 @@ export default {
           const captchaVerification = secretKey.value
             ? encryptByAes(
                   `${backToken.value}---${JSON.stringify(checkPosArr)}`,
-                  secretKey.value
+                  secretKey.value,
             )
             : `${backToken.value}---${JSON.stringify(checkPosArr)}`
           const data = {
@@ -234,7 +234,7 @@ export default {
             pointJson: secretKey.value
               ? encryptByAes(JSON.stringify(checkPosArr), secretKey.value)
               : JSON.stringify(checkPosArr),
-            token: backToken.value
+            token: backToken.value,
           }
           checkBehaviorCaptcha(data).then((res) => {
             if (res.success && res.data.repCode === '0000') {
@@ -289,8 +289,8 @@ export default {
       createPoint,
       refresh,
       getPicture,
-      pointTransform
+      pointTransform,
     }
-  }
+  },
 }
 </script>

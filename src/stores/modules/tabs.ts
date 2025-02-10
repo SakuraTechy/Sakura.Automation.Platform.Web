@@ -83,6 +83,17 @@ const storeSetup = () => {
     })
   }
 
+  // 关闭左侧
+  const closeLeft = (path: string) => {
+    const index = tabList.value.findIndex((i) => i.path === path)
+    if (index < 0) return
+    const arr = tabList.value.filter((i, n) => n < index)
+    arr.forEach((item) => {
+      deleteTabItem(item.path)
+      item?.name && deleteCacheItem(item.name)
+    })
+  }
+
   // 关闭右侧
   const closeRight = (path: string) => {
     const index = tabList.value.findIndex((i) => i.path === path)
@@ -113,6 +124,18 @@ const storeSetup = () => {
     reset()
   }
 
+  // Tabs页签右侧刷新按钮-页面重新加载
+  const reloadFlag = ref(true)
+  const reloadPage = () => {
+    const route = router.currentRoute.value
+    deleteCacheItem(route.name as string) // 修复点击刷新图标，无法重新触发生命周期钩子函数问题
+    reloadFlag.value = false
+    nextTick(() => {
+      reloadFlag.value = true
+      addCacheItem(route)
+    })
+  }
+
   return {
     tabList,
     cacheList,
@@ -124,10 +147,13 @@ const storeSetup = () => {
     clearCacheList,
     closeCurrent,
     closeOther,
+    closeLeft,
     closeRight,
     closeAll,
     reset,
-    init
+    init,
+    reloadFlag,
+    reloadPage,
   }
 }
 

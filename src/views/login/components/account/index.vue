@@ -1,6 +1,8 @@
 <template>
-  <a-form ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
-    :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin">
+  <a-form
+    ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
+    :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin"
+  >
     <a-form-item field="username" hide-label>
       <a-input ref="inputRef" v-model="form.username" :placeholder="getPlaceholder()" allow-clear>
         <template #prefix>
@@ -54,15 +56,15 @@ import { timeFix } from '@/utils'
 // 定义组件的 props
 const props = defineProps({
   isRegister: {
-    type: Boolean
-  }
+    type: Boolean,
+  },
 })
 const inputRef = ref<HTMLInputElement | null>(null)
 
 const loginConfig = useStorage('login-config', {
   rememberMe: props.isRegister,
   username: '',
-  password: ''
+  password: '',
 })
 
 const formRef = ref<FormInstance>()
@@ -76,12 +78,12 @@ const form = reactive({
   status: 1,
   captcha: '',
   uuid: '',
-  expired: false
+  expired: false,
 })
 const rules: FormInstance['rules'] = {
   username: [{ required: true, message: '请设置用户名，5-20个字符' }],
   password: [{ required: true, message: '请设置登录密码' }],
-  captcha: [{ required: true, message: '请输入验证码' }]
+  captcha: [{ required: true, message: '请输入验证码' }],
 }
 
 // 验证码过期定时器
@@ -144,22 +146,22 @@ const handleLogin = async () => {
         gender: 0,
         deptId: 1,
         roleIds: ['547888897925840928'],
-        status: 1
+        status: 1,
       })
     }
     await userStore.accountLogin({
       username: form.username,
       password: encryptByRsa(form.password) || '',
       captcha: form.captcha,
-      uuid: form.uuid
+      uuid: form.uuid,
     })
     tabsStore.reset()
     const { redirect, ...othersQuery } = router.currentRoute.value.query
     router.push({
       path: (redirect as string) || '/',
       query: {
-        ...othersQuery
-      }
+        ...othersQuery,
+      },
     })
     const { rememberMe } = loginConfig.value
     loginConfig.value.username = rememberMe ? form.username : ''
@@ -209,6 +211,11 @@ onMounted(() => {
 
 .arco-input-wrapper:hover {
   border-color: rgb(var(--arcoblue-6));
+}
+
+.arco-checkbox-checked :deep(.arco-checkbox-icon-check) {
+  transform: scale(1.2);
+  transition: transform 0.3s cubic-bezier(0.3, 1.3, 0.3, 1);
 }
 
 .captcha {

@@ -138,7 +138,7 @@ const get = <T = unknown>(url: string, params?: object, config?: AxiosRequestCon
         paramsSerializer: (obj) => {
           return qs.stringify(obj)
         },
-        ...config
+        ...config,
       })
       .then((res: AxiosResponse) => resolve(res.data))
       .catch((err: { msg: string }) => reject(err))
@@ -151,11 +151,11 @@ const loading = ref(false)
 const getDataList = async () => {
   try {
     loading.value = true
-    const { data } = await get('https://api.charles7c.top/git/orgs/continew/events')
+    const { data } = await get('https://api.charles7c.top/git/orgs/events/continew')
     data.forEach((item) => {
       dataList.value.push({
         ...item,
-        createTimeString: dayjs(new Date(item.createTime)).fromNow()
+        createTimeString: dayjs(new Date(item.createTime)).fromNow(),
       })
     })
   } catch (err) {
