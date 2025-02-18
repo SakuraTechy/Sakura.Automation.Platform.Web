@@ -56,6 +56,7 @@ export default {
         { id: 'productVersion.productVersionNumber', label: '版本号', value: '' },
         { id: 'agent', label: '在线数据量', value: '' },
         { id: 'modelType', label: '授权模块', value: '' },
+        { id: 'authorizationDeadlineTime', label: '授权期限', value: '' },
         { id: 'maintenanceWarnDate', label: '维保期限', value: '' },
         { id: 'technicalName', label: '技术服务', value: '' },
         { id: 'certificateState', label: '状态', value: '' },
@@ -122,7 +123,7 @@ export default {
         const path = item.id.split('.')
         let current = infoItem
         for (const key of path) {
-          current = (['maintenanceWarnDate', 'makeTime', 'approvalTime'].includes(key) && current[key]) ? this.parseTime(current[key]) : current[key] ?? '-'
+          current = (['authorizationDeadlineTime', 'maintenanceWarnDate', 'makeTime', 'approvalTime'].includes(key) && current[key]) ? this.parseTime(current[key]) : current[key] ?? '-'
         }
         item.value = current
       })

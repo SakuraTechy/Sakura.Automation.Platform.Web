@@ -1,7 +1,7 @@
 <template>
   <ant-modal
-    modalWidth="630"
-    modalHeight="580"
+    modalWidth="600"
+    modalHeight="700"
     :visible="open"
     :modal-title="formTitle"
     :adjust-size="true"
@@ -28,6 +28,12 @@
               {{ item.productVersionNumber }}
             </a-select-option>
           </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="授权期限" prop="authorizationDeadlineTime">
+          <el-date-picker style="width: 336px;" v-model="form.authorizationDeadlineTime" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择授权期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
+        </a-form-model-item>
+        <a-form-model-item label="维保期限" prop="maintenanceWarnDate">
+          <el-date-picker style="width: 336px;" v-model="form.maintenanceWarnDate" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择维保期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
         </a-form-model-item>
       </a-form-model>
       <div class="form-item-row">
@@ -126,10 +132,48 @@ export default {
       productVersions: [],
       versionId: '',
 
+      pickerOptions: {
+        shortcuts: [{
+          text: '1天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(date.getTime() + 3600 * 1000 * 24)
+            date.setHours(0, 0, 0, 0)
+            picker.$emit('pick', date)
+          }
+        }, {
+          text: '7天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
+            date.setHours(0, 0, 0, 0)
+            picker.$emit('pick', date)
+          }
+        }, {
+          text: '14天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 14)
+            date.setHours(0, 0, 0, 0)
+            picker.$emit('pick', date)
+          }
+        }, {
+          text: '365天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 365)
+            date.setHours(0, 0, 0, 0)
+            picker.$emit('pick', date)
+          }
+        }]
+      },
       // 表单参数
       form: {
         projectId: undefined,
         productVersionId: undefined,
+        planTime: [],
+        authorizationDeadlineTime: new Date().setTime(new Date().setHours(0, 0, 0, 0) + 3600 * 1000 * 24 * 14),
+        maintenanceWarnDate: new Date().setTime(new Date().setHours(0, 0, 0, 0) + 3600 * 1000 * 24 * 14),
         id: '',
         name: '',
         description: '',
@@ -144,7 +188,8 @@ export default {
       open: false,
       rules: {
         projectId: [{ required: true, message: '产品项目不能为空', trigger: 'blur' }],
-        productVersionId: [{ required: true, message: '产品版本不能为空', trigger: 'blur' }]
+        productVersionId: [{ required: true, message: '产品版本不能为空', trigger: 'blur' }],
+        authorizationDeadlineTime: [{ required: true, message: `授权期限不能为空`, trigger: 'blur' }]
       }
     }
   },
@@ -435,8 +480,10 @@ export default {
           ['technicalName', this.$config[abbreviate].technicalName],
           ['certificateType', this.$config[abbreviate].certificateType],
           ['modelType', this.$config[abbreviate].modelType],
-          ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
-          ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
+          // ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
+          // ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
+          ['authorizationDeadlineTime', this.form.authorizationDeadlineTime],
+          ['maintenanceWarnDate', this.form.maintenanceWarnDate],
           ['orderId', this.orderIdList[0]],
           ['MachineCodeFile', this.fileList[0].raw],
           ['requestType', this.$config[abbreviate].requestType],
@@ -481,8 +528,10 @@ export default {
           ['technicalName', this.$config[abbreviate].technicalName],
           ['certificateType', this.$config[abbreviate].certificateType],
           ['modelType', this.$config[abbreviate].modelType],
-          ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
-          ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
+          // ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
+          // ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
+          ['authorizationDeadlineTime', this.form.authorizationDeadlineTime],
+          ['maintenanceWarnDate', this.form.maintenanceWarnDate],
           ['orderId', this.orderIdList[i]],
           ['MachineCodeFile', this.fileList[i].raw],
           ['requestType', this.$config[abbreviate].requestType],
