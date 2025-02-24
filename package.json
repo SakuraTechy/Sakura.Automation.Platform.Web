@@ -13,7 +13,8 @@
     "preview": "vite preview --port 5050",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "clean": "rm -rf node_modules"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",

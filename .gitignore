@@ -8,6 +8,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+node_modules1
+yarn.lock
+
 .DS_Store
 dist/
 dist-ssr
