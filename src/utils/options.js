@@ -968,7 +968,31 @@ export const operations = [
         ]
       },
       {
-        id: 'web-checkset',
+        id: 'web-notchecklist',
+        name: '不检查从数据库中查询出的结果中的值',
+        config: [
+          { paramsName: 'details', paramsValue: 'condition:size_not_null;subject:${key}'},
+          { paramsName: 'details', paramsValue: 'condition:field;subject:${key}'},
+          { paramsName: 'details', paramsValue: 'condition:field;subject:${key[0].IP}'},
+          { paramsName: 'expect', paramsValue: `这里填写预期结果`},
+          { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+        ]
+      },
+      {
+        id: 'web-regexchecklist',
+        name: '正则检查从数据库中查询出的结果中的值',
+        config: [
+          { paramsName: 'details', paramsValue: 'condition:size_not_null;subject:${key}'},
+          { paramsName: 'details', paramsValue: 'condition:field;subject:${key}'},
+          { paramsName: 'details', paramsValue: 'condition:field;subject:${key[0].IP}'},
+          { paramsName: 'regex', paramsValue: `这里填写正则预期结果`},
+          { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
+          { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
+        ]
+      },
+      {
+        id: 'web-checksetlist',
         name: '检查Web本地缓存的list中的元素',
         config: [
           { paramsName: 'value', paramsValue: '${key}'},
@@ -978,12 +1002,22 @@ export const operations = [
         ]
       },
       {
-        id: 'web-notchecklists',
+        id: 'web-notchecksetlist',
         name: '不检查Web本地缓存的list中的元素',
         config: [
           { paramsName: 'value', paramsValue: '${key}'},
           { paramsName: 'value', paramsValue: '${key[0].IP}'},
           { paramsName: 'expect', paramsValue: '这里填写预期结果'},
+          { paramsName: 'message', paramsValue: '这里填写检查失败的提示内容(实际结果和预期结果不一致)'},
+        ]
+      },
+      {
+        id: 'web-regexchecksetlist',
+        name: '正则检查Web本地缓存的list中的元素',
+        config: [
+          { paramsName: 'value', paramsValue: '${key}'},
+          { paramsName: 'value', paramsValue: '${key[0].IP}'},
+          { paramsName: 'regex', paramsValue: '这里填写正则预期结果'},
           { paramsName: 'message', paramsValue: '这里填写检查失败的提示内容(实际结果和预期结果不一致)'},
         ]
       },
