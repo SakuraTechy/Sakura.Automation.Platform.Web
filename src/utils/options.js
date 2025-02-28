@@ -986,6 +986,8 @@ export const operations = [
           { paramsName: 'details', paramsValue: 'condition:size_not_null;subject:${key}'},
           { paramsName: 'details', paramsValue: 'condition:field;subject:${key}'},
           { paramsName: 'details', paramsValue: 'condition:field;subject:${key[0].IP}'},
+          { paramsName: 'value', paramsValue: '${key}'},
+          { paramsName: 'key', paramsValue: 'IP'},
           { paramsName: 'regex', paramsValue: `这里填写正则预期结果`},
           { paramsName: 'message', paramsValue: `这里填写检查失败的提示内容(实际结果和预期结果不一致)`},
           { paramsName: 'skip', paramsValue: `locator（默认locator，可跳过locator和expect，跳过后会标记为成功）`}
