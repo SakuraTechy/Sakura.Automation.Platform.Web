@@ -21,7 +21,7 @@
             <a-input v-model="item.paramsValue" style="width: 500px" placeholder="请输入参数值" :disabled="multiple"
               allow-clear />
             <a-button type="primary" v-if="index === form1.configList.length - 1" shape="circle" icon="plus"
-              @click="addConfig(item, index)" style="margin-left;: 10px" :disabled="multiple" />
+              @click="addConfig(item, index)" style="margin-left: 10px" :disabled="multiple" />
             <a-button type="danger" shape="circle" icon="delete" v-if="form1.configList.length > 1"
               @click="deleteConfig(item, index)" :disabled="multiple" />
           </a-space>
@@ -71,23 +71,27 @@
             </a-select-option>
           </a-select>
         </a-form-model-item>
-        <!-- <a-popover placement="right" title="Title">
-          <template style="left: -100px;" #content>
-            <p>Content</p>
-            <p>Content</p>
-          </template>
-          <a-form-model-item label="服务器版本" prop="version">
-            <a-input v-model="form1.version" placeholder="请输入" :disabled="multiple" allow-clear />
-          </a-form-model-item>
-        </a-popover> -->
         <a-form-model-item label="服务器版本" prop="version">
-          <el-popover placement="right" title="在Linux中如何查看服务器版本?" trigger="hover">
-            <span>
+          <el-popover placement="right" :title="`${form1.type}服务器如何查看版本?`" trigger="hover">
+            <span v-if="form1.type === 'Linux'">
               <a>安装：rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</a>
               <br />
               <a>安装：sudo yum install redhat-lsb-core</a>
               <br />
               <a>执行：lsb_release -a</a>
+              <br />
+              <a>开启远程连接：sudo sed -i 's/^#*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config</a>
+              <br />
+              <a>重启sshd：systemctl reload sshd</a>
+            </span>
+            <span v-if="form1.type === 'Windows'">
+              <a>工具：FreeSShd 或 Bitvise SSH Client</a>
+              <br />
+              <a href="https://download.cnet.com/freesshd/3000-2085_4-75937656.html"
+                target="_blank">下载：https://download.cnet.com/freesshd/3000-2085_4-75937656.html</a>
+              <br />
+              <a href="https://zhuanlan.zhihu.com/p/115563492"
+                target="_blank">教程：https://zhuanlan.zhihu.com/p/115563492</a>
             </span>
             <a-input slot="reference" v-model="form1.version" placeholder="请输入" :disabled="multiple" allow-clear />
           </el-popover>
@@ -121,7 +125,7 @@
             <a-input v-model="item.paramsValue" style="width: 500px" placeholder="请输入参数值" :disabled="multiple"
               allow-clear />
             <a-button type="primary" v-if="index === form1.configList.length - 1" shape="circle" icon="plus"
-              @click="addConfig(item, index)" style="margin-left;: 10px" :disabled="multiple" />
+              @click="addConfig(item, index)" style="margin-left: 10px" :disabled="multiple" />
             <a-button type="danger" shape="circle" icon="delete" v-if="form1.configList.length > 1"
               @click="deleteConfig(item, index)" :disabled="multiple" />
           </a-space>
@@ -152,11 +156,26 @@
           <a-input v-model="form1.name" placeholder="请输入" allow-clear :disabled="multiple" />
         </a-form-model-item>
         <a-form-model-item label="数据库端口" prop="port">
-          <a-input v-model="form1.port" @change="handleInputChange" placeholder="请输入" type="number" allow-clear
-            :disabled="multiple" />
+          <el-popover placement="right" :title="`${form1.type}数据库如何开启远程访问?`" trigger="hover">
+            <span v-if="form1.type === 'MySQL'">
+              <a>连接数据库：mysql -usroot -pAnkki_mySQL123 mysql</a>
+              <br />
+              <a>执行命令：UPDATE `mysql`.`user` SET `Host` = '%' WHERE `User` = 'sroot' And `Host` = 'localhost';</a>
+              <br />
+              <a>执行命令：quit;</a>
+              <br />
+              <a>重启服务：systemctl restart mysqld</a>
+              <br />
+              <a>Linux开放端口：firewall-cmd --zone=public --add-port=3306/tcp --permanent && firewall-cmd --reload</a>
+              <br />
+              <a>Ubuntu开放端口：ufw allow 3306/tcp</a>
+            </span>
+            <a-input slot="reference" v-model="form1.port" @change="handleInputChange" placeholder="请输入" type="number"
+              allow-clear :disabled="multiple" />
+          </el-popover>
         </a-form-model-item>
-        <a-form-model-item label="数据库连接串" prop="url">
-          <a-input v-model="form1.url" placeholder="请输入" :disabled="multiple" allow-clear :rows="2" />
+        <a-form-model-item label="数据库/模式" prop="mode">
+          <a-input v-model="form1.mode" placeholder="请输入" allow-clear :disabled="multiple" />
         </a-form-model-item>
         <a-form-model-item label="用户名" prop="userName">
           <a-input v-model="form1.userName" placeholder="请输入" allow-clear :disabled="multiple" />
@@ -164,12 +183,15 @@
         <a-form-model-item label="密码" prop="passWord">
           <a-input v-model="form1.passWord" placeholder="请输入" allow-clear :disabled="multiple" />
         </a-form-model-item>
-        <a-form-model-item label="最大连接数" prop="maxActive">
+        <a-form-model-item label="数据库连接串" prop="url">
+          <a-input v-model="form1.url" placeholder="请输入" :disabled="multiple" allow-clear :rows="2" />
+        </a-form-model-item>
+        <!-- <a-form-model-item label="最大连接数" prop="maxActive">
           <a-input v-model="form1.maxActive" placeholder="请输入" allow-clear :disabled="multiple" />
         </a-form-model-item>
         <a-form-model-item label="最大等待时间" prop="maxWait">
           <a-input v-model="form1.maxWait" placeholder="请输入" allow-clear :disabled="multiple" />
-        </a-form-model-item>
+        </a-form-model-item> -->
         <a-form-model-item label="数据库描述" prop="description">
           <a-input v-model="form1.description" placeholder="请输入" :disabled="multiple" allow-clear :rows="2" />
         </a-form-model-item>
@@ -183,7 +205,7 @@
             <a-input v-model="item.paramsValue" style="width: 500px" placeholder="请输入参数值" :disabled="multiple"
               allow-clear />
             <a-button type="primary" v-if="index === form1.configList.length - 1" shape="circle" icon="plus"
-              @click="addConfig(item, index)" style="margin-left;: 10px" :disabled="multiple" />
+              @click="addConfig(item, index)" style="margin-left: 10px" :disabled="multiple" />
             <a-button type="danger" shape="circle" icon="delete" v-if="form1.configList.length > 1"
               @click="deleteConfig(item, index)" :disabled="multiple" />
           </a-space>
@@ -192,6 +214,7 @@
     </a-form-model>
     <template slot="footer">
       <a-button @click="cancel">取消</a-button>
+      <a-button @click="testConnect">测试连接</a-button>
       <a-button type="primary" :disabled="multiple" @click="submitForm">{{ this.okButton }}</a-button>
     </template>
   </ant-modal>
@@ -237,15 +260,15 @@ export default {
       accountType,
       serverType,
       dataBaseType,
-
       url: {
         ip: '',
-        port: ''
+        port: '',
+        mode: '',
+        userName: '',
+        passWord: ''
       },
-
       form1: {
         id: '',
-        description: '',
         name: '',
         url: '',
         userName: '',
@@ -253,8 +276,10 @@ export default {
         driver: '',
         maxActive: '',
         maxWait: '',
+        description: '',
         host: '',
         port: undefined,
+        mode: '',
         type: '',
         version: '',
         versionName: '',
@@ -262,7 +287,7 @@ export default {
         configList: [
           {
             paramsName: '',
-            paramsValue: '',
+            paramsValue: ''
           }
         ],
         status: 0
@@ -279,10 +304,10 @@ export default {
           configList: [
             {
               paramsName: '',
-              paramsValue: '',
+              paramsValue: ''
             }
           ],
-          status: 0,
+          status: 0
         },
         domains: {
           id: '',
@@ -311,7 +336,7 @@ export default {
           configList: [
             {
               paramsName: '',
-              paramsValue: '',
+              paramsValue: ''
             }
           ],
           status: 0
@@ -332,29 +357,30 @@ export default {
           configList: [
             {
               paramsName: '',
-              paramsValue: '',
+              paramsValue: ''
             }
           ],
           status: 0
-        },
+        }
       },
       rules: {
         name: [{ required: true, message: `名称不能为空`, trigger: 'blur' }],
-        description: [{ required: true, message: `描述不能为空`, trigger: 'blur' }],
+        // description: [{ required: true, message: `描述不能为空`, trigger: 'blur' }],
         url: [{ required: true, message: `地址不能为空`, trigger: 'blur' }],
         type: [{ required: true, message: `类型不能为空`, trigger: 'blur' }],
         version: [{ required: true, message: `版本不能为空`, trigger: 'blur' }],
         userName: [{ required: true, message: `用户名不能为空`, trigger: 'blur' }],
         passWord: [{ required: true, message: `密码不能为空`, trigger: 'blur' }],
         driver: [{ required: true, message: `驱动不能为空`, trigger: 'blur' }],
-        maxActive: [{ required: true, message: `最大连接池数量不能为空`, trigger: 'blur' }],
-        maxWait: [{ required: true, message: `最大等待时间不能为空`, trigger: 'blur' }],
+        // maxActive: [{ required: true, message: `最大连接池数量不能为空`, trigger: 'blur' }],
+        // maxWait: [{ required: true, message: `最大等待时间不能为空`, trigger: 'blur' }],
         host: [{ required: true, message: `主机名称不能为空`, trigger: 'blur' }],
         port: [{ required: true, message: `端口不能为空`, trigger: 'blur' }],
+        mode: [{ required: true, message: `数据库或模式不能为空`, trigger: 'blur' }],
         domain: [{ required: true, message: `域名不能为空`, trigger: 'blur' }],
         configList: [
           { required: true, message: '参数配置不能为空', trigger: 'blur', validator: validateHandler },
-        ],
+        ]
         // versions: {
         //   name: [{ required: true, message: `名称不能为空`, trigger: 'blur' }],
         //   description: [{ required: true, message: `描述不能为空`, trigger: 'blur' }],
@@ -366,6 +392,7 @@ export default {
       },
       configType: 1,
       copyStatus: false,
+      testStatus: false,
       TitleMap: {
         1: '版本',
         2: '域名',
@@ -381,28 +408,49 @@ export default {
   },
   watch: {
     'form1.name': {
-      handler(val) {
-        if (this.url.ip !== '') {
+      handler(newVal, oldVal) {
+        if (this.url.ip !== '' && this.form1.name !== '') {
           this.form1.url = this.url.ip
-          this.form1.url = this.form1.url.replace('localhost', val)
+          this.form1.url = this.form1.url.replace('localhost', newVal || oldVal)
           this.url.port = this.form1.url
         }
       }
     },
     'form1.port': {
-      handler(val) {
-        if (this.url.port !== '') {
+      handler(newVal, oldVal) {
+        if (this.url.port !== '' && this.form1.port !== undefined) {
           this.form1.url = this.url.port
-          this.form1.url = this.form1.url.replace('port', val)
+          this.form1.url = this.form1.url.replace('port', newVal || oldVal)
+          this.url.mode = this.form1.url
         }
       }
     },
-    // 'form1.name': {
-    //   handler(newVal, oldVal) {
-    //     console.log(newVal,oldVal);
-    //     // this.form1.name = this.form1.name
-    //   }
-    // }
+    'form1.mode': {
+      handler(newVal, oldVal) {
+        if (this.url.mode !== '' && this.form1.mode !== '') {
+          this.form1.url = this.url.mode
+          this.form1.url = this.form1.url.replace('mydb', newVal || oldVal)
+          this.url.userName = this.form1.url
+        }
+      }
+    },
+    'form1.userName': {
+      handler(newVal, oldVal) {
+        if (this.url.userName !== '' && this.form1.userName !== '') {
+          this.form1.url = this.url.userName
+          this.form1.url = this.form1.url.replace('userName', newVal || oldVal)
+          this.url.passWord = this.form1.url
+        }
+      }
+    },
+    'form1.passWord': {
+      handler(newVal, oldVal) {
+        if (this.url.passWord !== '' && this.form1.passWord !== '') {
+          this.form1.url = this.url.passWord
+          this.form1.url = this.form1.url.replace('passWord', newVal || oldVal)
+        }
+      }
+    }
   },
   created() {
     this.form.id = this.environment_Id
@@ -426,14 +474,19 @@ export default {
     },
     // 表单重置
     reset() {
-      // if (this.$refs.form !== undefined) {
+      // if (this.$refs.form) {
       //   this.$refs.form.resetFields()
       // }
-      this.$refs.form1?.resetFields()
       this.switchStatus = false
+      this.url = {
+        ip: '',
+        port: '',
+        mode: '',
+        userName: '',
+        passWord: ''
+      }
       this.form1 = {
         id: '',
-        description: '',
         name: '',
         url: '',
         userName: '',
@@ -441,12 +494,17 @@ export default {
         driver: '',
         maxActive: '',
         maxWait: '',
+        description: '',
         host: '',
         port: undefined,
+        mode: '',
+        version: '',
+        versionName: '',
+        domain: '',
         configList: [
           {
             paramsName: '',
-            paramsValue: '',
+            paramsValue: ''
           }
         ],
         status: 0
@@ -466,6 +524,7 @@ export default {
         this.open = true
         this.configType = type
         this.formTitle = `新增${this.TitleMap[this.configType]}配置`
+        this.testStatus = false
         // delete this.accountType[0]
         // console.info(this.accountType)
       }
@@ -488,12 +547,12 @@ export default {
       this.okButton = '确定'
       this.configType = type
       this.formTitle = `修改${this.TitleMap[this.configType]}配置`
+      this.testStatus = false
       // const { id, name, description, status } = row
       // this.switchStatus = Boolean(status)
       // this.form.versions = { id, name, description, status }
       this.switchStatus = Boolean(row.status)
       this.form1 = row
-      console.log(this.form1);
       this.onActionChange(this.form1.type)
     },
     handleCopy(row, type) {
@@ -503,10 +562,11 @@ export default {
       this.okButton = '确定'
       this.configType = type
       this.formTitle = `复制${this.TitleMap[this.configType]}配置`
+      this.testStatus = false
       this.switchStatus = Boolean(row.status)
       this.form1 = row
       this.copyStatus = true
-      this.versionName= row.name
+      this.versionName = row.name
       // console.log(this.form1);
       this.onActionChange(this.form1.type)
     },
@@ -577,10 +637,63 @@ export default {
         onCancel() { }
       })
     },
+    handleTest(row, type) {
+      // console.log(row)
+      this.form1 = row
+      switch (type) {
+        case 4:
+          Object.keys(this.form.servers).forEach(key => {
+            this.form.servers[key] = this.form1[key]
+          })
+          projectApis.testServer(this.form).then(response => {
+            this.$message.success(response.msg)
+          })
+          break
+        case 5:
+          Object.keys(this.form.dataBases).forEach(key => {
+            this.form.dataBases[key] = this.form1[key]
+          })
+          projectApis.testServer(this.form).then(response => {
+            this.$message.success(response.msg)
+          })
+          break
+      }
+    },
+    testConnect() {
+      this.$refs.form1.validate(valid => {
+        if (valid) {
+          switch (this.configType) {
+            case 4:
+              Object.keys(this.form.servers).forEach(key => {
+                this.form.servers[key] = this.form1[key]
+              })
+              projectApis.testServer(this.form).then(response => {
+                this.$message.success(response.msg)
+                this.testStatus = true
+              })
+              break
+            case 5:
+              Object.keys(this.form.dataBases).forEach(key => {
+                this.form.dataBases[key] = this.form1[key]
+              })
+              projectApis.testDataBase(this.form).then(response => {
+                this.$message.success(response.msg)
+                this.testStatus = true
+              })
+              break
+          }
+        } else {
+          return false
+        }
+      })
+    },
     /** 提交按钮 */
     submitForm: function () {
       this.$refs.form1.validate(valid => {
         if (valid) {
+          if (!this.testStatus) {
+            return this.$message.warning('请先测试连接通过！')
+          }
           switch (this.configType) {
             case 1:
               // this.form.versions = this.form1
@@ -592,7 +705,7 @@ export default {
                   this.$message.success('新增成功',)
                   this.open = false
                   this.$emit('getList')
-                  this.$emit('ok',this.form.versions)
+                  this.$emit('ok', this.form.versions)
                 })
               } else {
                 projectApis.editVersion(this.form).then(response => {
@@ -720,14 +833,20 @@ export default {
       //   }
       //   console.info(value)
       // })
-      for (let key of Object.keys(this.dataBaseType)) {
+      this.reset()
+      for (const key of Object.keys(this.dataBaseType)) {
         var type = this.dataBaseType[key].type
         if (value === type) {
           // console.info(this.dataBaseType[key].driver)
           // console.info(this.dataBaseType[key].url)
+          this.form1.type = this.dataBaseType[key].type
           this.form1.driver = this.dataBaseType[key].driver
           this.form1.url = this.dataBaseType[key].url
           this.url.ip = this.dataBaseType[key].url
+          this.url.port = this.dataBaseType[key].url
+          this.url.mode = this.dataBaseType[key].url
+          this.url.userName = this.dataBaseType[key].url
+          this.url.passWord = this.dataBaseType[key].url
           return
         }
       }
@@ -735,13 +854,13 @@ export default {
     addConfig(item, index) {
       this.form1.configList.push({
         paramsName: '',
-        paramsValue: '',
+        paramsValue: ''
       })
     },
     // 删除配置信息
     deleteConfig(item, index) {
       this.form1.configList.splice(index, 1)
-    },
+    }
   }
 }
 </script>
@@ -755,5 +874,10 @@ export default {
     line-height: 18px;
     text-align: center;
   }
+}
+
+::v-deep .ant-modal-body {
+  max-width: 1000px;
+  max-height: 815px;
 }
 </style>

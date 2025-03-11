@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-import qs from 'qs'
+
 //** **** 项目管理 start ***** */
 // 获取项目列表
 export function getProjectList(params) {
   return request({
     url: '/project/projectConfig/list',
     method: 'get',
-    params,
+    params
   })
 }
 // 新增项目
@@ -14,7 +14,7 @@ export function addProject(data) {
   return request({
     url: '/project/projectConfig',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改项目
@@ -22,7 +22,7 @@ export function editProject(data) {
   return request({
     url: '/project/projectConfig',
     method: 'put',
-    data,
+    data
   })
 }
 // 删除项目
@@ -47,14 +47,14 @@ export function exportProject() {
     url: `/project/projectConfig/export`,
     method: 'get',
     responseType: 'blob',
-    headers:{ 'Content-Type': 'application/json; application/octet-stream'},
+    headers:{ 'Content-Type': 'application/json; application/octet-stream'}
   })
 }
 // 获取系统下所有用户
 export function getAllUsersOfSystem() {
   return request({
     url: '/system/user/getAll',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -64,14 +64,14 @@ export function getEnvironmentList(params) {
   return request({
     url: '/project/environmentConfig/list',
     method: 'get',
-    params,
+    params
   })
 }
 // 获取环境详细信息
 export function getEnvironmentInfo(id) {
   return request({
     url: `/project/environmentConfig/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 // 新增环境
@@ -79,7 +79,7 @@ export function addEnvironment(data) {
   return request({
     url: '/project/environmentConfig',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改环境
@@ -87,7 +87,7 @@ export function editEnvironment(data) {
   return request({
     url: '/project/environmentConfig',
     method: 'put',
-    data,
+    data
   })
 }
 // 删除环境
@@ -113,7 +113,7 @@ export function exportEnvironmentConfig(data) {
     method: 'post',
     responseType: 'blob',
     headers:{ 'Content-Type': 'application/json; application/octet-stream'},
-    data,
+    data
   })
 }
 
@@ -123,7 +123,7 @@ export function addVersion(data) {
   return request({
     url: '/project/environmentConfig/addVersion',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改版本
@@ -148,7 +148,7 @@ export function addDomain(data) {
   return request({
     url: '/project/environmentConfig/addDomain',
     method: 'post',
-    data,
+    data
   })
 }
 export function editDomain(data) {
@@ -171,7 +171,7 @@ export function addAccount(data) {
   return request({
     url: '/project/environmentConfig/addAccount',
     method: 'post',
-    data,
+    data
   })
 }
 export function editAccount(data) {
@@ -194,7 +194,7 @@ export function addServer(data) {
   return request({
     url: '/project/environmentConfig/addServer',
     method: 'post',
-    data,
+    data
   })
 }
 export function editServer(data) {
@@ -211,13 +211,19 @@ export function removeServer(data) {
     data
   })
 }
-
+export function testServer(data) {
+  return request({
+    url: `/project/environmentConfig/testServer`,
+    method: 'post',
+    data
+  })
+}
 /** **** 数据库配置 ***** */
 export function addDataBase(data) {
   return request({
     url: '/project/environmentConfig/addDataBase',
     method: 'post',
-    data,
+    data
   })
 }
 export function editDataBase(data) {
@@ -235,11 +241,18 @@ export function removeDataBase(data) {
   })
 }
 // 校验数据库配置
+export function testDataBase(data) {
+  return request({
+    url: `/project/environmentConfig/testDataBase`,
+    method: 'post',
+    data
+  })
+}
 export function checkDataBase(data) {
   return request({
     url: '/system/environment/validate',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -249,14 +262,14 @@ export function getAutomationList(params) {
   return request({
     url: '/project/automationConfig/list',
     method: 'get',
-    params,
+    params
   })
 }
 // 获取自动化配置详细信息
 export function getAutomationInfo(id) {
   return request({
     url: `/project/automationConfig/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 // 新增自动化配置
@@ -264,7 +277,7 @@ export function addAutomation(data) {
   return request({
     url: '/project/automationConfig',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改自动化配置
@@ -272,7 +285,7 @@ export function editAutomation(data) {
   return request({
     url: '/project/automationConfig',
     method: 'put',
-    data,
+    data
   })
 }
 // 删除自动化配置
@@ -298,7 +311,7 @@ export function exportAutomationConfig(data) {
     method: 'post',
     responseType: 'blob',
     headers:{ 'Content-Type': 'application/json; application/octet-stream'},
-    data,
+    data
   })
 }
 
@@ -308,7 +321,7 @@ export function addAutomationProject(data) {
   return request({
     url: '/project/automationConfig/addProject',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改项目
@@ -333,7 +346,7 @@ export function addAutomationJenkins(data) {
   return request({
     url: '/project/automationConfig/addJenkins',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改Jenkins
@@ -359,7 +372,7 @@ export function addAutomationEnvironment(data) {
   return request({
     url: '/project/automationConfig/addEnvironment',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改环境
@@ -382,7 +395,7 @@ export function removeAutomationEnvironment(data) {
 export function syncAutomationEnvironment1(id) {
   return request({
     url: `/project/automationConfig/syncEnvironment/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 // 同步环境
@@ -390,7 +403,7 @@ export function syncAutomationEnvironment(data) {
   return request({
     url: `/project/automationConfig/syncEnvironment`,
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -400,7 +413,7 @@ export function addAutomationBrowser(data) {
   return request({
     url: '/project/automationConfig/addBrowser',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改浏览器
@@ -447,14 +460,14 @@ export function getVersionList(params) {
   return request({
     url: '/system/version/list',
     method: 'get',
-    params,
+    params
   })
 }
 // 获取版本详细信息
 export function getVersionInfo(id) {
   return request({
     url: `/system/version/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -462,7 +475,7 @@ export function getVersionInfo(id) {
 export function changeVersionStatus(id) {
   return request({
     url: `/system/version/change/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 // 最新版切换
@@ -470,7 +483,7 @@ export function setLatestVersion(data) {
   return request({
     url: `/system/version/latest`,
     method: 'put',
-    data,
+    data
   })
 }
 //** **** 版本管理 end ***** */
@@ -480,7 +493,7 @@ export function getConfigurationList(params) {
   return request({
     url: '/system/configuration/list',
     method: 'get',
-    params,
+    params
   })
 }
 // 新增配置管理
@@ -488,7 +501,7 @@ export function addConfiguration(data) {
   return request({
     url: '/system/configuration',
     method: 'post',
-    data,
+    data
   })
 }
 // 修改配置管理
@@ -496,25 +509,21 @@ export function editConfiguration(data) {
   return request({
     url: '/system/configuration',
     method: 'put',
-    data,
+    data
   })
 }
 // 删除配置管理
 export function deleteConfiguration(params) {
   return request({
     url: `/system/configuration/${params}`,
-    method: 'delete',
+    method: 'delete'
   })
 }
 
 //** **** 配置管理 end ***** */
-
-
-
-
 export function getAllProject() {
   return request({
     url: '/system/project/getAll',
-    method: 'get',
+    method: 'get'
   })
 }

@@ -479,7 +479,7 @@ export const dataBaseType = [
   {
     label: 'SQLServer',
     type: 'SQLServer',
-    driver: 'com.microsoft.jdbc.sqlserver.SQLServerDriver',
+    driver: 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
     url: 'jdbc:sqlserver://localhost:port;databaseName=mydb',
     sql: 'SELECT @@VERSION;'
   },
@@ -491,33 +491,138 @@ export const dataBaseType = [
     sql: 'SELECT version();'
   },
   {
-    label: 'DB2',
-    type: 'DB2',
-    driver: 'com.ibm.db2.jcc.DB2Driver',
-    url: 'jdbc:db2://localhost:port/mydb',
-    sql: 'SELECT SERVICE_LEVEL, FIXPACK_NUM, SPECIAL_REGISTRATION, BUILD_LEVEL FROM SYSIBMADM.ENV_INST_INFO'
-  },
-  {
-    label: 'SQLite',
-    type: 'SQLite',
-    driver: 'org.sqlite.JDBC',
-    url: 'jdbc:sqlite:/path/to/database.sqlite',
-    sql: 'SELECT sqlite_version();'
+    label: 'Greenplum',
+    type: 'Greenplum',
+    driver: 'org.postgresql.Driver',
+    url: 'jdbc:postgresql://localhost:port/mydb',
+    sql: 'SELECT version();'
   },
   {
     label: 'Sybase',
     type: 'Sybase',
     driver: 'com.sybase.jdbc4.jdbc.SybDriver',
-    url: 'jdbc:sybase:Tds:localhost:port/SXABC',
+    url: 'jdbc:sybase:Tds:localhost:port/mydb',
     sql: 'SELECT @@version'
+  },
+  {
+    label: 'Hive',
+    type: 'Hive',
+    driver: 'org.apache.hive.jdbc.HiveDriver',
+    url: 'jdbc:hive2://localhost:port/mydb',
+    sql: 'SELECT @@version'
+  },
+  {
+    label: 'TiDB',
+    type: 'TiDB',
+    driver: 'com.mysql.cj.jdbc.Driver',
+    url: 'jdbc:mysql://localhost:port/mydb',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'OceanBase',
+    type: 'OceanBase',
+    driver: 'com.mysql.jdbc.Driver',
+    url: 'jdbc:mysql://localhost:port/mydb',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'Teradata',
+    type: 'Teradata',
+    driver: 'com.teradata.jdbc.TeraDriver',
+    url: 'jdbc:teradata://localhost/DATABASE=mydb,DBS_PORT=port',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'MariaDB',
+    type: 'MariaDB',
+    driver: 'org.mariadb.jdbc.Driver',
+    url: 'jdbc:mysql://localhost:port/mydb',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'KingBase',
+    type: 'KingBase',
+    driver: 'com.kingbase8.Driver',
+    url: 'jdbc:kingbase8://localhost:port/mydb',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'IRIS',
+    type: 'IRIS',
+    driver: 'com.intersystems.jdbc.IRISDriver',
+    url: 'jdbc:IRIS://localhost:port/mydb',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'Informix',
+    type: 'Informix',
+    driver: 'com.informix.jdbc.IfxDriver',
+    url: 'jdbc:informix-sqli://localhost:port/mydb:informixserver=informix',
+    sql: 'SELECT @@VERSION;'
+  },
+  {
+    label: 'DB2',
+    type: 'DB2',
+    driver: 'com.ibm.db2.jcc.DB2Driver',
+    url: 'jdbc:db2://localhost:port/mydb',
+    sql: 'SELECT version();'
+  },
+  {
+    label: 'Cache',
+    type: 'Cache',
+    driver: 'com.intersys.jdbc.CacheDriver',
+    url: 'jdbc:Cache://localhost:port/mydb',
+    sql: 'SELECT version();'
+  },
+  {
+    label: 'GaussDB',
+    type: 'GaussDB',
+    driver: 'org.postgresql.Driver',
+    url: 'jdbc:postgresql://localhost:port/mydb',
+    sql: 'SELECT version();'
+  },
+  {
+    label: 'Gbase8a',
+    type: 'Gbase8a',
+    driver: 'com.gbase.jdbc.Driver',
+    url: 'jdbc:gbase://localhost:port/mydb',
+    sql: 'SELECT version();'
+  },
+  {
+    label: 'Gbase8s',
+    type: 'Gbase8s',
+    driver: 'com.gbasedbt.jdbc.Driver',
+    url: 'jdbc:gbasedbt-sqli://localhost:port/mydb:GBASEDBTSERVER=gbaseserver;CLIENT_LOCALE=zh_cn.utf8;SQLMODE=GBase;NEWCODESET=UTF8,zh_cn.UTF8,57372;DB_LOCALE=zh_CN.57372;',
+    sql: 'SELECT version();'
+  },
+  {
+    label: 'TDengine',
+    type: 'TDengine',
+    driver: 'com.taosdata.jdbc.rs.RestfulDriver',
+    url: 'jdbc:TAOS-RS://localhost:port/mydb',
+    sql: 'SELECT version();'
+  },
+  {
+    label: 'Hbase',
+    type: 'Hbase',
+    driver: 'org.apache.phoenix.jdbc.PhoenixDriver',
+    url: 'jdbc:phoenix:localhost:port/mydb',
+    sql: 'SELECT version();'
   },
   {
     label: '达梦',
     type: '达梦',
     driver: 'dm.jdbc.driver.DmDriver',
-    url: 'jdbc:dm://localhost:port/hive',
+    url: 'jdbc:dm://localhost:port/schema=mydb',
     sql: 'SELECT version();'
   },
+  {
+    label: 'MongoDB',
+    type: 'MongoDB',
+    driver: 'com.dbschema.MongoJdbcDriver',
+    url: 'mongodb://userName:passWord@localhost:port/mydb?authSource=admin',
+    sql: 'SELECT version();'
+  }
 ]
 export const dataBaseQueryData = [
   {

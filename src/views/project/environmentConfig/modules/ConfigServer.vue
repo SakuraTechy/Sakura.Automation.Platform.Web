@@ -63,7 +63,8 @@
         <a @click="handleDelete(record)" v-show="record.id !== '1'"
           v-hasPermi="['project:environmentConfig:serverConfig:remove']">删除</a>
         <a-divider type="vertical" />
-        <a @click="handleExport(record)" v-hasPermi="['project:environmentConfig:serverConfig:export']"> 导出 </a>
+        <a @click="handleTest(record)" v-hasPermi="['project:environmentConfig:serverConfig:edit']"> 测试 </a>
+        <!-- <a @click="handleExport(record)" v-hasPermi="['project:environmentConfig:serverConfig:export']"> 导出 </a> -->
       </span>
     </advance-table>
     <ConfigDataAddOrEdit v-if="showAddModal" :environment_Id="environment_Id" :statusOptions="statusOptions"
@@ -370,6 +371,12 @@ export default {
         this.$refs.ConfigDataAddOrEdit.handleDelete(row, this.ids, this.names, 4)
       ))
     },
+    handleTest(record) {
+      this.showAddModal = true
+      this.$nextTick(() => (
+        this.$refs.ConfigDataAddOrEdit.handleTest(record, 4)
+      ))
+    },
     handleImport() { },
     handleExport() { },
     // 表格内-状态切换
@@ -387,7 +394,7 @@ export default {
         this.getList()
       })
     }
-  },
+  }
 }
 </script>
 
