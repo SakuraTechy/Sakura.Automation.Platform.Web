@@ -14,6 +14,8 @@ window.config = {
     download: '/certificateApply/download',
     details: '/certificate/details',
     productVersions: '/productManage/productVersions',
+    productTypes: '/productManage/productTypes',
+    productModules: '/productManage/productModules',
     applications: '/certificateApply/applications',
     parseCaptcha: '/common/parseCaptcha',
 //    pythonPath: 'D:/Program/Python/3.9.0/python.exe',
@@ -31,7 +33,7 @@ window.config = {
     savePath: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/license',
     downloadPath: 'http://172.19.5.222:8079/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/license/',
     webhookUrl: '/system/file/sendWebhookMessage',
-    webhook: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=fba8ce79-c1b0-4fae-ad3d-56c1bd3051ae'
+    webhook: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=cce2c047-5c30-4d58-a7e0-8a2463cc8dc9'
   },
   防统方系统: {
     id: 'AAS_P',

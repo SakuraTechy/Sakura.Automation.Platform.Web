@@ -1,7 +1,7 @@
 <template>
   <ant-modal
     modalWidth="600"
-    modalHeight="700"
+    modalHeight="900"
     :visible="open"
     :modal-title="formTitle"
     :adjust-size="true"
@@ -29,11 +29,22 @@
             </a-select-option>
           </a-select>
         </a-form-model-item>
+        <a-form-model-item label="所属型号" prop="productTypeId">
+          <a-select v-model="form.productTypeId" placeholder="请选择所属型号" option-filter-prop="children" show-search allowClear>
+            <a-select-option v-for="(item, index) in productTypes" :key="index" :value="item.productTypeId" @click="handleChangeProductType(item)">
+              {{ item.typeName }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="授权模块" prop="modelType">
+          <a-select v-model="form.modelType" mode="multiple" style="width: 100%" max-tag-count="15" max-tag-text-length="15" placeholder="请选择授权模块" :options="productModules" @change="handleChangeProductModule" allowClear>
+          </a-select>
+        </a-form-model-item>
         <a-form-model-item label="授权期限" prop="authorizationDeadlineTime">
-          <el-date-picker style="width: 336px;" v-model="form.authorizationDeadlineTime" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择授权期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
+          <el-date-picker style="width: 100%;" v-model="form.authorizationDeadlineTime" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择授权期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
         </a-form-model-item>
         <a-form-model-item label="维保期限" prop="maintenanceWarnDate">
-          <el-date-picker style="width: 336px;" v-model="form.maintenanceWarnDate" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择维保期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
+          <el-date-picker style="width: 100%;" v-model="form.maintenanceWarnDate" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择维保期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
         </a-form-model-item>
       </a-form-model>
       <div class="form-item-row">
@@ -76,7 +87,7 @@
           drag
         >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__text">可批量将文件拖到此处，或<em>点击上传</em></div>
           <div slot="tip" class="el-upload__tip">只能上传.info文件，且不超过500kb</div>
         </el-upload>
       </div>
@@ -130,6 +141,8 @@ export default {
       },
       projectId: '',
       productVersions: [],
+      productTypes: [],
+      productModules: [],
       versionId: '',
 
       pickerOptions: {
@@ -171,6 +184,9 @@ export default {
       form: {
         projectId: undefined,
         productVersionId: undefined,
+        productTypeId: undefined,
+        modelType: [],
+        versionGroupId: '',
         planTime: [],
         authorizationDeadlineTime: new Date().setTime(new Date().setHours(0, 0, 0, 0) + 3600 * 1000 * 24 * 14),
         maintenanceWarnDate: new Date().setTime(new Date().setHours(0, 0, 0, 0) + 3600 * 1000 * 24 * 14),
@@ -189,6 +205,7 @@ export default {
       rules: {
         projectId: [{ required: true, message: '产品项目不能为空', trigger: 'blur' }],
         productVersionId: [{ required: true, message: '产品版本不能为空', trigger: 'blur' }],
+        productTypeId: [{ required: true, message: '产品型号不能为空', trigger: 'blur' }],
         authorizationDeadlineTime: [{ required: true, message: `授权期限不能为空`, trigger: 'blur' }]
       }
     }
@@ -275,6 +292,14 @@ export default {
         this.productVersions = response.data.data.list
         if (this.$config[this.project.productChName] && this.$config[this.project.productChName].productVersionId) {
           this.form.productVersionId = this.$config[this.project.productChName].productVersionId
+          for (const item of this.productVersions) {
+            if (item.productVersionId === this.$config[this.project.productChName].productVersionId) {
+              this.form.versionGroupId = item.versionGroupId
+              break
+            }
+          }
+          this.getProductTypeList()
+          this.getProductModuleList()
         }
       })
     },
@@ -283,6 +308,54 @@ export default {
         this.$message.warning('请先选择项目！')
       } else {
         this.form.productVersionId = item.productVersionId
+        this.form.versionGroupId = item.versionGroupId
+        this.getProductTypeList()
+        this.getProductModuleList()
+      }
+    },
+    getProductTypeList() {
+      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
+      axios.get(buildUrl(this.$config.environment.productTypes + '?productId=' + this.projectId + '&versionGroupId=' + this.form.versionGroupId), {
+        headers: { 'Authorization': this.token }
+      }).then((response) => {
+        this.productTypes = response.data.data.list
+        for (const item of this.productTypes) {
+          if (item.productTypeId === this.$config[this.project.productChName].productTypeId) {
+            this.form.productTypeId = item.productTypeId
+            break
+          }
+          this.form.productTypeId = item.productTypeId
+        }
+      })
+    },
+    handleChangeProductType(item) {
+      if (this.form.productVersionId === '') {
+        this.$message.warning('请先选择版本！')
+      } else {
+        this.form.productTypeId = item.productTypeId
+      }
+    },
+    getProductModuleList() {
+      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
+      axios.get(buildUrl(this.$config.environment.productModules + '?productId=' + this.projectId + '&versionGroupId=' + this.form.versionGroupId), {
+        headers: { 'Authorization': this.token }
+      }).then((response) => {
+        this.productModules = response.data.data.list.map(item => ({
+          value: item.productModuleId,
+          label: item.productModuleName
+        }))
+        if (this.form.productVersionId === this.$config[this.project.productChName].productVersionId) {
+          this.form.modelType = this.$config[this.project.productChName].modelType.split(',').map(Number)
+        } else {
+          this.form.modelType = this.productModules.map(item => item.value)
+        }
+      })
+    },
+    handleChangeProductModule(item) {
+      if (this.form.productVersionId === '') {
+        this.$message.warning('请先选择版本！')
+      } else {
+        this.form.modelType = item
       }
     },
     getEnvironmentList() {
@@ -472,14 +545,14 @@ export default {
           ['agent', this.$config[abbreviate].agent],
           ['productId', this.$config[abbreviate].productId],
           ['productVersionId', this.form.productVersionId],
-          ['productTypeId', this.$config[abbreviate].productTypeId],
+          ['productTypeId', this.form.productTypeId],
           ['maxInstance', this.$config[abbreviate].maxInstance],
           ['maxStorage', this.$config[abbreviate].maxStorage],
           ['maxPerformance', this.$config[abbreviate].maxPerformance],
           ['applyTotal', this.$config[abbreviate].applyTotal],
           ['technicalName', this.$config[abbreviate].technicalName],
           ['certificateType', this.$config[abbreviate].certificateType],
-          ['modelType', this.$config[abbreviate].modelType],
+          ['modelType', this.form.modelType.join(',')],
           // ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
           // ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
           ['authorizationDeadlineTime', this.form.authorizationDeadlineTime],
@@ -520,14 +593,14 @@ export default {
           ['agent', this.$config[abbreviate].agent],
           ['productId', this.$config[abbreviate].productId],
           ['productVersionId', this.form.productVersionId],
-          ['productTypeId', this.$config[abbreviate].productTypeId],
+          ['productTypeId', this.form.productTypeId],
           ['maxInstance', this.$config[abbreviate].maxInstance],
           ['maxStorage', this.$config[abbreviate].maxStorage],
           ['maxPerformance', this.$config[abbreviate].maxPerformance],
           ['applyTotal', this.$config[abbreviate].applyTotal],
           ['technicalName', this.$config[abbreviate].technicalName],
           ['certificateType', this.$config[abbreviate].certificateType],
-          ['modelType', this.$config[abbreviate].modelType],
+          ['modelType', this.form.modelType.join(',')],
           // ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
           // ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
           ['authorizationDeadlineTime', this.form.authorizationDeadlineTime],
@@ -612,11 +685,11 @@ export default {
 }
 
 .upload-demo {
-  margin-left: 20px; /* 设置间距 */
+  margin-left: 14px; /* 设置间距 */
   flex: 1; /* 使上传组件占据剩余空间 */
 
   ::v-deep .el-upload-dragger {
-    width: 340px;
+    width: 322px;
     // height: 100px;
     .el-icon-upload {
       font-size: 50px;
