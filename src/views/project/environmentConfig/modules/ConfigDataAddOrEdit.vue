@@ -410,6 +410,7 @@ export default {
   watch: {
     'form1.name': {
       handler(newVal, oldVal) {
+        console.log(newVal, oldVal)
         if (this.url.ip !== '' && this.form1.name !== '') {
           this.form1.url = this.url.ip
           this.form1.url = this.form1.url.replace('localhost', newVal || oldVal)
@@ -457,12 +458,6 @@ export default {
     this.form.id = this.environment_Id
   },
   methods: {
-    // 获取系统的所有用户
-    getAllUsers() {
-      getAllUsersOfSystem().then((response) => {
-        this.memberOptions = response.data
-      })
-    },
     getList() {
       this.form1 = {}
     },
@@ -539,7 +534,6 @@ export default {
       this.formTitle = `查看${this.TitleMap[this.configType]}配置`
       this.switchStatus = Boolean(row.status)
       this.form1 = row
-      // this.onActionChange(this.form1.type)
     },
     /** 修改按钮操作 */
     handleUpdate(row, type) {
@@ -553,8 +547,8 @@ export default {
       // this.switchStatus = Boolean(status)
       // this.form.versions = { id, name, description, status }
       this.switchStatus = Boolean(row.status)
+      this.onActionChange(row.type)
       this.form1 = row
-      // this.onActionChange(this.form1.type)
     },
     handleCopy(row, type) {
       console.log(this.environment_Id);
@@ -565,11 +559,10 @@ export default {
       this.formTitle = `复制${this.TitleMap[this.configType]}配置`
       this.testStatus = false
       this.switchStatus = Boolean(row.status)
+      this.onActionChange(row.type)
       this.form1 = row
       this.copyStatus = true
       this.versionName = row.name
-      // console.log(this.form1);
-      // this.onActionChange(this.form1.type)
     },
     handleDelete(row, ids, names, type) {
       // // 修改 row 中 host 属性名为 name
