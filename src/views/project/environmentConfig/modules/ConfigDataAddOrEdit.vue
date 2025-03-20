@@ -223,6 +223,7 @@
 import * as projectApis from '@/api/project'
 import AntModal from '@/components/pt/dialog/AntModal'
 import { accountType, serverType, dataBaseType } from './EnvConfig'
+import log from '@/utils/log'
 
 export default {
   name: 'ConfigDataAddOrEdit',
@@ -538,7 +539,7 @@ export default {
       this.formTitle = `查看${this.TitleMap[this.configType]}配置`
       this.switchStatus = Boolean(row.status)
       this.form1 = row
-      this.onActionChange(this.form1.type)
+      // this.onActionChange(this.form1.type)
     },
     /** 修改按钮操作 */
     handleUpdate(row, type) {
@@ -553,7 +554,7 @@ export default {
       // this.form.versions = { id, name, description, status }
       this.switchStatus = Boolean(row.status)
       this.form1 = row
-      this.onActionChange(this.form1.type)
+      // this.onActionChange(this.form1.type)
     },
     handleCopy(row, type) {
       console.log(this.environment_Id);
@@ -568,7 +569,7 @@ export default {
       this.copyStatus = true
       this.versionName = row.name
       // console.log(this.form1);
-      this.onActionChange(this.form1.type)
+      // this.onActionChange(this.form1.type)
     },
     handleDelete(row, ids, names, type) {
       // // 修改 row 中 host 属性名为 name

@@ -325,12 +325,12 @@ export const accountColumns = [
 export const serverType = [
   {
     label: 'Linux',
-    type: 'Linux',
+    type: 'Linux'
   },
   {
     label: 'Windows',
-    type: 'Windows',
-  },
+    type: 'Windows'
+  }
 ]
 export const serverQueryData = [
   {
