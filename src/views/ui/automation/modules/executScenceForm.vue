@@ -1565,7 +1565,7 @@ export default {
             executeName: localStorage.getItem('userName'),
             executeEmail: localStorage.getItem('userEmail'),
             testReport: {
-              id: this.testPlan ? this.uuidv1().replaceAll('-', ''),
+              id: this.testPlan ? this.uuidv1().replaceAll('-', '') : '',
               name: this.testPlan ? `${this.testPlan.name}_测试报告` : '',
               description: this.testPlan ? `${this.testPlan.name}_测试报告` : '',
               triggerMode: '1',
