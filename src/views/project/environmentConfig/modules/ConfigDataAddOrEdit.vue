@@ -214,7 +214,7 @@
     </a-form-model>
     <template slot="footer">
       <a-button @click="cancel">取消</a-button>
-      <a-button @click="testConnect">测试连接</a-button>
+      <a-button v-if="configType === 4 || configType === 5" @click="testConnect">测试连接</a-button>
       <a-button type="primary" :disabled="multiple" @click="submitForm">{{ this.okButton }}</a-button>
     </template>
   </ant-modal>
@@ -685,7 +685,7 @@ export default {
     submitForm: function () {
       this.$refs.form1.validate(valid => {
         if (valid) {
-          if (!this.testStatus) {
+          if (!this.testStatus && this.configType === 4 || this.configType === 5) {
             return this.$message.warning('请先测试连接通过！')
           }
           switch (this.configType) {

@@ -1,7 +1,7 @@
 <template>
   <ant-modal
-    modalWidth="630"
-    modalHeight="550"
+    modalWidth="600"
+    modalHeight="600"
     :visible="open"
     :modal-title="formTitle"
     :adjust-size="true"
@@ -18,6 +18,13 @@
         <a-form-model-item label="所属项目" prop="abbreviate">
           <a-select v-model="form.abbreviate" placeholder="请选择所属项目" option-filter-prop="children" show-search allowClear>
             <a-select-option v-for="(item, index) in projectOptions" :key="index" :value="item.abbreviate" @click="handleChangeProject(item)">
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="所属版本" prop="version">
+          <a-select v-model="form.version" placeholder="请选择所属版本" option-filter-prop="children" show-search allowClear>
+            <a-select-option v-for="(item, index) in versionOptions" :key="index" :value="item.name" @click="handleChangeVersion(item)">
               {{ item.name }}
             </a-select-option>
           </a-select>
@@ -88,6 +95,7 @@ import * as api from '@/api/api'
 import * as projectApis from '@/api/project'
 import { randomUUID } from '@/utils/util'
 import AntModal from '@/components/pt/dialog/AntModal'
+import { version } from 'store'
 
 export default {
   name: 'CertificateAddForm',
@@ -111,6 +119,7 @@ export default {
 
       orderIdList: [],
       certificateList: [],
+      versionOptions: [],
 
       okButton: '立即申请',
       loading: false,
@@ -120,12 +129,14 @@ export default {
       // 表单参数
       form: {
         abbreviate: undefined,
+        version: undefined,
         host: undefined
       },
       sceneList: [],
       open: false,
       rules: {
         abbreviate: [{ required: true, message: '所属项目不能为空', trigger: 'blur' }],
+        version: [{ required: true, message: '所属版本不能为空', trigger: 'blur' }],
         host: [{ required: true, message: '所属环境不能为空', trigger: 'blur' }]
       }
     }
@@ -187,11 +198,33 @@ export default {
       this.getSceneList(this.form.testPlan)
     },
     handleChangeProject(project) {
-      // this.form.abbreviate  = project.abbreviate
+      this.form.abbreviate = project.abbreviate
+      this.getAllVersions(project.id)
+    },
+    getAllVersions(projectId) {
+      const queryParam = {
+        projectId: projectId
+      }
+      this.versionOptions = []
+      projectApis.getEnvironmentList(queryParam).then((response) => {
+        response.data.list.forEach((item, index) => {
+          if (item.status === 1) {
+            var versionOptions = JSON.parse(item.versionConfig)
+            versionOptions.forEach(item => {
+              if (item.delFlag === 0) {
+                this.versionOptions.push(item)
+              }
+            })
+          }
+        })
+      })
+    },
+    handleChangeVersion(version) {
+      this.form.version = version.name
     },
     handleChangeServer(server) {
       // this.host = server.id
-      this.License_Path = this.$config.environment.license + '/' + this.form.abbreviate + '/License'
+      this.License_Path = this.$config.environment.license + '/' + this.form.abbreviate + '/' + this.form.version + '/License'
     },
     getEnvironmentList() {
       const queryParam = {
