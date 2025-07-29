@@ -350,6 +350,7 @@ export default {
           port: undefined,
           driver: '',
           url: '',
+          mode: '',
           userName: '',
           passWord: '',
           maxActive: '',
@@ -410,7 +411,7 @@ export default {
   watch: {
     'form1.name': {
       handler(newVal, oldVal) {
-        console.log(newVal, oldVal)
+        // console.log(newVal, oldVal)
         if (this.url.ip !== '' && this.form1.name !== '') {
           this.form1.url = this.url.ip
           this.form1.url = this.form1.url.replace('localhost', newVal || oldVal)
@@ -685,7 +686,7 @@ export default {
     submitForm: function () {
       this.$refs.form1.validate(valid => {
         if (valid) {
-          if (!this.testStatus && this.configType === 4 || this.configType === 5) {
+          if (this.configType === 4 || this.configType === 5 && !this.testStatus) {
             return this.$message.warning('请先测试连接通过！')
           }
           switch (this.configType) {
