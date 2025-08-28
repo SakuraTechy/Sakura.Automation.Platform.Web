@@ -686,7 +686,7 @@ export default {
     submitForm: function () {
       this.$refs.form1.validate(valid => {
         if (valid) {
-          if (this.configType === 4 || this.configType === 5 && !this.testStatus) {
+          if ((this.configType === 4 || this.configType === 5) && !this.testStatus) {
             return this.$message.warning('请先测试连接通过！')
           }
           switch (this.configType) {
