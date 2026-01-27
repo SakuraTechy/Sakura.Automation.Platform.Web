@@ -313,7 +313,7 @@ export default {
       }
       try {
         const response = await automationApis.getSceneList(params)
-        this.list = response.data.list
+        this.list = response.data
         this.list.forEach((item, index) => {
           item.caseList = item.caseMsg ? JSON.parse(item.caseMsg) : []
           item.testRecordList = item.testRecord ? JSON.parse(item.testRecord) : []
