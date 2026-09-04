@@ -1,671 +1,508 @@
 <template>
   <ant-modal
-    modalWidth="600"
-    modalHeight="900"
+    modal-width="600"
+    modal-height="850"
     :visible="open"
     :modal-title="formTitle"
     :adjust-size="true"
     @cancel="cancel"
   >
     <div slot="content">
-      <a-form-model
-        ref="form"
-        :model="form"
-        :rules="rules"
-        :label-col="{ span: 4 }"
-        :wrapper-col="{ span: 14 }"
-      >
-        <a-form-model-item label="所属项目" prop="projectId">
-          <a-select v-model="form.projectId" placeholder="请选择所属项目" option-filter-prop="children" show-search allowClear>
-            <a-select-option v-for="(item, index) in projectOptions" :key="index" :value="item.productId" @click="handleChangeProject(item)">
-              {{ item.productChName }}
+      <a-form-model ref="form" :model="form" :rules="rules" :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }">
+        <!-- <a-form-model-item label="客户名称" prop="customerName">
+          <a-input v-model="form.customerName" placeholder="请输入客户名称" />
+        </a-form-model-item>
+        <a-form-model-item label="客户简称" prop="customerShort">
+          <a-input v-model="form.customerShort" placeholder="请输入客户简称" />
+        </a-form-model-item> -->
+        <a-form-model-item label="产品项目" prop="productId">
+          <a-select
+            v-model="form.productId"
+            placeholder="请选择产品"
+            show-search
+            option-filter-prop="children"
+            allow-clear
+            @change="handleChangeProject">
+            <a-select-option v-for="item in projectOptions" :key="item.productId" :value="item.productId">
+              {{ item.productName }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
-        <a-form-model-item label="所属版本" prop="productVersionId">
-          <a-select v-model="form.productVersionId" placeholder="请选择所属版本" option-filter-prop="children" show-search allowClear>
-            <a-select-option v-for="(item, index) in productVersions" :key="index" :value="item.productVersionId" @click="handleChangeVersion(item)">
-              {{ item.productVersionNumber }}
+        <a-form-model-item label="产品版本" prop="versionId">
+          <a-select
+            v-model="form.versionId"
+            placeholder="请选择版本"
+            show-search
+            option-filter-prop="children"
+            allow-clear
+            @change="handleChangeVersion">
+            <a-select-option v-for="item in productVersions" :key="item.versionId" :value="item.versionId">
+              {{ item.versionNo }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
-        <a-form-model-item label="所属型号" prop="productTypeId">
-          <a-select v-model="form.productTypeId" placeholder="请选择所属型号" option-filter-prop="children" show-search allowClear>
-            <a-select-option v-for="(item, index) in productTypes" :key="index" :value="item.productTypeId" @click="handleChangeProductType(item)">
-              {{ item.typeName }}
+        <a-form-model-item label="产品型号" prop="modelId">
+          <a-select
+            v-model="form.modelId"
+            placeholder="请选择型号"
+            show-search
+            option-filter-prop="children"
+            allow-clear
+            @change="handleChangeModel">
+            <a-select-option v-for="item in productModels" :key="item.modelId" :value="item.modelId">
+              {{ item.modelName }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
-        <a-form-model-item label="授权模块" prop="modelType">
-          <a-select v-model="form.modelType" mode="multiple" style="width: 100%" max-tag-count="15" max-tag-text-length="15" placeholder="请选择授权模块" :options="productModules" @change="handleChangeProductModule" allowClear>
-          </a-select>
+        <a-form-model-item label="授权模块">
+          <a-select
+            v-model="form.authModuleIdList"
+            mode="multiple"
+            :options="productModules"
+            :max-tag-count="50"
+            placeholder="请选择授权模块"
+            allow-clear />
         </a-form-model-item>
-        <a-form-model-item label="授权期限" prop="authorizationDeadlineTime">
-          <el-date-picker style="width: 100%;" v-model="form.authorizationDeadlineTime" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择授权期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
+        <a-form-model-item label="授权生效" prop="effectDate">
+          <el-date-picker
+            size="small"
+            v-model="form.effectDate"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            default-time="00:00:00"
+            :picker-options="pickerOptions"
+            style="width: 100%"
+            clearable />
         </a-form-model-item>
-        <a-form-model-item label="维保期限" prop="maintenanceWarnDate">
-          <el-date-picker style="width: 100%;" v-model="form.maintenanceWarnDate" value-format="timestamp" size="small" align="left" type="datetime" placeholder="选择维保期限" default-time="00:00:00" :picker-options="pickerOptions" clearable/>
+        <a-form-model-item label="授权结束" prop="expiryDate">
+          <el-date-picker
+            size="small"
+            v-model="form.expiryDate"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            default-time="23:59:59"
+            :picker-options="pickerOptions"
+            style="width: 100%"
+            clearable />
+        </a-form-model-item>
+        <a-form-model-item label="维保结束" prop="maintenanceExpiry">
+          <el-date-picker
+            size="small"
+            v-model="form.maintenanceExpiry"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            default-time="23:59:59"
+            :picker-options="pickerOptions"
+            style="width: 100%"
+            clearable />
+        </a-form-model-item>
+        <a-form-model-item label="授权天数" prop="authDays">
+          <a-input-number v-model="form.authDays" :min="1" :precision="0" style="width: 100%" />
         </a-form-model-item>
       </a-form-model>
       <div class="form-item-row">
         <span class="form-item-label">机器码：</span>
-        <!-- <el-upload
-          class="upload-demo"
-          ref="upload"
-          :action="uploadUrl"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-change="handleChange"
-          :on-exceed="handleExceed"
-          :before-upload="beforeUpload"
-          :http-request="submitUpload"
-          :file-list="fileList"
-          :auto-upload="false"
-          :limit="limit"
-          accept=".info,.lic"
-          multiple
-        >
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload2">上传到服务器</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传.info | .lic文件，且不超过500kb</div>
-        </el-upload> -->
         <el-upload
           class="upload-demo"
           ref="upload"
           :action="uploadUrl"
-          :on-preview="handlePreview"
           :on-remove="handleRemove"
           :on-change="handleChange"
           :on-exceed="handleExceed"
           :before-upload="beforeUpload"
-          :http-request="submitUpload"
           :file-list="fileList"
           :auto-upload="false"
           :limit="limit"
-          accept=".info,"
+          accept=".info,.txt"
           multiple
           drag
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">可批量将文件拖到此处，或<em>点击上传</em></div>
-          <div slot="tip" class="el-upload__tip">只能上传.info文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">只能上传.info或.txt文件，且单个文件不超过500KB</div>
         </el-upload>
       </div>
     </div>
     <template slot="footer">
-      <a-button @click="cancel"> 取消 </a-button>
-      <!-- <a-button type="primary" @click="submitForm2"> 上传到自动化环境 </a-button> -->
-      <a-button type="primary" @click="submitForm"> 立即申请 </a-button>
-      <a-button type="primary" @click="submitForm1"> 一键制作 </a-button>
+      <a-button @click="cancel">取消</a-button>
+      <a-button type="primary" :loading="loading" @click="submitForm">立即申请</a-button>
+      <a-button type="primary" :loading="loading" @click="submitAndApprove">一键制作</a-button>
     </template>
   </ant-modal>
 </template>
+
 <script>
 import axios from 'axios'
-import * as api from '@/api/api'
-import * as projectApis from '@/api/project'
-import { randomUUID } from '@/utils/util'
+import md5 from 'md5'
 import AntModal from '@/components/pt/dialog/AntModal'
+import { randomUUID } from '@/utils/util'
 
 export default {
-  name: 'CreateForm',
+  name: 'CertificateAddForm',
+  components: { AntModal },
   props: {
-    projectOptions: {
-      type: Array
-    },
-    token: {
-      type: String
-    }
-  },
-  components: {
-    AntModal
+    projectOptions: { type: Array, default: () => [] },
+    config: { type: Object, required: true },
+    token: { type: String, default: '' }
   },
   data() {
+    const start = this.formatDate(new Date(), '00:00:00')
+    const expiry = this.addDays(start, 7, '23:59:59')
     return {
-      uploadUrl: 'https://jsonplaceholder.typicode.com/posts/',
+      open: false,
+      formTitle: '添加证书申请',
+      loading: false,
+      uploadUrl: '/',
       limit: 10,
       fileList: [],
-      License_Path: '',
-
-      orderIdList: [],
-      certificateList: [],
-
-      okButton: '立即申请',
-      loading: false,
-      formTitle: '',
-      switchStatus: true,
-      project: {
-          productId: '',
-          productChName: '',
-          productDesc: ''
-      },
-      projectId: '',
       productVersions: [],
-      productTypes: [],
+      productModels: [],
       productModules: [],
-      versionId: '',
-
+      updatingFromDate: false,
       pickerOptions: {
-        shortcuts: [{
-          text: '1天',
+        shortcuts: [1, 7, 14, 365].map(days => ({
+          text: `${days}天`,
           onClick(picker) {
             const date = new Date()
-            date.setTime(date.getTime() + 3600 * 1000 * 24)
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * days)
             date.setHours(0, 0, 0, 0)
             picker.$emit('pick', date)
           }
-        }, {
-          text: '7天',
-          onClick(picker) {
-            const date = new Date()
-            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
-            date.setHours(0, 0, 0, 0)
-            picker.$emit('pick', date)
-          }
-        }, {
-          text: '14天',
-          onClick(picker) {
-            const date = new Date()
-            date.setTime(date.getTime() + 3600 * 1000 * 24 * 14)
-            date.setHours(0, 0, 0, 0)
-            picker.$emit('pick', date)
-          }
-        }, {
-          text: '365天',
-          onClick(picker) {
-            const date = new Date()
-            date.setTime(date.getTime() + 3600 * 1000 * 24 * 365)
-            date.setHours(0, 0, 0, 0)
-            picker.$emit('pick', date)
-          }
-        }]
+        }))
       },
-      // 表单参数
       form: {
-        projectId: undefined,
-        productVersionId: undefined,
-        productTypeId: undefined,
-        modelType: [],
-        versionGroupId: '',
-        planTime: [],
-        authorizationDeadlineTime: new Date().setTime(new Date().setHours(0, 0, 0, 0) + 3600 * 1000 * 24 * 14),
-        maintenanceWarnDate: new Date().setTime(new Date().setHours(0, 0, 0, 0) + 3600 * 1000 * 24 * 14),
-        id: '',
-        name: '',
-        description: '',
-        runEnvironment: '',
-        cronExpression: '',
-        concurrent: '1',
-        misfirePolicy: '1',
-        status: '0',
-        createBy: ''
+        productId: undefined,
+        versionId: undefined,
+        modelId: undefined,
+        customerId: 1,
+        customerName: '昂楷科技内部测试',
+        customerShort: 'ANKKI',
+        authModuleIdList: [],
+        effectDate: start,
+        expiryDate: expiry,
+        maintenanceExpiry: expiry,
+        authDays: 7,
+        totalCount: 1
       },
-      sceneList: [],
-      open: false,
       rules: {
-        projectId: [{ required: true, message: '产品项目不能为空', trigger: 'blur' }],
-        productVersionId: [{ required: true, message: '产品版本不能为空', trigger: 'blur' }],
-        productTypeId: [{ required: true, message: '产品型号不能为空', trigger: 'blur' }],
-        authorizationDeadlineTime: [{ required: true, message: `授权期限不能为空`, trigger: 'blur' }]
+        productId: [{ required: true, message: '产品项目不能为空', trigger: 'change' }],
+        versionId: [{ required: true, message: '产品版本不能为空', trigger: 'change' }],
+        modelId: [{ required: true, message: '产品型号不能为空', trigger: 'change' }],
+        customerName: [{ required: true, message: '客户名称不能为空', trigger: 'blur' }],
+        customerShort: [{ required: true, message: '客户简称不能为空', trigger: 'blur' }],
+        effectDate: [{ required: true, message: '生效时间不能为空', trigger: 'change' }],
+        expiryDate: [{ required: true, message: '授权结束时间不能为空', trigger: 'change' }],
+        maintenanceExpiry: [{ required: true, message: '维保结束时间不能为空', trigger: 'change' }],
+        authDays: [{ required: true, message: '授权天数不能为空', trigger: 'change' }]
       }
     }
   },
-  filters: {},
-  created() {
-    // console.log(this.$config)
-    // console.log(this.token)
+  watch: {
+    'form.effectDate'() {
+      this.updateAuthDaysFromDates()
+    },
+    'form.expiryDate'() {
+      this.updateAuthDaysFromDates()
+    },
+    'form.authDays'(value) {
+      if (!this.updatingFromDate && value) this.updateExpiryDate(value)
+    }
   },
-  computed: {},
-  watch: {},
-  mounted() {},
   methods: {
-    // 取消按钮
+    buildUrl(endpoint) {
+      return `${this.config.environment2.url}${endpoint}`
+    },
+    headers() {
+      return { Authorization: `Bearer ${this.token}` }
+    },
+    formatDate(date, time) {
+      const pad = value => String(value).padStart(2, '0')
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${time || `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`}`
+    },
+    addDays(dateString, days, time) {
+      const date = new Date(dateString.replace(' ', 'T'))
+      date.setDate(date.getDate() + days)
+      return this.formatDate(date, time)
+    },
+    getDatePart(value) {
+      return String(value || '').slice(0, 10)
+    },
+    calculateAuthDays() {
+      const start = this.getDatePart(this.form.effectDate).split('-').map(Number)
+      const end = this.getDatePart(this.form.expiryDate).split('-').map(Number)
+      if (start.length !== 3 || end.length !== 3 || start.some(Number.isNaN) || end.some(Number.isNaN)) return 0
+      return Math.round((Date.UTC(end[0], end[1] - 1, end[2]) - Date.UTC(start[0], start[1] - 1, start[2])) / 86400000)
+    },
+    updateAuthDaysFromDates() {
+      const days = this.calculateAuthDays()
+      if (days < 1 || days === this.form.authDays) return
+      this.updatingFromDate = true
+      this.form.authDays = days
+      this.$nextTick(() => {
+        this.updatingFromDate = false
+      })
+    },
+    updateExpiryDate(days) {
+      const start = this.getDatePart(this.form.effectDate)
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(start)) return
+      const date = new Date(`${start}T00:00:00`)
+      date.setDate(date.getDate() + Number(days))
+      this.form.expiryDate = this.formatDate(date, '23:59:59')
+    },
+    normalizeList(data) {
+      const value = data && data.data !== undefined ? data.data : data
+      return Array.isArray(value) ? value : (value && (value.rows || value.list)) || []
+    },
+    normalizeVersionList(data) {
+      return this.normalizeList(data)
+        .filter(item => String(item.certVersion || '').trim() !== '')
+        .sort((left, right) => this.compareVersionNo(left.versionNo, right.versionNo))
+    },
+    compareVersionNo(left, right) {
+      const leftParts = String(left || '').replace(/^v/i, '').split('.')
+      const rightParts = String(right || '').replace(/^v/i, '').split('.')
+      const length = Math.max(leftParts.length, rightParts.length)
+      for (let index = 0; index < length; index++) {
+        const leftPart = leftParts[index] || ''
+        const rightPart = rightParts[index] || ''
+        const leftNumber = /^\d+$/.test(leftPart) ? Number(leftPart) : null
+        const rightNumber = /^\d+$/.test(rightPart) ? Number(rightPart) : null
+        if (leftNumber !== null && rightNumber !== null && leftNumber !== rightNumber) return rightNumber - leftNumber
+        if (leftPart !== rightPart) return rightPart.localeCompare(leftPart, undefined, { numeric: true, sensitivity: 'base' })
+      }
+      return 0
+    },
+    resetForm() {
+      const start = this.formatDate(new Date(), '00:00:00')
+      const expiry = this.addDays(start, 7, '23:59:59')
+      this.form = {
+        productId: undefined,
+        versionId: undefined,
+        modelId: undefined,
+        customerId: (this.config.environment2.certificateDefaults || {}).customerId || 1,
+        customerName: (this.config.environment2.certificateDefaults || {}).customerName || '',
+        customerShort: (this.config.environment2.certificateDefaults || {}).customerShort || '',
+        authModuleIdList: [],
+        effectDate: start,
+        expiryDate: expiry,
+        maintenanceExpiry: expiry,
+        authDays: 7,
+        totalCount: 1
+      }
+      this.fileList = []
+      this.productVersions = []
+      this.productModels = []
+      this.productModules = []
+      if (this.$refs.form) this.$refs.form.resetFields()
+    },
     cancel() {
       this.open = false
       this.$emit('close')
     },
-    resetForm() {
-      this.$nextTick(() => {
-        this.$refs.form.resetFields()
-      })
-      this.fileList = []
-      // this.form = {
-      //   projectId: undefined,
-      //   productVersionId: undefined,
-      //   type: undefined,
-      //   id: '',
-      //   name: '',
-      //   description: '',
-      //   runEnvironment: '',
-      //   cronExpression: '',
-      //   concurrent: '1',
-      //   misfirePolicy: '1',
-      //   status: '0'
-      // }
-    },
-    // 选择时间
-    change(value) {
-      // console.log(value);
-      // this.form.planTime = value
-    },
-    onOk(value) {
-      // console.log(value);
-      this.form.planTime = value
-      this.form.plannedStartTime = this.form.planTime[0]
-      this.form.plannedEndTime = this.form.planTime[1]
-    },
-    /** 新增按钮操作 */
     handleAdd() {
+      this.resetForm()
       this.open = true
       this.formTitle = '添加证书申请'
-      this.resetForm()
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.open = true
-      this.formTitle = '修改定时任务'
-      this.okButton = '确定'
-      this.form = Object.assign(this.form, row)
-      this.testPlanOptions.forEach((item) => {
-        if (item.id === this.form.testPlanId) {
-          this.form.testPlan = item
-        }
-      })
-      this.getSceneList(this.form.testPlan)
-    },
-    handleChangeProject(project) {
-      this.project = project
-      this.projectId = project.productId
-      if (this.$config[this.project.productChName] && this.$config[this.project.productChName].id) {
-        this.License_Path = this.$config.environment.license + '/' + this.$config[this.project.productChName].id + '/License'
-      } else {
-        this.$message.warning('该产品项目暂未支持，请联系平台管理员！')
-        this.resetForm()
-      }
-      this.getVersionList()
-    },
-    getVersionList() {
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      axios.get(buildUrl(this.$config.environment.productVersions + '?productId=' + this.projectId), {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
-        this.productVersions = response.data.data.list
-        if (this.$config[this.project.productChName] && this.$config[this.project.productChName].productVersionId) {
-          this.form.productVersionId = this.$config[this.project.productChName].productVersionId
-          for (const item of this.productVersions) {
-            if (item.productVersionId === this.$config[this.project.productChName].productVersionId) {
-              this.form.versionGroupId = item.versionGroupId
-              break
-            }
-          }
-          this.getProductTypeList()
-          this.getProductModuleList()
-        }
-      })
-    },
-    handleChangeVersion(item) {
-      if (this.projectId === '') {
-        this.$message.warning('请先选择项目！')
-      } else {
-        this.form.productVersionId = item.productVersionId
-        this.form.versionGroupId = item.versionGroupId
-        this.getProductTypeList()
-        this.getProductModuleList()
-      }
-    },
-    getProductTypeList() {
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      axios.get(buildUrl(this.$config.environment.productTypes + '?productId=' + this.projectId + '&versionGroupId=' + this.form.versionGroupId), {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
-        this.productTypes = response.data.data.list
-        for (const item of this.productTypes) {
-          if (item.productTypeId === this.$config[this.project.productChName].productTypeId) {
-            this.form.productTypeId = item.productTypeId
-            break
-          }
-          this.form.productTypeId = item.productTypeId
-        }
-      })
-    },
-    handleChangeProductType(item) {
-      if (this.form.productVersionId === '') {
-        this.$message.warning('请先选择版本！')
-      } else {
-        this.form.productTypeId = item.productTypeId
-      }
-    },
-    getProductModuleList() {
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      axios.get(buildUrl(this.$config.environment.productModules + '?productId=' + this.projectId + '&versionGroupId=' + this.form.versionGroupId), {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
-        this.productModules = response.data.data.list.map(item => ({
-          value: item.productModuleId,
-          label: item.productModuleName
-        }))
-        if (this.form.productVersionId === this.$config[this.project.productChName].productVersionId) {
-          this.form.modelType = this.$config[this.project.productChName].modelType.split(',').map(Number)
-        } else {
-          this.form.modelType = this.productModules.map(item => item.value)
-        }
-      })
-    },
-    handleChangeProductModule(item) {
-      if (this.form.productVersionId === '') {
-        this.$message.warning('请先选择版本！')
-      } else {
-        this.form.modelType = item
-      }
-    },
-    getEnvironmentList() {
-      const queryParam = {
-        projectId: this.project.id
-      }
-      projectApis.getEnvironmentList(queryParam).then((response) => {
-        response.data.list.forEach((item, index) => {
-          if (item.status === 1) {
-            this.getEnvironmentInfo(item.id)
-          }
+    async handleChangeProject(productId) {
+      const product = this.projectOptions.find(item => item.productId === productId)
+      this.form.versionId = undefined
+      this.form.modelId = undefined
+      this.productVersions = []
+      this.productModels = []
+      this.productModules = []
+      if (!product) return
+      try {
+        const response = await axios.get(this.buildUrl(this.config.environment2.productVersions), {
+          params: { productId, pageNum: 1, pageSize: 9999 }, headers: this.headers()
         })
-      })
-    },
-    getEnvironmentInfo(environmentId) {
-      projectApis.getEnvironmentInfo(environmentId).then((response) => {
-        if (response.data.serverConfig.length > 0) {
-          this.serverList = JSON.parse(response.data.serverConfig)
-          this.serverList.forEach((item, index) => {
-            if (item.status === 1) {
-              item.configList.forEach((key) => {
-                if (key.paramsName === '证书路径') {
-                  this.License_Path = key.paramsValue
-                }
-              })
-              // console.log(this.License_Path)
-            }
-          })
-        }
-      })
-    },
-    handlePreview(file) {
-      // 处理文件预览逻辑
-      // console.log('Preview file:', file)
-      // 如果是图片文件，可以直接显示预览
-      window.open(file.url || URL.createObjectURL(file.raw))
-      if (file.type.startsWith('image/png')) {
-        window.open(file.url || URL.createObjectURL(file.raw))
-      } else {
-        // 对于非图片文件，可以提示用户或提供其他预览方式
-        this.$message.info('该文件类型不支持预览')
+        this.productVersions = this.normalizeVersionList(response.data)
+      } catch (error) {
+        this.$message.error('获取产品版本失败')
       }
     },
-    handleRemove(file, fileList) {
-      // 处理文件移除逻辑
-      // console.log('Removed file:', file)
-      // console.log('Current file list:', fileList)
-      // 从待上传的文件列表中移除文件
-      const index = this.fileList.findIndex(f => f.uid === file.uid)
-      if (index !== -1) {
-        this.fileList.splice(index, 1)
+    async handleChangeVersion(versionId) {
+      this.form.modelId = undefined
+      this.productModels = []
+      this.productModules = []
+      if (!versionId || !this.form.productId) return
+      await Promise.all([this.getProductModels(), this.getProductModules()])
+    },
+    async getProductModels() {
+      try {
+        const response = await axios.get(this.buildUrl(this.config.environment2.productTypes), {
+          params: { productId: this.form.productId, versionId: this.form.versionId, status: 0 }, headers: this.headers()
+        })
+        this.productModels = this.normalizeList(response.data)
+      } catch (error) {
+        this.$message.error('获取产品型号失败')
       }
-      // 更新显示的文件列表
-      this.fileList = fileList
+    },
+    async getProductModules() {
+      try {
+        const endpoint = `${this.config.environment2.productModules}/${this.form.productId}/${this.form.versionId}`
+        const response = await axios.get(this.buildUrl(endpoint), { headers: this.headers() })
+        this.productModules = this.normalizeList(response.data).map(item => ({
+          value: item.moduleId,
+          label: item.moduleName
+        }))
+      } catch (error) {
+        this.$message.error('获取授权模块失败')
+      }
+    },
+    handleChangeModel(modelId) {
+      const model = this.productModels.find(item => item.modelId === modelId)
+      this.form.authModuleIdList = model && Array.isArray(model.moduleIds)
+        ? model.moduleIds.slice()
+        : this.productModules.map(item => item.value)
+    },
+    validateMachineCodeFile(file) {
+      if (!file) return false
+      if (!/\.(info|txt)$/i.test(file.name)) {
+        this.$message.error(`${file.name} 不是有效的机器码文件`)
+        return false
+      }
+      if (file.size > 500 * 1024) {
+        this.$message.error(`${file.name} 超过 500KB`)
+        return false
+      }
+      return true
+    },
+    beforeUpload(file) {
+      return this.validateMachineCodeFile(file)
     },
     handleChange(file, fileList) {
-      // console.log('File changed:', file, fileList)
       this.fileList = fileList
-      // console.log('this.fileList:', this.fileList)
-      // this.fileList = fileList.slice(-3) // 保持最多三个文件
     },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 ${this.limit} 个文件。这次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    handleRemove(file, fileList) {
+      this.fileList = fileList
     },
-    beforeUpload(type) {
-      if (!this.project.productId) {
-        this.$message.warning('请选择所属项目!')
+    handleExceed() {
+      this.$message.warning(`最多选择 ${this.limit} 个机器码文件`)
+    },
+    async readMachineCode(file) {
+      const text = (await file.text()).replace(/^\uFEFF/, '').trim()
+      let data = {}
+      try {
+        data = JSON.parse(text)
+      } catch (error) {
+        const match = text.match(/(?:machineCode|机器码)\s*[:=]\s*([^\r\n]+)/i)
+        data.machineCode = match ? match[1].trim() : text.split(/\r?\n/).map(item => item.trim()).filter(Boolean)[0]
+      }
+      const machineCode = data.machineCode || (Array.isArray(data.machineCodeList) && data.machineCodeList[0])
+      if (!machineCode) throw new Error(`${file.name} 中未找到机器码`)
+      const licenseNo = data.licenseNo || md5(machineCode).slice(0, 16).toUpperCase()
+      return { machineCode, licenseNo }
+    },
+    getProductConfig(product) {
+      const config = this.config[product.productName] || {}
+      return { ...config, ...(this.config.environment2.certificateDefaults || {}) }
+    },
+    createPayload(machines) {
+      const machine = machines[0]
+      const product = this.projectOptions.find(item => item.productId === this.form.productId) || {}
+      const version = this.productVersions.find(item => item.versionId === this.form.versionId) || {}
+      const model = this.productModels.find(item => item.modelId === this.form.modelId) || {}
+      const defaults = this.getProductConfig(product)
+      const modules = this.form.authModuleIdList || []
+      return {
+        testNo: randomUUID(), // 生成唯一测试编号
+        licenseNo: machine.licenseNo,
+        customerId: this.form.customerId || defaults.customerId,
+        customerName: this.form.customerName,
+        customerShort: this.form.customerShort,
+        productId: product.productId,
+        productName: product.productName,
+        versionId: version.versionId,
+        versionName: version.versionNo,
+        certVersion: version.certVersion || defaults.certVersion || '',
+        modelId: model.modelId,
+        modelName: model.modelName,
+        shipmentModel: model.modelMapping || model.modelName,
+        isNeutral: defaults.isNeutral || '0',
+        hasSysinfoMenu: defaults.hasSysinfoMenu || '0',
+        isClusterLicense: defaults.isClusterLicense || '0',
+        maintenanceExpiry: this.form.maintenanceExpiry,
+        authType: defaults.authType || '1',
+        totalCount: machines.length,
+        effectDate: this.form.effectDate,
+        expiryDate: this.form.expiryDate,
+        authDays: Number(this.form.authDays),
+        authModuleIdList: modules.map(Number),
+        machineCode: machines.map(item => item.machineCode).join(','),
+        authModuleIds: modules.join(','),
+        perfConfig: model.performanceConfig || '{}',
+        machineCodeList: machines.map(item => item.machineCode),
+        certNoList: machines.map(item => item.licenseNo)
+      }
+    },
+    extractLicenseIds(data) {
+      const value = data && data.data !== undefined ? data.data : data
+      if (!value) return []
+      if (Array.isArray(value)) return value.map(item => typeof item === 'object' ? item.licenseId : item).filter(Boolean)
+      if (Array.isArray(value.licenseIdList)) return value.licenseIdList.filter(Boolean)
+      if (Array.isArray(value.licenseIds)) return value.licenseIds.filter(Boolean)
+      if (typeof value.licenseIds === 'string') return value.licenseIds.split(',').map(item => item.trim()).filter(Boolean)
+      const records = value.rows || value.list || value.licenseList
+      if (Array.isArray(records)) return records.map(item => typeof item === 'object' ? item.licenseId : item).filter(Boolean)
+      return value.licenseId ? [value.licenseId] : []
+    },
+    async createLicenses(submit, autoMake) {
+      if (!this.fileList.length) {
+        this.$message.warning('请选择机器码文件')
         return
       }
-      if (this.fileList.length === 0) {
-        this.$message.warning('请选择文件后再上传!')
-        return
-      }
-      let isLic
-      let isLt500K
-      for (let i = 0; i < this.fileList.length; i++) {
-        const file = this.fileList[i]
-        isLic = file.name.endsWith(type)
-        isLt500K = file.size / 1024 < 500
-        if (!isLic) {
-          this.$message.error(`请上传正确的${type}格式文件！`)
-          return
-        }
-        if (!isLt500K) {
-          this.$message.error('文件大小不能超过 500KB!')
-          return
-        }
-      }
-      // // 验证文件格式和大小
-      // const file = this.fileList[0]
-      // const isLic = file.name.endsWith('.info') || file.name.endsWith('.lic')
-      // // const isLic1 = file.type === 'image/jpeg' || file.type === 'image/png'
-      // const isLt500K = file.size / 1024 < 500
-      // if (!isLic) {
-      //   this.$message.error('上传文件格式错误！')
-      //   return
-      // }
-      // if (!isLt500K) {
-      //   this.$message.error('文件大小不能超过 500KB!')
-      //   return
-      // }
-      return isLic && isLt500K
-    },
-    async submitUpload() {
-      if (this.beforeUpload('.info')) {
-        await this.applications()
-        this.cancel()
-        this.$emit('ok')
-      }
-    },
-    async submitUpload1() {
-      if (this.beforeUpload('.info')) {
-        await this.applications()
-        await this.getList()
-        this.cancel()
-        this.$emit('handleMakes', this.certificateList)
-      }
-    },
-    submitUpload2() {
-      if (this.beforeUpload('.lic')) {
-        this.customUploads()
-      }
-    },
-    // 单个文件上传
-    customUpload() {
-      const formData = new FormData()
-      formData.append('file', this.fileList[0].raw)
-      formData.append('path', this.License_Path)
-      // const response = axios.post(`${process.env.VUE_APP_BASE_URL}/system/file/upload`, formData)
-      // console.log('Response:', response)
-      api.uploadFile(formData).then((res) => {
-        this.$message.success('文件上传成功！')
-        this.fileList = []
-      }).catch((error) => {
-        this.$message.error('文件上传失败！', error)
-      })
-    },
-    // 多个文件上传
-    customUploads() {
-      const formData = new FormData()
-      this.fileList.forEach(file => {
-        // 打印原始文件名
-        // console.log('Original filename:', file.raw.name)
-        // 创建新的文件名
-        this.form.host = this.form.host.replace(/\./g, '_')
-        const newName = file.raw.name.replacee(/^(.*?)(?=(_audit\.lic)$)/, this.form.host)
-        // 使用 Blob 构造函数创建一个新的文件对象，同时保持原有的文件内容
-        const newFile = new File([file.raw], newName, { type: file.raw.type })
-        // 打印修改后的文件名
-        // console.log('Modified filename:', newFile)
-        // 将新的文件对象添加到 FormData 中
-        formData.append('files', newFile)
-      })
-      formData.append('path', this.License_Path)
-      // 发送 HTTP 请求进行文件上传
-      // fetch(process.env.VUE_APP_BASE_URL + '/system/file/uploads', {
-      //   headers: {
-      //       'Authorization': 'Bearer ' + localStorage.getItem('access_token').replace(/"/g, '')
-      //   },
-      //   method: 'POST',
-      //   body: formData
-      // })
-      // .then(response => response.json())
-      // .then(data => {
-      //   console.log('Upload success:', data)
-      //   this.$message.success('文件上传成功！')
-      // })
-      // .catch(error => {
-      //   console.error('Upload error:', error)
-      //   this.$message.error('文件上传失败！')
-      // })
-      api.uploadFiles(formData).then((res) => {
-        this.$message.success('文件上传成功！')
-        // this.fileList = []
-      }).catch((error) => {
-        this.$message.error('文件上传失败！', error)
-      })
-    },
-    async application() {
-      this.orderIdList = []
-      this.orderIdList.push(randomUUID())
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      const abbreviate = this.project.productChName
-      const applicationsFormData = new FormData();
-        [
-          ['clientInfoId', this.$config[abbreviate].clientInfoId],
-          ['agent', this.$config[abbreviate].agent],
-          ['productId', this.$config[abbreviate].productId],
-          ['productVersionId', this.form.productVersionId],
-          ['productTypeId', this.form.productTypeId],
-          ['maxInstance', this.$config[abbreviate].maxInstance],
-          ['maxStorage', this.$config[abbreviate].maxStorage],
-          ['maxPerformance', this.$config[abbreviate].maxPerformance],
-          ['applyTotal', this.$config[abbreviate].applyTotal],
-          ['technicalName', this.$config[abbreviate].technicalName],
-          ['certificateType', this.$config[abbreviate].certificateType],
-          ['modelType', this.form.modelType.join(',')],
-          // ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
-          // ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
-          ['authorizationDeadlineTime', this.form.authorizationDeadlineTime],
-          ['maintenanceWarnDate', this.form.maintenanceWarnDate],
-          ['orderId', this.orderIdList[0]],
-          ['MachineCodeFile', this.fileList[0].raw],
-          ['requestType', this.$config[abbreviate].requestType],
-          ['maxAbilityEquipment', this.$config[abbreviate].maxAbilityEquipment],
-          ['externalEquipmentControl', this.$config[abbreviate].externalEquipmentControl],
-          ['abilityEquipmentType', this.$config[abbreviate].abilityEquipmentType],
-          ['machineCode', this.$config[abbreviate].machineCode]
-        ].forEach(([key, value]) => applicationsFormData.append(key, value))
-        const applicationsResponse = await axios.post(buildUrl(this.$config.environment.applications), applicationsFormData, {
-          headers: { 'Authorization': this.token }
+      this.loading = true
+      try {
+        const invalidFile = this.fileList.find(item => !this.validateMachineCodeFile(item.raw))
+        if (invalidFile) return
+        const machines = await Promise.all(this.fileList.map(item => this.readMachineCode(item.raw)))
+        const payload = this.createPayload(machines)
+        const response = await axios.post(this.buildUrl(this.config.environment2.batchApplications), payload, {
+          headers: { ...this.headers(), 'Content-Type': 'application/json' }
         })
-        // console.log('Applications Response:', applicationsResponse)
-        if (applicationsResponse.data) {
-          // console.log(`Application response code: ${applicationsResponse.data.code}`)
-          if (applicationsResponse.data.code === 0) {
-            this.$message.success('添加证书申请成功', 1)
-            this.cancel()
-            this.$emit('ok')
-          } else {
-            this.$message.success('添加证书申请失败', 1)
+        if (response.data.code !== 200) throw new Error(response.data.msg || '证书申请失败')
+        const licenseIds = this.extractLicenseIds(response.data)
+        if (submit || autoMake) {
+          if (!licenseIds.length) throw new Error('批量申请成功，但未返回证书 ID')
+          for (const licenseId of licenseIds) {
+            const submitResponse = await axios.put(this.buildUrl(this.config.environment2.submit), { licenseId }, {
+              headers: { ...this.headers(), 'Content-Type': 'application/json' }
+            })
+            if (submitResponse.data.code !== 200) throw new Error(submitResponse.data.msg || `证书 ${licenseId} 提交审核失败`)
           }
         }
-    },
-    async applications() {
-      this.orderIdList = []
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      const abbreviate = this.project.productChName
-      let code
-      for (let i = 0; i < this.fileList.length; i++) {
-        this.orderIdList.push(randomUUID())
-        const applicationsFormData = new FormData();
-        [
-          ['clientInfoId', this.$config[abbreviate].clientInfoId],
-          ['agent', this.$config[abbreviate].agent],
-          ['productId', this.$config[abbreviate].productId],
-          ['productVersionId', this.form.productVersionId],
-          ['productTypeId', this.form.productTypeId],
-          ['maxInstance', this.$config[abbreviate].maxInstance],
-          ['maxStorage', this.$config[abbreviate].maxStorage],
-          ['maxPerformance', this.$config[abbreviate].maxPerformance],
-          ['applyTotal', this.$config[abbreviate].applyTotal],
-          ['technicalName', this.$config[abbreviate].technicalName],
-          ['certificateType', this.$config[abbreviate].certificateType],
-          ['modelType', this.form.modelType.join(',')],
-          // ['authorizationDeadlineTime', this.addDaysToDate(new Date(), this.$config[abbreviate].authorizationDeadlineTime)],
-          // ['maintenanceWarnDate', this.addDaysToDate(new Date(), this.$config[abbreviate].maintenanceWarnDate)],
-          ['authorizationDeadlineTime', this.form.authorizationDeadlineTime],
-          ['maintenanceWarnDate', this.form.maintenanceWarnDate],
-          ['orderId', this.orderIdList[i]],
-          ['MachineCodeFile', this.fileList[i].raw],
-          ['requestType', this.$config[abbreviate].requestType],
-          ['maxAbilityEquipment', this.$config[abbreviate].maxAbilityEquipment],
-          ['externalEquipmentControl', this.$config[abbreviate].externalEquipmentControl],
-          ['abilityEquipmentType', this.$config[abbreviate].abilityEquipmentType],
-          ['machineCode', this.$config[abbreviate].machineCode]
-        ].forEach(([key, value]) => applicationsFormData.append(key, value))
-        await axios.post(buildUrl(this.$config.environment.applications), applicationsFormData, {
-          headers: { 'Authorization': this.token }
-        }).then((applicationsResponse) => {
-          applicationsResponse.data.code === 0 ? code = 0 : code = 1
-        })
-      }
-      if (code === 0) {
-        this.$message.success('批量添证书申请成功', 1)
-      } else {
-        this.$message.success('部分证书添加申请失败', 1)
-      }
-    },
-    async getList() {
-      this.certificateList = []
-      const url = `${this.$config.environment.url + this.$config.environment.makes}?keyword=&page=1&size=10&certificateStateQuery=`
-      await axios.get(url, {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
-        // console.log(this.orderIdList)
-        for (var orderId of this.orderIdList) {
-          for (var item of response.data.data.list) {
-            if (item.orderId === orderId) {
-              this.certificateList.push(item)
-            }
+        if (autoMake) {
+          for (const licenseId of licenseIds) {
+            const approveResponse = await axios.put(this.buildUrl(this.config.environment2.approve), { licenseId }, {
+              headers: { ...this.headers(), 'Content-Type': 'application/json' }
+            })
+            if (approveResponse.data.code !== 200) throw new Error(approveResponse.data.msg || `证书 ${licenseId} 审批失败`)
           }
         }
+        this.$message.success(autoMake ? '一键制作成功，证书已完成审批' : (submit ? '证书申请并提交审核成功' : '添加证书申请成功'))
+        this.cancel()
+        this.$emit('ok', autoMake ? licenseIds : null)
+      } catch (error) {
+        this.$message.error(error.message || '证书申请失败')
+      } finally {
+        this.loading = false
+      }
+    },
+    submitForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) this.createLicenses(false, false)
       })
     },
-    /** 提交按钮 */
-    submitForm () {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.submitUpload()
-        }
+    submitAndSubmit() {
+      this.$refs.form.validate(valid => {
+        if (valid) this.createLicenses(true, false)
       })
     },
-    submitForm1 () {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.submitUpload1()
-        }
+    submitAndApprove() {
+      this.$refs.form.validate(valid => {
+        if (valid) this.createLicenses(true, true)
       })
-    },
-    submitForm2 () {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.submitUpload2()
-        }
-      })
-    },
-    /** 修改状态 */
-    onchange: function (value) {
-      this.form.status = value ? 1 : 0
     }
   }
 }
@@ -674,27 +511,38 @@ export default {
 <style lang="less" scoped>
 .form-item-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
+  // padding: 0 24px;
 }
 
 .form-item-label {
-  margin-top: -30px;
-  margin-left: 22px;
-  // font-weight: bold;
+  width: 25%;
+  text-align: right;
+  padding-right: 12px;
+  line-height: 40px;
 }
 
 .upload-demo {
-  margin-left: 14px; /* 设置间距 */
-  flex: 1; /* 使上传组件占据剩余空间 */
+  width: 66.66%;
 
+  ::v-deep .el-upload,
   ::v-deep .el-upload-dragger {
-    width: 322px;
-    // height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 150px;
+    width: 100%;
     .el-icon-upload {
+      margin: 0px;
       font-size: 50px;
-      // margin: 5px 0 0 15px;
+      margin-bottom: 10px;
     }
   }
+}
+
+::v-deep .ant-modal-body {
+  padding: 24px 10px 24px 0px;
 }
 </style>
