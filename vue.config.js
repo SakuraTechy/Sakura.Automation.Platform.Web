@@ -72,24 +72,28 @@ const vueConfig = {
         GIT_HASH: JSON.stringify(getGitHash()),
         BUILD_DATE: buildDate
       }),
-      // 配置compression-webpack-plugin压缩
-      new CompressionWebpackPlugin({
-        algorithm: 'gzip',
-        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-        threshold: 10240,
-        minRatio: 0.8
-      }),
-      new ZipPlugin({
-        path: '../',
-        filename: 'dist.zip'
-      }),
       new CopyWebpackPlugin({
         patterns: [
           {
             from: 'public/config.js', to: 'config.js'
           }
         ]
-      })
+      }),
+      ...(isProd
+        ? [
+            // Compress and archive release assets only.
+            new CompressionWebpackPlugin({
+              algorithm: 'gzip',
+              test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+              threshold: 10240,
+              minRatio: 0.8
+            }),
+            new ZipPlugin({
+              path: '../',
+              filename: 'dist.zip'
+            })
+          ]
+        : [])
     ],
     // if prod, add externals
     externals: isProd ? assetsCDN.externals : {}
@@ -163,6 +167,19 @@ const vueConfig = {
         // 重写路径，这种是没有我们定义的前缀
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      },
+      '/certificate2-api': {
+        target: 'https://172.24.4.222',
+        changeOrigin: true,
+        secure: false,
+        onProxyReq: (proxyReq) => {
+          // The browser request is same-origin after proxying; do not forward its CORS origin.
+          proxyReq.removeHeader('origin')
+          proxyReq.removeHeader('referer')
+        },
+        pathRewrite: {
+          '^/certificate2-api': ''
         }
       },
       // '/permission':{

@@ -1,59 +1,73 @@
 <template>
   <div class="table-page-search-wrapper">
-    <a-form :labelCol="labelCol" :wrapperCol="wrapperCol">
+    <a-form :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-row :gutter="100">
-        <a-col :md="7" v-if="queryData[0].label === '产品名称'">
-          <a-form-item style="width: 450px" :label="queryData[0].label">
-            <a-select v-model="queryParam[queryData[0].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
-              <a-select-option v-for="(item, index) in projectOptions" :key="index" :value="item.productChName" @click="handleChangeProject(item)">
-                {{ item.productChName }}
+        <a-col :md="7" :sm="12">
+          <a-form-item label="产品名称">
+            <a-select
+              v-model="query.productId"
+              placeholder="请选择"
+              allow-clear
+              show-search
+              option-filter-prop="children"
+              @change="handleProductChange">
+              <a-select-option v-for="item in projectOptions" :key="item.productId" :value="item.productId">
+                {{ item.productName }}
               </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :md="7" v-if="queryData[1].label === '产品版本'">
-          <a-form-item style="width: 450px" :label="queryData[1].label">
-            <a-select v-model="queryParam[queryData[1].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
-              <a-select-option v-for="(item, index) in productVersions" :key="index" :value="item.productVersionNumber">
-                {{ item.productVersionNumber }}
+        <a-col :md="7" :sm="12">
+          <a-form-item label="产品版本">
+            <a-select v-model="query.versionId" placeholder="请选择" allow-clear show-search option-filter-prop="children">
+              <a-select-option v-for="item in productVersions" :key="item.versionId" :value="item.versionId">
+                {{ item.versionNo }}
               </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :md="7" v-if="queryData[2].label === '证书编号'">
-          <a-form-item style="width: 450px" :label="queryData[2].label">
-            <a-input v-model="queryParam[queryData[2].value]" :placeholder='`请输入${queryData[2].label}`' allow-clear />
+        <a-col :md="7" :sm="12">
+          <a-form-item label="证书编号">
+            <a-input v-model="query.licenseNo" placeholder="请输入证书编号" allow-clear />
           </a-form-item>
         </a-col>
-        <a-col>
-          <span class="table-page-search-submitButtons" style="float: right">
-            <a-button type="primary" :disabled="multiple" @click="handleQuery"><a-icon type="search" />查 询</a-button>
+        <a-col :md="3" :sm="24">
+          <span class="table-page-search-submitButtons">
+            <a-button type="primary" @click="handleQuery"><a-icon type="search" />查 询</a-button>
           </span>
         </a-col>
       </a-row>
       <a-row :gutter="100">
-        <a-col :md="7" v-if="queryData[3].label === '制作状态'">
-          <a-form-item style="width: 450px" :label="queryData[3].label">
-            <a-select v-model="queryParam[queryData[3].value]" placeholder="请选择" option-filter-prop="children" show-search allowClear>
-              <a-select-option v-for="(item, index) in certificateStateOptions" :key="index" :value="item.name">
+        <a-col :md="7" :sm="12">
+          <a-form-item label="制作状态">
+            <a-select v-model="query.status" placeholder="请选择" allow-clear>
+              <a-select-option v-for="item in statusOptions" :key="item.id" :value="item.id">
                 {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :md="7" v-if="queryData[4]!==undefined&&queryData[4].label === '申请人'">
-          <a-form-item style="width: 450px" :label="queryData[4].label">
-            <a-input v-model="queryParam[queryData[4].value]" :placeholder='`请输入${queryData[4].label}`' allow-clear />
+        <a-col :md="7" :sm="12">
+          <a-form-item label="申请人">
+            <a-input v-model="query.createBy" placeholder="请输入申请人" allow-clear />
           </a-form-item>
         </a-col>
-        <a-col :md="7" v-if="queryData[5]!==undefined&&queryData[5].label === '申请时间'">
-          <a-form-item style="width: 450px" :label="queryData[5].label">
-            <a-range-picker v-model="queryParam[queryData[5].value]" :show-time="{ format: 'HH:mm:ss' }" format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" @change="change" @ok="onOk" allow-clear/>
+        <a-col :md="7" :sm="12">
+          <a-form-item label="申请时间">
+            <a-range-picker
+              v-model="query.createTimeRange"
+              :show-time="{ format: 'HH:mm:ss' }"
+              format="YYYY-MM-DD HH:mm:ss"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              :placeholder="['开始日期', '结束日期']"
+              allow-clear
+              @change="handleDateChange"
+            />
           </a-form-item>
         </a-col>
-        <a-col>
-          <span class="table-page-search-submitButtons" style="float: right">
-            <a-button :disabled="multiple" @click="resetQuery"><a-icon type="redo" />重 置</a-button>
+        <a-col :md="3" :sm="24">
+          <span class="table-page-search-submitButtons">
+            <a-button @click="resetQuery"><a-icon type="redo" />重 置</a-button>
           </span>
         </a-col>
       </a-row>
@@ -63,98 +77,92 @@
 
 <script>
 import axios from 'axios'
-import { certificateStateOptions } from './Config'
+import { certificateStatusOptions } from './Config'
 
 export default {
   name: 'SearchControl',
   props: {
-    token: {
-      type: String
-    },
-    queryData: {
-      type: Array,
-      required: true
-    },
-    projectOptions: {
-      type: Array
-    }
+    token: { type: String, default: '' },
+    config: { type: Object, required: true },
+    projectOptions: { type: Array, default: () => [] }
   },
   data() {
     return {
-      multiple: false,
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
       productVersions: [],
-      certificateStateOptions,
-      approvalTime: undefined,
-      queryParam: {
-        productChName: undefined,
-        productVersionId: undefined,
-        machineCodeMd5: '',
-        certificateState: undefined,
-        name: '',
+      statusOptions: certificateStatusOptions,
+      query: {
+        productId: undefined,
+        versionId: undefined,
+        licenseNo: '',
+        status: undefined,
+        createBy: '',
         createStartTime: '',
-        createEndTime: ''
+        createEndTime: '',
+        createTimeRange: []
       }
-    }
-  },
-  created() {
-    // console.log(this.$route)
-  },
-  watch: {
-    $route: {
-      handler(val, oldVal) {
-        // console.log(val,oldVal)
-      },
-      // 深度观察监听
-      deep: true
-    },
-    queryParam: {
-      handler(newVal, oldVal) {
-        // console.info(newVal, oldVal)
-        this.handleQuery()
-      },
-      deep: true
     }
   },
   methods: {
-    handleChangeProject(project) {
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      axios.get(buildUrl(this.$config.environment.productVersions + '?productId=' + project.productId), {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
-        this.productVersions = response.data.data.list
-      })
+    buildUrl(endpoint) {
+      return `${this.config.environment2.url}${endpoint}`
     },
-    // 选择时间
-    change(value) {
-      // console.log(value);
-      this.approvalTime = value
-      this.queryParam.createStartTime = this.approvalTime[0]
-      this.queryParam.createEndTime = this.approvalTime[1]
+    async handleProductChange(productId) {
+      this.query.versionId = undefined
+      this.productVersions = []
+      if (!productId) return
+      try {
+        const response = await axios.get(this.buildUrl(this.config.environment2.productVersions), {
+          params: { productId, pageNum: 1, pageSize: 9999 },
+          headers: { Authorization: `Bearer ${this.token}` }
+        })
+        this.productVersions = this.normalizeVersionList(response.data)
+      } catch (error) {
+        this.$message.error('获取产品版本失败')
+      }
     },
-    onOk(value) {
-      // console.log(value);
-      this.approvalTime = value
-      this.queryParam.createStartTime = this.approvalTime[0]
-      this.queryParam.createEndTime = this.approvalTime[1]
+    normalizeList(data) {
+      const value = data && data.data !== undefined ? data.data : data
+      return Array.isArray(value) ? value : (value && (value.rows || value.list)) || []
+    },
+    normalizeVersionList(data) {
+      return this.normalizeList(data)
+        .filter(item => String(item.certVersion || '').trim() !== '')
+        .sort((left, right) => this.compareVersionNo(left.versionNo, right.versionNo))
+    },
+    compareVersionNo(left, right) {
+      const leftParts = String(left || '').replace(/^v/i, '').split('.')
+      const rightParts = String(right || '').replace(/^v/i, '').split('.')
+      const length = Math.max(leftParts.length, rightParts.length)
+      for (let index = 0; index < length; index++) {
+        const leftPart = leftParts[index] || ''
+        const rightPart = rightParts[index] || ''
+        const leftNumber = /^\d+$/.test(leftPart) ? Number(leftPart) : null
+        const rightNumber = /^\d+$/.test(rightPart) ? Number(rightPart) : null
+        if (leftNumber !== null && rightNumber !== null && leftNumber !== rightNumber) return rightNumber - leftNumber
+        if (leftPart !== rightPart) return rightPart.localeCompare(leftPart, undefined, { numeric: true, sensitivity: 'base' })
+      }
+      return 0
+    },
+    handleDateChange(value) {
+      this.query.createStartTime = value && value[0] ? value[0] : ''
+      this.query.createEndTime = value && value[1] ? value[1] : ''
     },
     handleQuery() {
-      const queryParam = this.queryParam
-      // console.log(queryParam)
-      this.$emit('handleQuery', queryParam)
+      const { createTimeRange, ...query } = this.query
+      this.$emit('handleQuery', query)
     },
     resetQuery() {
-      this.approvalTime = undefined
-      this.queryParam = {
-        productChName: undefined,
-        productVersionId: undefined,
-        machineCodeMd5: '',
-        certificateState: undefined,
-        name: '',
+      this.query = {
+        productId: undefined,
+        versionId: undefined,
+        licenseNo: '',
+        status: undefined,
+        createBy: '',
         createStartTime: '',
-        createEndTime: ''
+        createEndTime: '',
+        createTimeRange: []
       }
+      this.productVersions = []
       this.$emit('resetQuery')
     }
   }
@@ -162,7 +170,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.table-page-search-wrapper {
+  padding-bottom: 0;
+}
+.table-page-search-submitButtons {
+  display: block;
+  padding-top: 4px;
+  text-align: right;
+}
 .ant-calendar-picker {
-  width: auto !important;
+  width: 100% !important;
 }
 </style>

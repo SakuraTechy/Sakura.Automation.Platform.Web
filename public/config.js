@@ -1,6 +1,6 @@
 window.config = {
   api: {
-    baseUrl: 'https://api.example.com11',
+    baseUrl: 'https://api.example.com',
     timeout: 5000
   },
   environment: {
@@ -13,6 +13,7 @@ window.config = {
     operate: '/certificateMake/operate',
     download: '/certificateApply/download',
     details: '/certificate/details',
+    products: '/productManage/products',
     productVersions: '/productManage/productVersions',
     productTypes: '/productManage/productTypes',
     productModules: '/productManage/productModules',
@@ -34,6 +35,37 @@ window.config = {
     downloadPath: 'http://172.19.5.222:8079/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/license/',
     webhookUrl: '/system/file/sendWebhookMessage',
     webhook: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=cce2c047-5c30-4d58-a7e0-8a2463cc8dc9'
+  },
+  environment2: {
+    url: 'https://172.24.4.222',
+    devUrl: '/certificate2-api',
+    username: 'liuzhi',
+    password: '3edc$RFV',
+    login: '/prod-api/login',
+    products: '/prod-api/common/product/info/list',
+    productVersions: '/prod-api/common/product/version/list',
+    productTypes: '/prod-api/common/product/model/list',
+    productModules: '/prod-api/common/product/module/listByVersionRange',
+    batchApplications: '/prod-api/certificate/make/batch',
+    submit: '/prod-api/certificate/make/submit',
+    makes: '/prod-api/certificate/make/list',
+    approve: '/prod-api/certificate/audit/approve',
+    download: '/prod-api/certificate/make/download',
+    downloadFile: '/system/file/downloadFile',
+    savePath: '/data/ankki/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/license',
+    downloadPath: 'http://172.19.5.222:8079/Ankki.Test.Platform/automation/Ankki.Web.UI.Automation.Test/TestData/license/',
+    webhookUrl: '/system/file/sendWebhookMessage',
+    webhook: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=cce2c047-5c30-4d58-a7e0-8a2463cc8dc9',
+    certificateDefaults: {
+      customerId: 1,
+      customerName: '昂楷科技内部测试',
+      customerShort: 'ANKKI',
+      authType: '1',
+      isNeutral: '0',
+      hasSysinfoMenu: '0',
+      isClusterLicense: '0',
+      totalCount: 1
+    }
   },
   防统方系统: {
     id: 'AAS_P',

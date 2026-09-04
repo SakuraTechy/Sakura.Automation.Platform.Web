@@ -1,157 +1,158 @@
 <template>
   <ant-modal
-    modalWidth="1000"
-    modalHeight="925"
+    modal-width="900"
+    modal-height="760"
     :visible="open"
-    :modal-title="formTitle"
+    modal-title="证书信息详情"
     :adjust-size="true"
     @cancel="cancel"
   >
-    <div slot="content" style="background-color: #f4f8ff; padding: 20px;">
-      <a-row type="flex" justify="center">
-        <a-col :span="24">
-          <div v-for="(item, index) in infoItems" :key="index" class="info-item">
-            <strong>{{ item.label }}:</strong>
-            <span>{{ item.value }}</span>
-          </div>
+    <div slot="content" class="detail-content">
+      <a-row :gutter="24">
+        <a-col v-for="item in infoItems" :key="item.key" :span="12" class="info-item">
+          <strong>{{ item.label }}</strong>
+          <span v-if="item.key === 'authModuleIds'" class="module-tags">
+            <a-tag v-for="module in moduleItems" :key="module.id">{{ module.name }}</a-tag>
+            <span v-if="!moduleItems.length">-</span>
+          </span>
+          <span v-else>{{ formatValue(certificate[item.key], item.key) }}</span>
         </a-col>
       </a-row>
+      <a-divider />
+      <div class="json-title">完整返回数据</div>
+      <pre class="json-content">{{ formattedCertificate }}</pre>
     </div>
     <template slot="footer">
-      <a-button @click="cancel">取消</a-button>
-      <a-button type="primary" @click="cancel">
-        {{ okButton }}
-      </a-button>
+      <a-button type="primary" @click="cancel">确定</a-button>
     </template>
   </ant-modal>
 </template>
+
 <script>
-import AntModal from '@/components/pt/dialog/AntModal'
 import axios from 'axios'
+import AntModal from '@/components/pt/dialog/AntModal'
+import { getCertificateStatus } from './Config'
 
 export default {
-  name: 'CreateForm',
+  name: 'CertificateDetail',
+  components: { AntModal },
   props: {
-    token: {
-      type: String
-    }
-  },
-  components: {
-    AntModal
+    token: { type: String, default: '' },
+    config: { type: Object, required: true }
   },
   data() {
     return {
       open: false,
-      formTitle: '',
-      okButton: '确定',
-      certificate: undefined,
+      certificate: {},
+      moduleItems: [],
       infoItems: [
-        { id: 'clientInfo.fullName', label: '客户名称', value: '' },
-        { id: 'clientInfo.agent', label: '代理商', value: '' },
-        { id: 'orderId', label: '订单编号', value: '' },
-        { id: 'applyTotal', label: '申请总数', value: '' },
-        { id: 'maxInstance', label: '最大实例数', value: '' },
-        { id: 'maxPerformance', label: '流量限制', value: '' },
-        { id: 'product.productChName', label: '产品名称', value: '' },
-        { id: 'productVersion.productVersionNumber', label: '版本号', value: '' },
-        { id: 'agent', label: '在线数据量', value: '' },
-        { id: 'modelType', label: '授权模块', value: '' },
-        { id: 'authorizationDeadlineTime', label: '授权期限', value: '' },
-        { id: 'maintenanceWarnDate', label: '维保期限', value: '' },
-        { id: 'technicalName', label: '技术服务', value: '' },
-        { id: 'certificateState', label: '状态', value: '' },
-        { id: 'makeUser.name', label: '制作人', value: '' },
-        { id: 'makeTime', label: '制作时间', value: '' },
-        { id: 'approvalUser.name', label: '审批人', value: '' },
-        { id: 'approvalTime', label: '审批时间', value: '' },
-        { id: 'approvalOpinion', label: '审批意见', value: '' },
-        { id: 'licenseMakeNumber', label: '证书制作次数', value: '' },
-        { id: 'desenTaskConcNum', label: '脱敏任务并发数', value: '' },
-        { id: 'wmTaskConcNum', label: '水印任务并发数', value: '' },
-        // { id: 'description', label: '描述', value: '' },
-        { id: 'machineCodeMd5', label: '证书码编号', value: '' },
-        { id: 'machineCode', label: '机器码', value: '' }
+        { key: 'licenseId', label: '证书ID' },
+        { key: 'status', label: '状态' },
+        { key: 'licenseNo', label: '证书编号' },
+        { key: 'machineCode', label: '机器码' },
+        { key: 'createBy', label: '申请人' },
+        { key: 'createTime', label: '申请时间' },
+        { key: 'submitByName', label: '提交人' },
+        { key: 'submitTime', label: '提交时间' },
+        { key: 'auditByName', label: '审批人' },
+        { key: 'auditTime', label: '审批时间' },
+        { key: 'customerName', label: '客户名称' },
+        { key: 'customerShort', label: '客户简称' },
+        { key: 'productName', label: '产品名称' },
+        { key: 'versionName', label: '产品版本' },
+        { key: 'modelName', label: '产品型号' },
+        { key: 'shipmentModel', label: '出货型号' },
+        { key: 'authDays', label: '授权天数' },
+        { key: 'totalCount', label: '证书数量' },
+        { key: 'effectDate', label: '授权生效' },
+        { key: 'expiryDate', label: '授权结束' },
+        { key: 'maintenanceExpiry', label: '维保结束' },
+        { key: 'authModuleIds', label: '授权模块' },
+        { key: 'perfConfig', label: '性能配置' }
       ]
-}
+    }
   },
-  filters: {},
-  created() {
-
+  computed: {
+    formattedCertificate() {
+      return JSON.stringify(this.certificate, null, 2)
+    }
   },
-  computed: {},
-  watch: {},
-  mounted() {},
   methods: {
     cancel() {
       this.open = false
       this.$emit('close')
     },
-    async getList(record) {
-      const buildUrl = (endpoint) => `${this.$config.environment.url}${endpoint}`
-      await axios.get(buildUrl(this.$config.environment.details + '?certificateId=' + record.certificateId), {
-        headers: { 'Authorization': this.token }
-      }).then((response) => {
-        this.certificate = response.data.data.certificate
-        this.updateInfoItems(this.certificate, this.infoItems)
-      })
+    formatValue(value, key) {
+      if (value === null || value === undefined || value === '') return '-'
+      if (key === 'status') return getCertificateStatus(value)
+      return typeof value === 'object' ? JSON.stringify(value) : value
     },
-    updateInfoItems1(infoItem, infoItems) {
-      infoItems.forEach(item => {
-        const path = item.id.split('.')
-        let current = infoItem
-        for (const key of path) {
-          const timeKeys = ['maintenanceWarnDate', 'makeTime', 'approvalTime']
-          if (timeKeys.includes(key)) {
-            if (current[key]) {
-              current = this.parseTime(current[key])
-            } else {
-              current = '-'
-            }
-          } else {
-            if (current[key]) {
-              current = current[key]
-            } else {
-              current = '-'
-            }
-          }
-        }
-        item.value = current
-      })
+    normalizeList(data) {
+      const value = data && data.data !== undefined ? data.data : data
+      return Array.isArray(value) ? value : (value && (value.rows || value.list)) || []
     },
-    updateInfoItems(infoItem, infoItems) {
-      infoItems.forEach(item => {
-        const path = item.id.split('.')
-        let current = infoItem
-        for (const key of path) {
-          current = (['authorizationDeadlineTime', 'maintenanceWarnDate', 'makeTime', 'approvalTime'].includes(key) && current[key]) ? this.parseTime(current[key]) : current[key] ?? '-'
-        }
-        item.value = current
-      })
+    getModuleIds(record) {
+      if (Array.isArray(record.authModuleIdList)) return record.authModuleIdList.map(String)
+      return String(record.authModuleIds || '').split(',').map(item => item.trim()).filter(Boolean)
+    },
+    async loadModuleItems(record) {
+      const moduleIds = this.getModuleIds(record)
+      this.moduleItems = moduleIds.map(id => ({ id, name: id }))
+      if (!record.productId || !record.versionId || !moduleIds.length) return
+      try {
+        const endpoint = `${this.config.environment2.productModules}/${record.productId}/${record.versionId}`
+        const response = await axios.get(`${this.config.environment2.url}${endpoint}`, {
+          headers: { Authorization: `Bearer ${this.token}` }
+        })
+        const modules = this.normalizeList(response.data)
+        const moduleMap = modules.reduce((result, module) => {
+          result[String(module.moduleId)] = module.moduleName
+          return result
+        }, {})
+        this.moduleItems = moduleIds.map(id => ({ id, name: moduleMap[id] || id }))
+      } catch (error) {
+        // Keep the IDs visible when the optional module-name request fails.
+      }
     },
     handlePreview(record) {
-      this.getList(record)
+      this.certificate = { ...record }
+      this.moduleItems = []
       this.open = true
-      this.formTitle = '证书信息详情'
+      this.loadModuleItems(record)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.detail-content {
+  padding: 20px;
+  background: #f4f8ff;
+}
 .info-item {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px; /* 可选：为每个信息项之间添加间距 */
+  margin-bottom: 12px;
+  line-height: 22px;
 }
-
 .info-item strong {
-  font-weight: bold;
-  min-width: 105px; /* 可选：设定标签的最小宽度以保持一致性 */
-  margin-right: 120px; /* 为标签和值之间添加间距 */
+  flex: 0 0 90px;
+  color: #555;
 }
-
 .info-item span {
-  flex-grow: 1; /* 让 span 占据剩余空间 */
-  word-break: break-all; /* 允许长单词换行 */
+  flex: 1;
+  word-break: break-all;
+}
+.json-title {
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 600;
+}
+.json-content {
+  max-height: 210px;
+  overflow: auto;
+  padding: 12px;
+  background: #fff;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 </style>
